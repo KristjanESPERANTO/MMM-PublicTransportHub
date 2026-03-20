@@ -1,0 +1,49 @@
+.mmm-pthub-wrapper[data-line-preset="hamburg"] {
+  .mmm-pth-sign {
+    min-width: 4ch;
+  }
+
+  .mmm-pthub-product-bus {
+    background-color: #ed0020;
+    border-radius: 0;
+    clip-path: polygon(0% 50%, 20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%);
+  }
+
+  .mmm-pthub-line-u1 {
+    background-color: #005aa6;
+  }
+
+  .mmm-pthub-line-u2 {
+    background-color: #ee001a;
+  }
+
+  .mmm-pthub-line-u3 {
+    background-color: #ffd700;
+  }
+
+  .mmm-pthub-line-u4 {
+    background-color: #3ea8ab;
+  }
+
+  .mmm-pthub-line-s1 {
+    background-color: #009728;
+  }
+
+  .mmm-pthub-line-s2 {
+    background-color: #b60c36;
+  }
+
+  .mmm-pthub-line-s3 {
+    background-color: #531b6e;
+  }
+
+  .mmm-pthub-line-s5 {
+    background-color: #008bbe;
+  }
+
+  .mmm-pthub-line-a1,
+  .mmm-pthub-line-a2,
+  .mmm-pthub-line-a3 {
+    background-color: #fe8112;
+  }
+}

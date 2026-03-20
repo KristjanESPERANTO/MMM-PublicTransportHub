@@ -1,0 +1,137 @@
+.mmm-pthub-wrapper[data-line-preset="munich"] {
+  .mmm-pthub-line-s1 {
+    background-color: #6bbee6;
+  }
+
+  .mmm-pthub-line-s2 {
+    background-color: #8cbd4f;
+  }
+
+  .mmm-pthub-line-s3 {
+    background-color: #7d2a8b;
+  }
+
+  .mmm-pthub-line-s4 {
+    background-color: #cb1e47;
+  }
+
+  .mmm-pthub-line-s5 {
+    background-color: #7d2a8a;
+  }
+
+  .mmm-pthub-line-s6 {
+    background-color: #5da570;
+  }
+
+  .mmm-pthub-line-s7 {
+    background-color: #833c37;
+  }
+
+  .mmm-pthub-line-s8 {
+    background-color: #262425;
+  }
+
+  .mmm-pthub-line-s20 {
+    background-color: #d45e71;
+  }
+
+  .mmm-pthub-line-u1 {
+    background-color: #5c803e;
+  }
+
+  .mmm-pthub-line-u2 {
+    background-color: #a6123a;
+  }
+
+  .mmm-pthub-line-u3 {
+    background-color: #d66f38;
+  }
+
+  .mmm-pthub-line-u4 {
+    background-color: #64b28d;
+  }
+
+  .mmm-pthub-line-u5 {
+    background-color: #a67322;
+  }
+
+  .mmm-pthub-line-u6 {
+    background-color: #406fb7;
+  }
+
+  .mmm-pthub-line-u7 {
+    background-color: #5b803e;
+  }
+
+  .mmm-pthub-line-u8 {
+    background-color: #9f1a31;
+  }
+
+  .mmm-pthub-line-str12 {
+    background-color: #903f98;
+  }
+
+  .mmm-pthub-line-str15 {
+    background-color: white;
+    border: 1px solid #f58f98;
+    color: #f58f98;
+  }
+
+  .mmm-pthub-line-str16 {
+    background-color: #006cb2;
+  }
+
+  .mmm-pthub-line-str17 {
+    background-color: #875b46;
+  }
+
+  .mmm-pthub-line-str18 {
+    background-color: #0db14b;
+  }
+
+  .mmm-pthub-line-str19 {
+    background-color: #ed1d24;
+  }
+
+  .mmm-pthub-line-str20 {
+    background-color: #00c0e8;
+  }
+
+  .mmm-pthub-line-str21 {
+    background-color: #b999c7;
+  }
+
+  .mmm-pthub-line-str23 {
+    background-color: #b3d334;
+  }
+
+  .mmm-pthub-line-str25 {
+    background-color: #f58f98;
+  }
+
+  .mmm-pthub-line-str27 {
+    background-color: #faa61a;
+  }
+
+  .mmm-pthub-line-str28 {
+    background-color: white;
+    border: 1px solid #faa61a;
+    color: #faa61a;
+  }
+
+  .mmm-pthub-line-str29 {
+    background-color: white;
+    border: 1px solid #ed1d24;
+    color: #ed1d24;
+  }
+
+  .mmm-pthub-product-bus {
+    background-color: #d0672f;
+  }
+
+  div[class^="x"],
+  div[class*=" x"] {
+    background-color: #779986;
+    border-radius: 1rem;
+  }
+}

@@ -1,0 +1,136 @@
+.mmm-pthub-wrapper[data-line-preset="leipzig"] {
+  .mmm-pthub-line-s1,
+  .mmm-pthub-line-s2,
+  .mmm-pthub-line-s3,
+  .mmm-pthub-line-s4,
+  .mmm-pthub-line-s5,
+  .mmm-pthub-line-s5x,
+  .mmm-pthub-line-s6 {
+    background-color: #1e944b;
+    border-radius: 1.25rem;
+  }
+
+  .mmm-pthub-line-str1,
+  .mmm-pthub-line-str3,
+  .mmm-pthub-line-str3e {
+    background-color: #5eb246;
+  }
+
+  .mmm-pthub-line-str2,
+  .mmm-pthub-line-str8,
+  .mmm-pthub-line-str9 {
+    background-color: #f8c623;
+    color: black;
+  }
+
+  .mmm-pthub-line-str14 {
+    background-color: #00a8db;
+    color: black;
+  }
+
+  .mmm-pthub-line-str4,
+  .mmm-pthub-line-str7,
+  .mmm-pthub-line-str12,
+  .mmm-pthub-line-str15 {
+    background-color: #174489;
+  }
+
+  .mmm-pthub-line-str10,
+  .mmm-pthub-line-str11,
+  .mmm-pthub-line-str16,
+  .mmm-pthub-line-str51,
+  .mmm-pthub-line-str56 {
+    background-color: #d8232a;
+  }
+
+  .mmm-pthub-line-bus65,
+  .mmm-pthub-line-bus70,
+  .mmm-pthub-line-bus72,
+  .mmm-pthub-line-bus73,
+  .mmm-pthub-line-bus73e,
+  .mmm-pthub-line-bus74,
+  .mmm-pthub-line-bus74e,
+  .mmm-pthub-line-bus80,
+  .mmm-pthub-line-bus81,
+  .mmm-pthub-line-bus82,
+  .mmm-pthub-line-bus89,
+  .mmm-pthub-line-bus90 {
+    background-color: #912a7d;
+  }
+
+  .mmm-pthub-line-bus61,
+  .mmm-pthub-line-bus63,
+  .mmm-pthub-line-bus75,
+  .mmm-pthub-line-bus79,
+  .mmm-pthub-line-bus83,
+  .mmm-pthub-line-bus86,
+  .mmm-pthub-line-bus87,
+  .mmm-pthub-line-bus88,
+  .mmm-pthub-line-bus91,
+  .mmm-pthub-line-bus91e,
+  .mmm-pthub-line-bus100,
+  .mmm-pthub-line-bus105,
+  .mmm-pthub-line-bus106,
+  .mmm-pthub-line-bus107,
+  .mmm-pthub-line-bus108,
+  .mmm-pthub-line-bus120,
+  .mmm-pthub-line-bus130,
+  .mmm-pthub-line-bus131,
+  .mmm-pthub-line-bus135,
+  .mmm-pthub-line-bus141,
+  .mmm-pthub-line-bus145,
+  .mmm-pthub-line-bus161,
+  .mmm-pthub-line-bus163,
+  .mmm-pthub-line-bus164,
+  .mmm-pthub-line-bus165,
+  .mmm-pthub-line-bus172,
+  .mmm-pthub-line-bus175,
+  .mmm-pthub-line-bus176,
+  .mmm-pthub-line-bus190,
+  .mmm-pthub-line-bus191,
+  .mmm-pthub-line-bus192,
+  .mmm-pthub-line-bus195,
+  .mmm-pthub-line-bus196,
+  .mmm-pthub-line-bus197,
+  .mmm-pthub-line-bus202,
+  .mmm-pthub-line-bus207,
+  .mmm-pthub-line-bus215,
+  .mmm-pthub-line-bus412,
+  .mmm-pthub-line-bus645,
+  .mmm-pthub-line-bus690,
+  .mmm-pthub-line-bus691,
+  .mmm-pthub-line-bus724,
+  .mmm-pthub-line-bus743 {
+    background-color: #a3a3a2;
+  }
+
+  .mmm-pthub-line-busn1,
+  .mmm-pthub-line-busn1e,
+  .mmm-pthub-line-busn5,
+  .mmm-pthub-line-busn5e,
+  .mmm-pthub-line-busn8,
+  .mmm-pthub-line-busn8e {
+    background-color: #ee9f2e;
+    color: #164585;
+  }
+
+  .mmm-pthub-line-busn2,
+  .mmm-pthub-line-busn2e,
+  .mmm-pthub-line-busn7,
+  .mmm-pthub-line-busn7e {
+    background-color: #fbde89;
+    color: #164585;
+  }
+
+  .mmm-pthub-line-busn3,
+  .mmm-pthub-line-busn3e,
+  .mmm-pthub-line-busn4,
+  .mmm-pthub-line-busn4e,
+  .mmm-pthub-line-busn6,
+  .mmm-pthub-line-busn6e,
+  .mmm-pthub-line-busn9,
+  .mmm-pthub-line-busn9e {
+    background-color: #fcd120;
+    color: #164585;
+  }
+}

@@ -1,0 +1,63 @@
+.mmm-pthub-wrapper[data-line-preset="graz"] {
+  .mmm-pth-warning-remarks {
+    width: 50ch;
+  }
+
+  .mmm-pthub-line-s1,
+  .mmm-pthub-line-s2,
+  .mmm-pthub-line-s3,
+  .mmm-pthub-line-s4,
+  .mmm-pthub-line-s5,
+  .mmm-pthub-line-s5x,
+  .mmm-pthub-line-s6,
+  .mmm-pthub-line-s7,
+  .mmm-pthub-line-s61,
+  [class^="s "],
+  [class^="d"],
+  [class^="ec"],
+  [class^="icb"],
+  [class^="ic"],
+  [class^="ir"],
+  [class^="nj"],
+  [class^="rj"],
+  [class^="rex"] {
+    background-color: #e31613;
+    border-color: #e31613;
+    border-radius: 1.25rem;
+  }
+
+  .mmm-pthub-line-e {
+    background-color: #ecc91f;
+    color: white;
+    border-radius: 5px;
+  }
+
+  [class*="expressbus"],
+  [class*="regiobus"],
+  [class*="regionalbus"] {
+    background-color: #95bf0f;
+
+    color: white;
+    border-radius: 5px;
+  }
+
+  [class*="straßenbahn"] {
+    background-color: #93931b;
+
+    color: white;
+    border-radius: 5px;
+  }
+
+  [class*="stadtbus"],
+  [class*="nightline"] {
+    background-color: #018c3c;
+
+    color: white;
+    border-radius: 5px;
+  }
+
+  .mmm-pthub-line-sbb,
+  .mmm-pthub-line-sbl {
+    background-color: #6b4d34;
+  }
+}

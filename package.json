@@ -1,0 +1,51 @@
+{
+  "name": "mmm-publictransporthub",
+  "version": "0.1.0",
+  "description": "MagicMirror module for public transport departures with pluggable providers.",
+  "keywords": [
+    "MagicMirror",
+    "public transport",
+    "hafas",
+    "vendo",
+    "transitous"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KristjanESPERANTO/MMM-PublicTransportHub.git"
+  },
+  "license": "MIT",
+  "main": "MMM-PublicTransportHub.js",
+  "type": "commonjs",
+  "scripts": {
+    "demo": "cd ../../ && MM_CONFIG_FILE=modules/MMM-PublicTransportHub/demo.config.js node --run start:dev",
+    "lint": "eslint && prettier . --check",
+    "lint:fix": "eslint --fix && prettier . --write",
+    "query": "node ./convenience/query_stations.mjs",
+    "release": "commit-and-tag-version --config ./changelog.config.js",
+    "test": "node --run lint && node --run test:spelling && node --run test:unit",
+    "test:spelling": "cspell .",
+    "test:unit": "node --test 'tests/**/*.test.mjs'"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "@motis-project/motis-client": "^2.9.1",
+    "db-vendo-client": "^6.10.8",
+    "hafas-client": "^6.3.6"
+  },
+  "devDependencies": {
+    "@eslint/css": "^1.0.0",
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^1.2.0",
+    "@eslint/markdown": "^7.5.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "commit-and-tag-version": "^12.7.1",
+    "cspell": "^9.7.0",
+    "eslint": "^10.1.0",
+    "eslint-plugin-import-x": "^4.16.2",
+    "eslint-plugin-package-json": "^0.91.0",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1"
+  }
+}

@@ -1,0 +1,127 @@
+.mmm-pthub-wrapper[data-line-preset="magdeburg"] {
+  .mmm-pthub-line-str1 {
+    background-color: rgb(202 53 109);
+  }
+
+  .mmm-pthub-line-str2 {
+    background-color: rgb(1 142 74);
+  }
+
+  .mmm-pthub-line-str3 {
+    background-color: rgb(255 205 42);
+    color: rgb(0 0 0);
+  }
+
+  .mmm-pthub-line-str4 {
+    background-color: rgb(90 181 138);
+  }
+
+  .mmm-pthub-line-str5 {
+    background-color: rgb(184 111 46);
+  }
+
+  .mmm-pthub-line-str6 {
+    background-color: rgb(1 142 74);
+  }
+
+  .mmm-pthub-line-str8 {
+    background-color: rgb(254 254 254);
+    color: rgb(247 163 60);
+    border-color: rgb(247 163 60);
+    border-style: solid;
+    border-width: 2px;
+  }
+
+  .mmm-pthub-line-str9 {
+    background-color: rgb(0 133 69);
+  }
+
+  .mmm-pthub-line-str10 {
+    background-color: rgb(2 138 192);
+  }
+
+  .mmm-pthub-line-str13 {
+    background-color: rgb(0 133 69);
+  }
+
+  .mmm-pthub-line-strn1 {
+    background-color: rgb(188 13 49);
+  }
+
+  .mmm-pthub-line-strn2 {
+    background-color: rgb(119 90 162);
+  }
+
+  .mmm-pthub-line-strn3 {
+    background-color: rgb(213 17 48);
+  }
+
+  .mmm-pthub-line-strn4 {
+    background-color: rgb(0 120 88);
+  }
+
+  .mmm-pthub-line-strn6 {
+    background-color: rgb(245 156 0);
+  }
+
+  .mmm-pthub-line-bus46 {
+    background-color: rgb(71 37 130);
+  }
+
+  .mmm-pthub-line-bus51 {
+    background-color: rgb(73 110 177);
+  }
+
+  .mmm-pthub-line-bus52 {
+    background-color: rgb(248 159 50);
+  }
+
+  .mmm-pthub-line-bus53 {
+    background-color: rgb(251 253 252);
+    color: rgb(0 0 0);
+  }
+
+  .mmm-pthub-line-bus54 {
+    background-color: rgb(120 193 79);
+  }
+
+  .mmm-pthub-line-bus56 {
+    background-color: rgb(213 191 59);
+  }
+
+  .mmm-pthub-line-bus57 {
+    background-color: rgb(224 41 143);
+  }
+
+  .mmm-pthub-line-bus58 {
+    background-color: rgb(0 171 166);
+  }
+
+  .mmm-pthub-line-bus59 {
+    background-color: rgb(13 116 98);
+  }
+
+  .mmm-pthub-line-bus66 {
+    background-color: rgb(176 53 6);
+  }
+
+  .mmm-pthub-line-bus69 {
+    background-color: rgb(81 62 148);
+  }
+
+  .mmm-pthub-line-bus71 {
+    background-color: rgb(218 52 73);
+  }
+
+  .mmm-pthub-line-bus72 {
+    background-color: rgb(60 100 173);
+  }
+
+  .mmm-pthub-line-bus73 {
+    background-color: rgb(69 73 68);
+  }
+
+  .mmm-pthub-line-busn9 {
+    background-color: rgb(231 64 17);
+  }
+}

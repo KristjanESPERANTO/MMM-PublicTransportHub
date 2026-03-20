@@ -1,0 +1,10 @@
+{
+  "PTH_ERROR_PREFIX": "Error",
+  "LOADING": "Loading departures...",
+  "PTH_ERROR_TIMEOUT": "The provider request timed out. Please try again shortly.",
+  "PTH_ERROR_NETWORK": "Network error while contacting the provider.",
+  "PTH_ERROR_RATE_LIMIT": "Provider rate limit reached. Please try again later.",
+  "PTH_ERROR_SERVER": "Provider server error. Please try again shortly.",
+  "PTH_ERROR_CLIENT": "Invalid request for the selected provider configuration.",
+  "PTH_ERROR_NOT_INITIALIZED": "Provider is not initialized yet."
+}

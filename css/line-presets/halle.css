@@ -1,0 +1,275 @@
+.mmm-pthub-wrapper[data-line-preset="halle"] {
+  .mmm-pthub-line-str1,
+  .mmm-pthub-line-str1e,
+  .mmm-pthub-line-bus1,
+  .mmm-pthub-line-bus1e {
+    background-color: rgb(251 186 0);
+  }
+
+  .mmm-pthub-line-str2,
+  .mmm-pthub-line-str2e,
+  .mmm-pthub-line-str2s,
+  .mmm-pthub-line-str2se,
+  .mmm-pthub-line-bus2,
+  .mmm-pthub-line-bus2e {
+    background-color: rgb(239 124 0);
+  }
+
+  .mmm-pthub-line-str3,
+  .mmm-pthub-line-str3e,
+  .mmm-pthub-line-bus3,
+  .mmm-pthub-line-bus3e {
+    background-color: rgb(0 139 210);
+  }
+
+  .mmm-pthub-line-str4,
+  .mmm-pthub-line-str4e,
+  .mmm-pthub-line-bus4,
+  .mmm-pthub-line-bus4e {
+    background-color: rgb(155 16 6);
+  }
+
+  .mmm-pthub-line-str5,
+  .mmm-pthub-line-str5e,
+  .mmm-pthub-line-bus5,
+  .mmm-pthub-line-bus5e {
+    background-color: rgb(15 63 147);
+  }
+
+  .mmm-pthub-line-str7,
+  .mmm-pthub-line-str7e,
+  .mmm-pthub-line-bus7,
+  .mmm-pthub-line-bus7e {
+    background-color: rgb(234 80 151);
+  }
+
+  .mmm-pthub-line-str8,
+  .mmm-pthub-line-str8e,
+  .mmm-pthub-line-bus8,
+  .mmm-pthub-line-bus8e {
+    background-color: rgb(136 75 0);
+  }
+
+  .mmm-pthub-line-str9,
+  .mmm-pthub-line-str9e,
+  .mmm-pthub-line-bus9,
+  .mmm-pthub-line-bus9e {
+    background-color: rgb(173 175 23);
+  }
+
+  .mmm-pthub-line-str10,
+  .mmm-pthub-line-str10e,
+  .mmm-pthub-line-bus10,
+  .mmm-pthub-line-bus10e {
+    background-color: rgb(51 102 51);
+  }
+
+  .mmm-pthub-line-str11,
+  .mmm-pthub-line-str11e,
+  .mmm-pthub-line-bus11,
+  .mmm-pthub-line-bus11e {
+    background-color: rgb(153 102 0);
+  }
+
+  .mmm-pthub-line-str12,
+  .mmm-pthub-line-str12e,
+  .mmm-pthub-line-bus12,
+  .mmm-pthub-line-bus12e {
+    background-color: rgb(153 204 0);
+  }
+
+  .mmm-pthub-line-str15,
+  .mmm-pthub-line-str15e,
+  .mmm-pthub-line-bus15,
+  .mmm-pthub-line-bus15e {
+    background-color: rgb(255 102 102);
+  }
+
+  .mmm-pthub-line-str16,
+  .mmm-pthub-line-str16e,
+  .mmm-pthub-line-bus16,
+  .mmm-pthub-line-bus16e {
+    background-color: rgb(175 24 103);
+  }
+
+  .mmm-pthub-line-str17,
+  .mmm-pthub-line-str17e,
+  .mmm-pthub-line-bus17,
+  .mmm-pthub-line-bus17e {
+    background-color: rgb(25 204 102);
+  }
+
+  .mmm-pthub-line-str94,
+  .mmm-pthub-line-str94e,
+  .mmm-pthub-line-bus94,
+  .mmm-pthub-line-bus94e {
+    border: 1px solid #666;
+    background-color: rgb(111 17 5);
+  }
+
+  .mmm-pthub-line-str95,
+  .mmm-pthub-line-str95e,
+  .mmm-pthub-line-bus95,
+  .mmm-pthub-line-bus95e {
+    border: 1px solid #666;
+    background-color: rgb(5 21 65);
+  }
+
+  .mmm-pthub-line-str99,
+  .mmm-pthub-line-str99e,
+  .mmm-pthub-line-bus99,
+  .mmm-pthub-line-bus99e {
+    background-color: rgb(51 204 255);
+  }
+
+  .mmm-pthub-line-bus21,
+  .mmm-pthub-line-bus21e {
+    background-color: rgb(255 0 0);
+  }
+
+  .mmm-pthub-line-bus22,
+  .mmm-pthub-line-bus22e {
+    background-color: rgb(9 146 184);
+  }
+
+  .mmm-pthub-line-bus23,
+  .mmm-pthub-line-bus23e {
+    background-color: rgb(0 102 51);
+  }
+
+  .mmm-pthub-line-bus24,
+  .mmm-pthub-line-bus24e {
+    background-color: rgb(119 67 50);
+  }
+
+  .mmm-pthub-line-bus25,
+  .mmm-pthub-line-bus25e {
+    background-color: rgb(171 76 0);
+  }
+
+  .mmm-pthub-line-bus26,
+  .mmm-pthub-line-bus26e {
+    border: 1px solid #666;
+    background-color: rgb(89 11 34);
+  }
+
+  .mmm-pthub-line-bus27,
+  .mmm-pthub-line-bus27e {
+    background-color: rgb(141 0 75);
+  }
+
+  .mmm-pthub-line-bus28,
+  .mmm-pthub-line-bus28e {
+    background-color: rgb(226 141 0);
+  }
+
+  .mmm-pthub-line-bus30,
+  .mmm-pthub-line-bus30e {
+    background-color: rgb(116 58 118);
+  }
+
+  .mmm-pthub-line-bus31,
+  .mmm-pthub-line-bus31e {
+    background-color: rgb(201 75 24);
+  }
+
+  .mmm-pthub-line-bus32,
+  .mmm-pthub-line-bus32e {
+    background-color: rgb(153 153 0);
+  }
+
+  .mmm-pthub-line-bus34,
+  .mmm-pthub-line-bus34e {
+    background-color: rgb(0 153 153);
+  }
+
+  .mmm-pthub-line-bus35,
+  .mmm-pthub-line-bus35e {
+    border: 1px solid #666;
+    background-color: rgb(23 62 112);
+  }
+
+  .mmm-pthub-line-bus36,
+  .mmm-pthub-line-bus36e {
+    background-color: rgb(139 100 37);
+  }
+
+  .mmm-pthub-line-bus40,
+  .mmm-pthub-line-bus40e {
+    background-color: rgb(204 102 119);
+  }
+
+  .mmm-pthub-line-bus41,
+  .mmm-pthub-line-bus41e {
+    background-color: rgb(0 51 255);
+  }
+
+  .mmm-pthub-line-bus42,
+  .mmm-pthub-line-bus42e {
+    background-color: rgb(111 36 114);
+  }
+
+  .mmm-pthub-line-bus43,
+  .mmm-pthub-line-bus43e {
+    background-color: rgb(0 91 55);
+  }
+
+  .mmm-pthub-line-bus44,
+  .mmm-pthub-line-bus44e {
+    background-color: rgb(0 104 180);
+  }
+
+  .mmm-pthub-line-bus52,
+  .mmm-pthub-line-bus52e {
+    background-color: rgb(214 126 43);
+  }
+
+  .mmm-pthub-line-bus53,
+  .mmm-pthub-line-bus53e {
+    background-color: rgb(181 109 40);
+  }
+
+  .mmm-pthub-line-bus60,
+  .mmm-pthub-line-bus60e {
+    background-color: rgb(255 115 0);
+  }
+
+  .mmm-pthub-line-bus61,
+  .mmm-pthub-line-bus61e {
+    background-color: rgb(181 168 0);
+  }
+
+  .mmm-pthub-line-bus62,
+  .mmm-pthub-line-bus62e {
+    background-color: rgb(245 130 32);
+  }
+
+  .mmm-pthub-line-bus65,
+  .mmm-pthub-line-bus65e {
+    background-color: rgb(68 64 136);
+  }
+
+  .mmm-pthub-line-bus91,
+  .mmm-pthub-line-bus91e {
+    background-color: rgb(184 67 11);
+  }
+
+  .mmm-pthub-line-bus97,
+  .mmm-pthub-line-bus97e {
+    background-color: rgb(90 108 2);
+  }
+
+  .mmm-pthub-line-x1,
+  .mmm-pthub-line-x1e,
+  .mmm-pthub-line-busx1,
+  .mmm-pthub-line-busx1e {
+    background-color: rgb(125 0 213);
+  }
+
+  .mmm-pthub-line-x2,
+  .mmm-pthub-line-x2e,
+  .mmm-pthub-line-busx2,
+  .mmm-pthub-line-busx2e {
+    background-color: rgb(144 129 131);
+  }
+}

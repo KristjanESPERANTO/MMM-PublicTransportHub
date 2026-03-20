@@ -1,0 +1,490 @@
+.mmm-pthub-wrapper[data-line-preset="hannover"] {
+  .mmm-pthub-line-str1,
+  .mmm-pthub-line-stb1,
+  .mmm-pthub-line-str2,
+  .mmm-pthub-line-stb2,
+  .mmm-pthub-line-str8,
+  .mmm-pthub-line-stb8 {
+    background-image:
+      linear-gradient(
+        0deg,
+        #e40038 0 4px,
+        rgb(255 255 255 / 0%) 4px calc(100% - 4px),
+        #e40038 calc(100% - 4px) 100%
+      ),
+      linear-gradient(
+        90deg,
+        #e40038 0 4px,
+        white 4px calc(100% - 4px),
+        #e40038 calc(100% - 4px) 100%
+      );
+    color: #000;
+  }
+
+  .mmm-pthub-line-str4,
+  .mmm-pthub-line-stb4,
+  .mmm-pthub-line-str5,
+  .mmm-pthub-line-stb5,
+  .mmm-pthub-line-str6,
+  .mmm-pthub-line-stb6,
+  .mmm-pthub-line-str11,
+  .mmm-pthub-line-stb11,
+  .mmm-pthub-line-str14,
+  .mmm-pthub-line-stb14 {
+    background-image:
+      linear-gradient(
+        0deg,
+        #f9b000 0 4px,
+        rgb(255 255 255 / 0%) 4px calc(100% - 4px),
+        #f9b000 calc(100% - 4px) 100%
+      ),
+      linear-gradient(
+        90deg,
+        #f9b000 0 4px,
+        white 4px calc(100% - 4px),
+        #f9b000 calc(100% - 4px) 100%
+      );
+    color: #000;
+  }
+
+  .mmm-pthub-line-str3,
+  .mmm-pthub-line-stb3,
+  .mmm-pthub-line-str7,
+  .mmm-pthub-line-stb7,
+  .mmm-pthub-line-str9,
+  .mmm-pthub-line-stb9,
+  .mmm-pthub-line-str13,
+  .mmm-pthub-line-stb13 {
+    background-image:
+      linear-gradient(
+        0deg,
+        #0068b4 0 4px,
+        rgb(255 255 255 / 0%) 4px calc(100% - 4px),
+        #0068b4 calc(100% - 4px) 100%
+      ),
+      linear-gradient(
+        90deg,
+        #0068b4 0 4px,
+        white 4px calc(100% - 4px),
+        #0068b4 calc(100% - 4px) 100%
+      );
+    color: #000;
+  }
+
+  .mmm-pthub-line-str10,
+  .mmm-pthub-line-stb10,
+  .mmm-pthub-line-str12,
+  .mmm-pthub-line-stb12,
+  .mmm-pthub-line-str17,
+  .mmm-pthub-line-stb17 {
+    color: #000;
+    background-image:
+      linear-gradient(
+        0deg,
+        #75b726 0 4px,
+        rgb(255 255 255 / 0%) 4px calc(100% - 4px),
+        #75b726 calc(100% - 4px) 100%
+      ),
+      linear-gradient(
+        90deg,
+        #75b726 0 4px,
+        white 4px calc(100% - 4px),
+        #75b726 calc(100% - 4px) 100%
+      );
+  }
+
+  .mmm-pthub-line-s1 {
+    background-color: #73659a;
+    border-color: #73659a;
+    color: white;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-s2,
+  .mmm-pthub-line-s21 {
+    background-color: #007845;
+    border-color: #007845;
+    color: white;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-s3 {
+    background-color: #b9639a;
+    border-color: #b9639a;
+    color: white;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-s4 {
+    background-color: #863048;
+    border-color: #863048;
+    color: white;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-s5,
+  .mmm-pthub-line-s51 {
+    background-color: #e9822c;
+    border-color: #e9822c;
+    color: white;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-s6 {
+    background-color: #005093;
+    border-color: #005093;
+    color: white;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-s7 {
+    background-color: #9ec847;
+    border-color: #9ec847;
+    color: white;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-s8 {
+    background-color: #009ad8;
+    border-color: #009ad8;
+    color: white;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus100 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #d8127e 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #d8127e, #d8127e);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus120,
+  .mmm-pthub-line-bus129,
+  .mmm-pthub-line-bus137,
+  .mmm-pthub-line-bus363,
+  .mmm-pthub-line-bus367,
+  .mmm-pthub-line-bus373 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #eb8b2d 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #eb8b2d, #eb8b2d);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus121,
+  .mmm-pthub-line-bus124,
+  .mmm-pthub-line-bus130,
+  .mmm-pthub-line-bus365,
+  .mmm-pthub-line-bus460,
+  .mmm-pthub-line-bus490,
+  .mmm-pthub-line-bus580,
+  .mmm-pthub-line-bus631 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #91c33f 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #91c33f, #91c33f);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus122,
+  .mmm-pthub-line-bus127,
+  .mmm-pthub-line-bus330,
+  .mmm-pthub-line-bus450,
+  .mmm-pthub-line-bus700 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #f6bc26 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #f6bc26, #f6bc26);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus123,
+  .mmm-pthub-line-bus200,
+  .mmm-pthub-line-bus420,
+  .mmm-pthub-line-bus470,
+  .mmm-pthub-line-bus571 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #e680a9 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #e680a9, #e680a9);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus125,
+  .mmm-pthub-line-bus126,
+  .mmm-pthub-line-bus340,
+  .mmm-pthub-line-bus360,
+  .mmm-pthub-line-bus500,
+  .mmm-pthub-line-bus570 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #d8232a 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #d8232a, #d8232a);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus128,
+  .mmm-pthub-line-bus136 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #922e32 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #922e32, #922e32);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus133,
+  .mmm-pthub-line-bus300,
+  .mmm-pthub-line-bus581,
+  .mmm-pthub-line-bus620 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #8a3d85 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #8a3d85, #8a3d85);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus134,
+  .mmm-pthub-line-bus135,
+  .mmm-pthub-line-bus267,
+  .mmm-pthub-line-bus341,
+  .mmm-pthub-line-bus400,
+  .mmm-pthub-line-bus574 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #2dab66 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #2dab66, #2dab66);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus253 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #ef7f1a 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #ef7f1a, #ef7f1a);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus254 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #01b1e8 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #01b1e8, #01b1e8);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .mmm-pthub-line-bus366,
+  .mmm-pthub-line-bus492,
+  .mmm-pthub-line-bus572,
+  .mmm-pthub-line-bus800,
+  .mmm-pthub-line-bus900 {
+    background-image:
+      radial-gradient(
+        ellipse closest-side at 37% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 63% 50%,
+        white 0 75%,
+        rgb(255 255 255 / 0%) 75% 100%
+      ),
+      radial-gradient(
+        ellipse closest-side at 50% 50%,
+        white 0 75%,
+        #14a9d9 75% 100%
+      ),
+      radial-gradient(ellipse closest-side at 50% 50%, #14a9d9, #14a9d9);
+    color: #000;
+    width: 2em;
+    border-radius: 1em;
+  }
+
+  .busN31,
+  .busN41,
+  .busN43,
+  .busN56,
+  .busN57,
+  .busN62,
+  .busN63,
+  .busN70,
+  .busN94 {
+    background-color: #172d4b;
+    color: white;
+    width: 2em;
+    border-radius: 1em;
+  }
+}

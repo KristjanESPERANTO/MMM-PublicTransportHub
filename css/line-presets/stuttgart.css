@@ -1,0 +1,5 @@
+.mmm-pthub-wrapper[data-line-preset="stuttgart"] {
+  [class^="mmm-pth-sign stb stbu"] {
+    background-color: rgb(0 101 173);
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "PTH_ERROR_PREFIX": "Error",
+  "LOADING": "Cargando salidas...",
+  "PTH_ERROR_TIMEOUT": "La solicitud al proveedor tardo demasiado. Intentalo de nuevo en breve.",
+  "PTH_ERROR_NETWORK": "Error de red al consultar el proveedor.",
+  "PTH_ERROR_RATE_LIMIT": "Se alcanzo el limite de solicitudes del proveedor. Intentalo mas tarde.",
+  "PTH_ERROR_SERVER": "Error del servidor del proveedor. Intentalo de nuevo en breve.",
+  "PTH_ERROR_CLIENT": "Solicitud no valida para la configuracion actual del proveedor.",
+  "PTH_ERROR_NOT_INITIALIZED": "El proveedor aun no esta inicializado."
+}

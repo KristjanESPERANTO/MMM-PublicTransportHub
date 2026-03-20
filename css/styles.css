@@ -1,0 +1,163 @@
+.mmm-pthub-wrapper {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  td {
+    padding: 2px 6px 2px 0;
+    white-space: nowrap;
+    text-align: left;
+  }
+
+  .mmm-pthub-direction {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mmm-pthub-line {
+    min-width: 4.5ch;
+  }
+
+  .mmm-pthub-line-sign {
+    display: inline-block;
+    min-width: 2.5ch;
+    margin: 0.1rem auto;
+    padding: 0.2rem;
+    background: #3d3d3d;
+    color: #ffffff;
+    font-size: 0.9em;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    position: relative;
+    text-align: center;
+    width: max-content;
+  }
+
+  .mmm-pthub-line-sign:where([data-product-token="bus"]) {
+    background: rgb(122 32 106);
+    border-radius: 1rem;
+  }
+
+  .mmm-pthub-line-sign:where([data-product-token="tram"]),
+  .mmm-pthub-line-sign:where([data-product-token="str"]),
+  .mmm-pthub-line-sign:where([data-product-token="strm"]) {
+    background: rgb(255 0 0);
+  }
+
+  .mmm-pthub-line-sign:where([data-product-token="subway"]),
+  .mmm-pthub-line-sign:where([data-product-token="u"]) {
+    background: rgb(0 101 173);
+  }
+
+  .mmm-pthub-line-sign:where([data-product-token="suburban"]),
+  .mmm-pthub-line-sign:where([data-product-token="s"]) {
+    background: rgb(0 111 53);
+    border: 0.5px solid #ffffff;
+  }
+
+  .mmm-pthub-line-sign:where([data-product-token="ice"]),
+  .mmm-pthub-line-sign:where([data-product-token="ic"]) {
+    background: #ffffff;
+    color: #f01414;
+    border-bottom: 4px solid #f01414;
+    border-radius: 0.25rem;
+  }
+
+  .mmm-pthub-line-sign:where([data-line-token^="ice"]),
+  .mmm-pthub-line-sign:where([data-line-token^="ic"]) {
+    background: #ffffff;
+    color: #f01414;
+    border-bottom: 4px solid #f01414;
+    border-radius: 0.25rem;
+  }
+
+  .mmm-pthub-line-sign:where([data-product-token="re"]),
+  .mmm-pthub-line-sign:where([data-product-token="rb"]) {
+    background: #1f8332;
+    border: 0.5px solid #ffffff;
+    border-radius: 0.25rem;
+  }
+
+  .mmm-pthub-line-sign:where([data-line-token^="re"]),
+  .mmm-pthub-line-sign:where([data-line-token^="rb"]) {
+    background: #1f8332;
+    border: 0.5px solid #ffffff;
+    border-radius: 0.25rem;
+  }
+
+  .mmm-pthub-platform {
+    text-align: right;
+    min-width: 2ch;
+  }
+
+  .mmm-pthub-time {
+    min-width: 7ch;
+  }
+
+  .mmm-pthub-time-realtime {
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-color: #ffffff44;
+    text-decoration-thickness: 0.1px;
+    text-underline-offset: 0.12em;
+  }
+
+  .mmm-pthub-time-realtime .mmm-pthub-delay,
+  .mmm-pthub-time-realtime .mmm-pthub-badge {
+    text-decoration: none;
+  }
+
+  .mmm-pthub-delay {
+    margin-left: 0.35rem;
+    font-size: 0.8em;
+    font-weight: 600;
+  }
+
+  .mmm-pthub-delay-late {
+    color: #ff7878;
+  }
+
+  .mmm-pthub-delay-early {
+    color: #7bd18f;
+  }
+
+  .mmm-pthub-badge {
+    margin-left: 0.35rem;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .mmm-pthub-badge-canceled {
+    color: #ff7878;
+    font-size: 0.76em;
+  }
+
+  .mmm-pthub-canceled {
+    opacity: 0.65;
+  }
+
+  .mmm-pthub-unreachable {
+    opacity: 0.5;
+  }
+
+  .mmm-pthub-remarks {
+    margin-top: 2px;
+    color: #d0d0d0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mmm-pthub-remarks-warning {
+    color: #ffc266;
+  }
+}
+
+.mmm-pthub-wrapper[data-line-preset="plain"] .mmm-pthub-line-sign {
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 0.25rem;
+}

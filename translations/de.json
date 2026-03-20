@@ -1,0 +1,10 @@
+{
+  "PTH_ERROR_PREFIX": "Fehler",
+  "LOADING": "Abfahrten werden geladen...",
+  "PTH_ERROR_TIMEOUT": "Die Anfrage an den Anbieter hat zu lange gedauert. Bitte gleich erneut versuchen.",
+  "PTH_ERROR_NETWORK": "Netzwerkfehler beim Abruf der Abfahrten.",
+  "PTH_ERROR_RATE_LIMIT": "Anfrage-Limit des Anbieters erreicht. Bitte spaeter erneut versuchen.",
+  "PTH_ERROR_SERVER": "Serverfehler beim Anbieter. Bitte gleich erneut versuchen.",
+  "PTH_ERROR_CLIENT": "Ungueltige Anfrage fuer die aktuelle Anbieter-Konfiguration.",
+  "PTH_ERROR_NOT_INITIALIZED": "Anbieter ist noch nicht initialisiert."
+}
