@@ -88,7 +88,7 @@ npm ci
         updatesEvery: 60,
         maxDepartures: 7,
         timeToStation: 4,
-        hideUnreachableDepartures: true,
+        maxUnreachableDepartures: 2,
         excludeCanceled: false,
         lineFilter: ["S", "U2"],
         directionFilter: ["Potsdam", "Alexanderplatz"],
@@ -108,35 +108,35 @@ npm ci
 
 ### Configuration Options
 
-| Option                      | Default        | Notes                                                                                                                                                                                             |
-| --------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `provider`                  | `"transitous"` | Provider to use: `transitous`, `hafas`, `vendo`.                                                                                                                                                  |
-| `stationId`                 | `""`           | Required for all providers.                                                                                                                                                                       |
-| `updatesEvery`              | `60`           | Seconds between updates. Clamped to minimum `30`.                                                                                                                                                 |
-| `maxDepartures`             | `7`            | Maximum departures to render. Minimum `1`.                                                                                                                                                        |
-| `animationSpeed`            | `1000`         | DOM update animation speed in ms.                                                                                                                                                                 |
-| `showLastUpdate`            | `true`         | Show the last update timestamp in the module footer.                                                                                                                                              |
-| `showDelay`                 | `false`        | Show +/- delay minutes.                                                                                                                                                                           |
-| `showRealtimeIndicator`     | `true`         | Realtime departures are subtly underlined.                                                                                                                                                        |
-| `showRemarks`               | `true`         | Show warning/remark lines below departures.                                                                                                                                                       |
-| `timeToStation`             | `0`            | Walking time in minutes. Minimum `0`.                                                                                                                                                             |
-| `hideUnreachableDepartures` | `false`        | Hide departures that are too soon based on `timeToStation`.                                                                                                                                       |
-| `excludeCanceled`           | `false`        | Exclude canceled departures.                                                                                                                                                                      |
-| `requestTimeoutMs`          | `12000`        | Per-fetch timeout in ms. Clamped to `1000-60000`.                                                                                                                                                 |
-| `fetchRetries`              | `1`            | Retry attempts after first try. Clamped to `0-5`.                                                                                                                                                 |
-| `lineFilter`                | `[]`           | Only include matching lines. Accepts array or comma-separated string.                                                                                                                             |
-| `directionFilter`           | `[]`           | Only include matching directions. Accepts array or comma-separated string.                                                                                                                        |
-| `productFilter`             | `[]`           | Only include matching products. Accepts array or comma-separated string.                                                                                                                          |
-| `replaceInDirections`       | `{}`           | String replacements before filtering/rendering directions.                                                                                                                                        |
-| `replaceInLineNames`        | `{}`           | String replacements before rendering line labels.                                                                                                                                                 |
-| `lineStylePreset`           | `"none"`       | `none`, `plain`, or city preset: `berlin`, `duesseldorf`, `graz`, `halle`, `hamburg`, `hannover`, `leipzig`, `magdeburg`, `munich`, `nuernberg`, `stuttgart`. Invalid values fall back to `none`. |
-| `contact`                   | `""`           | Required for `provider: "transitous"`. Use a reachable email address or MagicMirror forum alias.                                                                                                  |
-| `userAgent`                 | `""`           | Optional custom User-Agent suffix for provider requests.                                                                                                                                          |
-| `clientVersion`             | `""`           | Optional client version string sent to provider clients.                                                                                                                                          |
-| `hafasProfile`              | `"db"`         | HAFAS profile when `provider: "hafas"` (for example `insa`, `vbb`).                                                                                                                               |
-| `vendoProfile`              | `"db"`         | Vendo profile when `provider: "vendo"` (`db` or `dbweb`).                                                                                                                                         |
-| `timeInFutureMinutes`       | `90`           | Look-ahead window in minutes for provider queries. Minimum `1`.                                                                                                                                   |
-| `includeRelatedStations`    | `false`        | Include nearby/related stops if supported by the provider.                                                                                                                                        |
+| Option                     | Default        | Notes                                                                                                                                                                                             |
+| -------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `provider`                 | `"transitous"` | Provider to use: `transitous`, `hafas`, `vendo`.                                                                                                                                                  |
+| `stationId`                | `""`           | Required for all providers.                                                                                                                                                                       |
+| `updatesEvery`             | `60`           | Seconds between updates. Clamped to minimum `30`.                                                                                                                                                 |
+| `maxDepartures`            | `7`            | Maximum departures to render. Minimum `1`.                                                                                                                                                        |
+| `animationSpeed`           | `1000`         | DOM update animation speed in ms.                                                                                                                                                                 |
+| `showLastUpdate`           | `true`         | Show the last update timestamp in the module footer.                                                                                                                                              |
+| `showDelay`                | `false`        | Show +/- delay minutes.                                                                                                                                                                           |
+| `showRealtimeIndicator`    | `true`         | Realtime departures are subtly underlined.                                                                                                                                                        |
+| `showRemarks`              | `true`         | Show warning/remark lines below departures.                                                                                                                                                       |
+| `timeToStation`            | `0`            | Walking time in minutes. Minimum `0`.                                                                                                                                                             |
+| `maxUnreachableDepartures` | `2`            | Maximum number of unreachable departures to keep (based on `timeToStation`). Set `0` to hide all unreachable departures. `null` means no extra limit.                                             |
+| `excludeCanceled`          | `false`        | Exclude canceled departures.                                                                                                                                                                      |
+| `requestTimeoutMs`         | `12000`        | Per-fetch timeout in ms. Clamped to `1000-60000`.                                                                                                                                                 |
+| `fetchRetries`             | `1`            | Retry attempts after first try. Clamped to `0-5`.                                                                                                                                                 |
+| `lineFilter`               | `[]`           | Only include matching lines. Accepts array or comma-separated string.                                                                                                                             |
+| `directionFilter`          | `[]`           | Only include matching directions. Accepts array or comma-separated string.                                                                                                                        |
+| `productFilter`            | `[]`           | Only include matching products. Accepts array or comma-separated string.                                                                                                                          |
+| `replaceInDirections`      | `{}`           | String replacements before filtering/rendering directions.                                                                                                                                        |
+| `replaceInLineNames`       | `{}`           | String replacements before rendering line labels.                                                                                                                                                 |
+| `lineStylePreset`          | `"none"`       | `none`, `plain`, or city preset: `berlin`, `duesseldorf`, `graz`, `halle`, `hamburg`, `hannover`, `leipzig`, `magdeburg`, `munich`, `nuernberg`, `stuttgart`. Invalid values fall back to `none`. |
+| `contact`                  | `""`           | Required for `provider: "transitous"`. Use a reachable email address or MagicMirror forum alias.                                                                                                  |
+| `userAgent`                | `""`           | Optional custom User-Agent suffix for provider requests.                                                                                                                                          |
+| `clientVersion`            | `""`           | Optional client version string sent to provider clients.                                                                                                                                          |
+| `hafasProfile`             | `"db"`         | HAFAS profile when `provider: "hafas"` (for example `insa`, `vbb`).                                                                                                                               |
+| `vendoProfile`             | `"db"`         | Vendo profile when `provider: "vendo"` (`db` or `dbweb`).                                                                                                                                         |
+| `timeInFutureMinutes`      | `90`           | Look-ahead window in minutes for provider queries. Minimum `1`.                                                                                                                                   |
+| `includeRelatedStations`   | `false`        | Include nearby/related stops if supported by the provider.                                                                                                                                        |
 
 Note: legacy option `showColoredLineBadges` has been replaced by `lineStylePreset`.
 

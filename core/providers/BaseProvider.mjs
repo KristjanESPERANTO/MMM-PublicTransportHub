@@ -96,6 +96,34 @@ export default class BaseProvider {
     }
   }
 
+  withUnreachableLimit(departures, maxUnreachableDepartures) {
+    if (maxUnreachableDepartures === null) {
+      return departures
+    }
+
+    if (maxUnreachableDepartures === 0) {
+      return departures.filter(departure => departure.reachable !== false)
+    }
+
+    const unreachableIndexes = departures
+      .map((departure, index) =>
+        departure.reachable === false ? index : -1,
+      )
+      .filter(index => index >= 0)
+
+    if (unreachableIndexes.length <= maxUnreachableDepartures) {
+      return departures
+    }
+
+    const keepUnreachableIndexes = new Set(
+      unreachableIndexes.slice(-maxUnreachableDepartures),
+    )
+
+    return departures.filter(
+      (departure, index) => departure.reachable !== false || keepUnreachableIndexes.has(index),
+    )
+  }
+
   finalizeDepartures(departures) {
     const nowTs = Date.now()
     const pastGraceSeconds = Number.isFinite(this.config.pastGraceSeconds)
@@ -111,12 +139,13 @@ export default class BaseProvider {
       this.config.directionFilter,
     )
     const productFilter = this.normalizeFilterList(this.config.productFilter)
-    const hideUnreachableDepartures = Boolean(
-      this.config.hideUnreachableDepartures,
-    )
+    const maxUnreachableDepartures
+      = Number.isFinite(this.config.maxUnreachableDepartures)
+        ? Math.max(0, Math.floor(this.config.maxUnreachableDepartures))
+        : null
     const excludeCanceled = Boolean(this.config.excludeCanceled)
 
-    return (departures || [])
+    const filteredAndSorted = (departures || [])
       .map(departure => this.withDirectionReplacements(departure))
       .map(departure => this.withReachability(departure, nowTs))
       .filter((departure) => {
@@ -129,10 +158,6 @@ export default class BaseProvider {
         }
 
         if (excludeCanceled && departure.canceled) {
-          return false
-        }
-
-        if (hideUnreachableDepartures && departure.reachable === false) {
           return false
         }
 
@@ -154,6 +179,11 @@ export default class BaseProvider {
         return lineMatches && directionMatches && productMatches
       })
       .sort((a, b) => this.toTimestamp(a) - this.toTimestamp(b))
+
+    return this.withUnreachableLimit(
+      filteredAndSorted,
+      maxUnreachableDepartures,
+    )
       .slice(0, maxDepartures)
   }
 

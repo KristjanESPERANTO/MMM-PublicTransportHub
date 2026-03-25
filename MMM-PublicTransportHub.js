@@ -50,7 +50,7 @@ Module.register("MMM-PublicTransportHub", {
     showRealtimeIndicator: true,
     showRemarks: true,
     timeToStation: 0,
-    hideUnreachableDepartures: false,
+    maxUnreachableDepartures: 2,
     excludeCanceled: false,
     requestTimeoutMs: 12000,
     fetchRetries: 1,
@@ -113,7 +113,7 @@ Module.register("MMM-PublicTransportHub", {
       timeInFutureMinutes: this.config.timeInFutureMinutes,
       includeRelatedStations: this.config.includeRelatedStations,
       timeToStation: this.config.timeToStation,
-      hideUnreachableDepartures: this.config.hideUnreachableDepartures,
+      maxUnreachableDepartures: this.config.maxUnreachableDepartures,
       excludeCanceled: this.config.excludeCanceled,
       requestTimeoutMs: this.config.requestTimeoutMs,
       fetchRetries: this.config.fetchRetries,
@@ -136,6 +136,11 @@ Module.register("MMM-PublicTransportHub", {
     this.config.timeToStation = Number.isFinite(this.config.timeToStation)
       ? Math.max(0, Math.floor(this.config.timeToStation))
       : 0
+
+    this.config.maxUnreachableDepartures
+      = Number.isFinite(this.config.maxUnreachableDepartures)
+        ? Math.max(0, Math.floor(this.config.maxUnreachableDepartures))
+        : null
 
     this.config.requestTimeoutMs = Number.isFinite(this.config.requestTimeoutMs)
       ? Math.min(

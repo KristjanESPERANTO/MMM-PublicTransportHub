@@ -54,7 +54,7 @@ test("finalizeDepartures applies replacements, filtering, sorting and maxDepartu
 test("finalizeDepartures filters canceled, unreachable and past departures", () => {
   const provider = new BaseProvider({
     timeToStation: 10,
-    hideUnreachableDepartures: true,
+    maxUnreachableDepartures: 0,
     excludeCanceled: true,
     pastGraceSeconds: 5,
     maxDepartures: 10,

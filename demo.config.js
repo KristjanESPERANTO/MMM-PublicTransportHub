@@ -16,7 +16,7 @@ let config = {
         stationId: "de-DELFI_de:15002:5257::01",
         updatesEvery: 60,
         lineStylePreset: "halle",
-        hideUnreachableDepartures: false,
+        maxUnreachableDepartures: 2,
         replaceInDirections: {
           "Halle (Saale), ": "",
           " (Tram/Bus)": "",
@@ -163,7 +163,7 @@ let config = {
           "STR ": "",
           "Str ": "",
         },
-        hideUnreachableDepartures: true,
+        maxUnreachableDepartures: 2,
         timeInFutureMinutes: 90,
         includeRelatedStations: false,
       },
