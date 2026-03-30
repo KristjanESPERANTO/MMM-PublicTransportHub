@@ -1,5 +1,5 @@
-const Log = require("../../js/logger")
-const NodeHelper = require("../../js/node_helper")
+const Log = require("logger")
+const NodeHelper = require("node_helper")
 
 const DEFAULT_TIMEOUT_MS = 12000
 const DEFAULT_RETRIES = 1

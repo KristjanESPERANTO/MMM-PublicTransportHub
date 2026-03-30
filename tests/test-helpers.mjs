@@ -35,7 +35,7 @@ export function loadNodeHelperModuleForTests() {
   const originalLoad = Module._load
 
   Module._load = function mockLoad(request, parent, isMain) {
-    if (request === "../../js/logger") {
+    if (request === "logger") {
       return {
         info() {},
         warn() {},
@@ -43,7 +43,7 @@ export function loadNodeHelperModuleForTests() {
       }
     }
 
-    if (request === "../../js/node_helper") {
+    if (request === "node_helper") {
       return {
         create(definition) {
           return definition
