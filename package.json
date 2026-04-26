@@ -1,7 +1,7 @@
 {
   "name": "mmm-publictransporthub",
   "version": "0.1.1",
-  "description": "MagicMirror module for public transport departures with pluggable providers.",
+  "description": "A module for MagicMirror² to display public transport departures - with pluggable providers.",
   "keywords": [
     "MagicMirror",
     "public transport",
@@ -13,6 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/KristjanESPERANTO/MMM-PublicTransportHub.git"
   },
+  "author": "KristjanESPERANTO",
   "license": "MIT",
   "main": "MMM-PublicTransportHub.js",
   "type": "commonjs",
