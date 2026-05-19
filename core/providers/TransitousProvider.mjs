@@ -75,7 +75,6 @@ function normalizeDeparture(stopTime) {
     rawWhen,
     rawPlannedWhen,
     realTime,
-    hasRealtime: realTime,
     delay,
     direction: stopTime.headsign || "",
     line: {

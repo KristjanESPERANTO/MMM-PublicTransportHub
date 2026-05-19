@@ -43,7 +43,6 @@ test("normalizeHafasLikeDeparture maps a typical API departure shape", () => {
     rawWhen: "2026-03-22T10:07:00.000Z",
     rawPlannedWhen: "2026-03-22T10:05:00.000Z",
     realTime: true,
-    hasRealtime: true,
     delay: 120,
     direction: "Central Station",
     line: {

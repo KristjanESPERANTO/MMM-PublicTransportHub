@@ -53,7 +53,6 @@ export function normalizeHafasLikeDeparture(departure) {
     rawWhen,
     rawPlannedWhen,
     realTime: hasRealtime,
-    hasRealtime: hasRealtime,
     delay: toDelaySeconds(departure, rawWhen, rawPlannedWhen),
     direction: departure.direction || departure.provenance || "",
     line: {
