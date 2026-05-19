@@ -12,6 +12,8 @@
 
   .mmm-pthub-direction {
     width: 100%;
+    /* `max-width: 0` lets the cell shrink so ellipsis works (td is nowrap). */
+    max-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
   }
