@@ -46,7 +46,8 @@ Clone this module into your MagicMirror modules directory and install dependenci
 ```bash
 cd ~/MagicMirror/modules
 git clone https://github.com/KristjanESPERANTO/MMM-PublicTransportHub
-npm ci
+cd MMM-PublicTransportHub
+npm ci --omit=dev
 ```
 
 ## Update
@@ -56,7 +57,7 @@ To update, pull the latest changes in the module directory:
 ```bash
 cd ~/MagicMirror/modules/MMM-PublicTransportHub
 git pull
-npm ci
+npm ci --omit=dev
 ```
 
 ## Configuration
