@@ -32,21 +32,21 @@
   },
   "dependencies": {
     "@motis-project/motis-client": "^2.9.2",
-    "db-vendo-client": "^6.10.8",
+    "db-vendo-client": "^6.10.10",
     "hafas-client": "^6.3.6"
   },
   "devDependencies": {
-    "@eslint/css": "^1.1.0",
+    "@eslint/css": "^1.2.0",
     "@eslint/js": "^10.0.1",
     "@eslint/json": "^1.2.0",
     "@eslint/markdown": "^8.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
-    "commit-and-tag-version": "^12.7.1",
+    "commit-and-tag-version": "^12.7.3",
     "cspell": "^10.0.0",
-    "eslint": "^10.2.1",
+    "eslint": "^10.4.0",
     "eslint-plugin-import-x": "^4.16.2",
-    "eslint-plugin-package-json": "^0.91.1",
-    "globals": "^17.5.0",
+    "eslint-plugin-package-json": "^0.91.2",
+    "globals": "^17.6.0",
     "prettier": "^3.8.3"
   }
 }
