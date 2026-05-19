@@ -14,14 +14,14 @@ Transitous is also a community-driven open-source project, which fits well with 
 
 ## Provider Comparison
 
-|                      | Transitous                                                | HAFAS                                                                               | Vendo                        |
-| -------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------- | ---------------------------- |
-| **Geographic scope** | 🌍 Global                                                 | 🌍 mostly Europe (per profile)                                                      | 🇩🇪 Germany                   |
-| **Coverage model**   | Community-aggregated open data (GTFS/GTFS-RT)             | Single-operator API per profile                                                     | Deutsche Bahn official API   |
-| **Profiles**         | — (one global instance)                                   | ~20 operator-specific profiles                                                      | `db`, `dbweb`                |
-| **Real-time data**   | Where upstream feeds provide it                           | Yes, per operator                                                                   | Yes                          |
-| **Best for**         | International or mixed regions                            | Local operators (e.g. BVG, ÖBB, SNCB)                                               | Deutsche Bahn trains/Germany |
-| **Coverage details** | [transitous.org/sources](https://transitous.org/sources/) | [profile list](https://github.com/public-transport/hafas-client/tree/main/p#readme) | primarily DE, some AT/CH     |
+|                      | Transitous                                                | HAFAS                                                                               | Vendo                                               |
+| -------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------- |
+| **Geographic scope** | 🌍 Global                                                 | 🌍 mostly Europe (per profile)                                                      | 🇩🇪 Germany                                          |
+| **Coverage model**   | Community-aggregated open data (GTFS/GTFS-RT)             | Single-operator API per profile                                                     | Deutsche Bahn official API                          |
+| **Profiles**         | — (one global instance)                                   | ~20 operator-specific profiles                                                      | `db`, `dbnav`, `dbbahnhof`, `dbregioguide`, `dbris` |
+| **Real-time data**   | Where upstream feeds provide it                           | Yes, per operator                                                                   | Yes                                                 |
+| **Best for**         | International or mixed regions                            | Local operators (e.g. BVG, ÖBB, SNCB)                                               | Deutsche Bahn trains/Germany                        |
+| **Coverage details** | [transitous.org/sources](https://transitous.org/sources/) | [profile list](https://github.com/public-transport/hafas-client/tree/main/p#readme) | primarily DE, some AT/CH                            |
 
 ## Choosing a Provider
 
@@ -29,7 +29,7 @@ Providers differ in coverage and data quality per region — no single provider 
 
 - **Transitous** is a good first choice: it covers most of Europe and many regions worldwide via aggregated open GTFS feeds.
 - **HAFAS** (with the right profile) often provides richer real-time data and better stop matching for specific operators.
-- **Vendo** (`db`/`dbweb`) is the strongest choice for Deutsche Bahn long-distance and regional trains within Germany.
+- **Vendo** (`db`/`dbnav`) is the strongest choice for Deutsche Bahn long-distance and regional trains within Germany.
 
 Recommendation: test all three providers for your specific station and pick the one that gives the best results locally.
 
@@ -134,7 +134,7 @@ npm ci
 | `userAgent`                | `""`           | Optional custom User-Agent suffix for provider requests.                                                                                                                                          |
 | `clientVersion`            | `""`           | Optional client version string sent to provider clients.                                                                                                                                          |
 | `hafasProfile`             | `"db"`         | HAFAS profile when `provider: "hafas"` (for example `insa`, `vbb`).                                                                                                                               |
-| `vendoProfile`             | `"db"`         | Vendo profile when `provider: "vendo"` (`db` or `dbweb`).                                                                                                                                         |
+| `vendoProfile`             | `"db"`         | Vendo profile when `provider: "vendo"` (`db`, `dbnav`, `dbbahnhof`, `dbregioguide`, `dbris`).                                                                                                     |
 | `timeInFutureMinutes`      | `90`           | Look-ahead window in minutes for provider queries. Minimum `1`.                                                                                                                                   |
 | `includeRelatedStations`   | `false`        | Include nearby/related stops if supported by the provider.                                                                                                                                        |
 
