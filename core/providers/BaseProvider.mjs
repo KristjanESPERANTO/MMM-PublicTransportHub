@@ -142,10 +142,9 @@ export default class BaseProvider {
 
   finalizeDepartures(departures) {
     const nowTs = Date.now()
-    const pastGraceSeconds = Number.isFinite(this.config.pastGraceSeconds)
-      ? Math.max(0, Math.floor(this.config.pastGraceSeconds))
-      : 30
-    const minDepartureTs = nowTs - pastGraceSeconds * 1000
+    // Keep departures visible for 30 s after their departure time so a
+    // just-departed train doesn't briefly vanish before the next fetch arrives.
+    const minDepartureTs = nowTs - 30 * 1000
     const maxDepartures = Number.isFinite(this.config.maxDepartures)
       ? Math.max(1, Math.floor(this.config.maxDepartures))
       : 7

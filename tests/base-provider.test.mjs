@@ -56,7 +56,6 @@ test("finalizeDepartures filters canceled, unreachable and past departures", () 
     timeToStation: 10,
     maxUnreachableDepartures: 0,
     excludeCanceled: true,
-    pastGraceSeconds: 5,
     maxDepartures: 10,
   })
 
@@ -231,7 +230,6 @@ test("finalizeDepartures keeps delayed departure when rawWhen equals rawPlannedW
   const provider = new BaseProvider({
     timeToStation: 2,
     maxUnreachableDepartures: null,
-    pastGraceSeconds: 30,
     maxDepartures: 10,
   })
 
