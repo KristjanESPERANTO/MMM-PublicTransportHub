@@ -222,3 +222,32 @@ test("finalizeDepartures handles missing line safely and keeps matching entries"
   assert.equal(result.length, 1)
   assert.equal(result[0].direction, "Valid")
 })
+
+test("finalizeDepartures keeps delayed departure when rawWhen equals rawPlannedWhen (issue #2)", () => {
+  // Simulates HAFAS returning delay without a live `when` timestamp:
+  // rawWhen falls back to rawPlannedWhen, so planned time is already in the past,
+  // but the actual departure (planned + delay) is still in the future.
+  const plannedWhen = isoInMinutes(-1) // planned 1 min ago
+  const provider = new BaseProvider({
+    timeToStation: 2,
+    maxUnreachableDepartures: null,
+    pastGraceSeconds: 30,
+    maxDepartures: 10,
+  })
+
+  const departures = [
+    {
+      rawWhen: plannedWhen,
+      rawPlannedWhen: plannedWhen,
+      delay: 10 * 60, // 10 minutes in seconds → actual departure in ~9 min
+      direction: "Delayed",
+      line: { name: "RE1", id: "re1", product: "regional" },
+    },
+  ]
+
+  const result = provider.finalizeDepartures(departures)
+
+  assert.equal(result.length, 1)
+  assert.equal(result[0].direction, "Delayed")
+  assert.equal(result[0].reachable, true)
+})
