@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@motis-project/motis-client": "^2.9.2",
-    "db-vendo-client": "^6.10.10",
+    "db-vendo-client": "^6.10.11",
     "hafas-client": "^6.3.6"
   },
   "devDependencies": {
