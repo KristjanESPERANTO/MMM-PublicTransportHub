@@ -49,6 +49,7 @@ Module.register("MMM-PublicTransportHub", {
     showDelay: false,
     showRealtimeIndicator: true,
     showRemarks: true,
+    columnOrder: ["time", "line", "direction", "platform"],
     timeToStation: 0,
     maxUnreachableDepartures: 2,
     excludeCanceled: false,
@@ -125,6 +126,9 @@ Module.register("MMM-PublicTransportHub", {
   },
 
   sanitizeConfig() {
+    const defaultColumnOrder = ["time", "line", "direction", "platform"]
+    const allowedTableColumns = new Set(defaultColumnOrder)
+
     this.config.updatesEvery = Number.isFinite(this.config.updatesEvery)
       ? Math.max(30, Math.floor(this.config.updatesEvery))
       : 60
@@ -194,6 +198,24 @@ Module.register("MMM-PublicTransportHub", {
     this.config.lineStylePreset = allowedLineStylePresets.has(requestedPreset)
       ? requestedPreset
       : "none"
+
+    const requestedColumnOrder = Array.isArray(this.config.columnOrder)
+      ? this.config.columnOrder
+      : defaultColumnOrder
+
+    const sanitizedColumnOrder = []
+    for (const rawKey of requestedColumnOrder) {
+      const key = String(rawKey || "").trim().toLowerCase()
+      if (!allowedTableColumns.has(key) || sanitizedColumnOrder.includes(key)) {
+        continue
+      }
+
+      sanitizedColumnOrder.push(key)
+    }
+
+    this.config.columnOrder = sanitizedColumnOrder.length > 0
+      ? sanitizedColumnOrder
+      : defaultColumnOrder
   },
 
   getStyles() {

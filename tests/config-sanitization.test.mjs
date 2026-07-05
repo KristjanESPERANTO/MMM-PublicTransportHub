@@ -41,3 +41,47 @@ test("sanitizeConfig falls back to 90 when timeInFutureMinutes is invalid", () =
 
   assert.equal(context.config.timeInFutureMinutes, 90)
 })
+
+test("sanitizeConfig keeps valid columnOrder values", () => {
+  const moduleDefinition = loadModuleDefinition()
+  const context = {
+    config: {
+      columnOrder: ["line", "direction", "time"],
+    },
+  }
+
+  moduleDefinition.sanitizeConfig.call(context)
+
+  assert.deepEqual(context.config.columnOrder, ["line", "direction", "time"])
+})
+
+test("sanitizeConfig removes duplicates and invalid columnOrder values", () => {
+  const moduleDefinition = loadModuleDefinition()
+  const context = {
+    config: {
+      columnOrder: ["line", "line", "invalid", "platform", "TIME"],
+    },
+  }
+
+  moduleDefinition.sanitizeConfig.call(context)
+
+  assert.deepEqual(context.config.columnOrder, ["line", "platform", "time"])
+})
+
+test("sanitizeConfig falls back to default columnOrder when empty", () => {
+  const moduleDefinition = loadModuleDefinition()
+  const context = {
+    config: {
+      columnOrder: [],
+    },
+  }
+
+  moduleDefinition.sanitizeConfig.call(context)
+
+  assert.deepEqual(context.config.columnOrder, [
+    "time",
+    "line",
+    "direction",
+    "platform",
+  ])
+})

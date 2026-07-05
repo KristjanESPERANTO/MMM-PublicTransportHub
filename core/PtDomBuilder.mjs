@@ -110,6 +110,113 @@ export default class PtDomBuilder {
     return wrapper
   }
 
+  getTimeCell(dep) {
+    const timeCell = document.createElement("td")
+    timeCell.className = "bright mmm-pthub-time"
+    timeCell.textContent = this.getDisplayedTime(dep)
+
+    if (this.config.showDelay !== false) {
+      const delayLabel = this.getDelayLabel(dep.delay)
+      if (delayLabel) {
+        const delaySpan = document.createElement("span")
+        delaySpan.className
+          = Number(dep.delay) > 0
+            ? "mmm-pthub-delay mmm-pthub-delay-late"
+            : "mmm-pthub-delay mmm-pthub-delay-early"
+        delaySpan.textContent = delayLabel
+        timeCell.appendChild(delaySpan)
+      }
+    }
+
+    if (this.config.showRealtimeIndicator !== false && dep.realTime) {
+      timeCell.classList.add("mmm-pthub-time-realtime")
+    }
+
+    if (dep.canceled) {
+      const canceledSpan = document.createElement("span")
+      canceledSpan.className = "mmm-pthub-badge mmm-pthub-badge-canceled"
+      canceledSpan.textContent = "X"
+      timeCell.appendChild(canceledSpan)
+    }
+
+    return timeCell
+  }
+
+  getLineCell(dep) {
+    const lineCell = document.createElement("td")
+    lineCell.className = "bright mmm-pthub-line"
+
+    const lineBadge = document.createElement("div")
+    lineBadge.className = "mmm-pthub-line-sign"
+    lineBadge.textContent = this.getProcessedLineName(dep.line)
+
+    const lineTokens = getLineStyleTokens(dep.line)
+    lineBadge.dataset.product = lineTokens.product
+    lineBadge.dataset.lineId = lineTokens.lineId
+
+    if (this.config.lineStylePreset !== "plain") {
+      lineBadge.dataset.productToken = lineTokens.productToken
+      lineBadge.dataset.lineToken = lineTokens.lineToken
+
+      if (lineTokens.productToken) {
+        lineBadge.classList.add(`mmm-pthub-product-${lineTokens.productToken}`)
+      }
+
+      if (lineTokens.lineToken) {
+        lineBadge.classList.add(`mmm-pthub-line-${lineTokens.lineToken}`)
+      }
+    }
+
+    lineCell.appendChild(lineBadge)
+    return lineCell
+  }
+
+  getDirectionCell(dep) {
+    const dirCell = document.createElement("td")
+    dirCell.className = "bright mmm-pthub-direction"
+    dirCell.textContent = dep.direction || "?"
+
+    if (this.config.showRemarks !== false) {
+      const remarksText = this.getRemarksText(dep)
+      if (remarksText) {
+        const remarksEl = document.createElement("div")
+        const hasWarning = (dep.remarks || []).some(
+          remark =>
+            String(remark?.type || "").toLowerCase() === "warning",
+        )
+        remarksEl.className = hasWarning
+          ? "xsmall mmm-pthub-remarks mmm-pthub-remarks-warning"
+          : "xsmall mmm-pthub-remarks"
+        remarksEl.textContent = remarksText
+        dirCell.appendChild(remarksEl)
+      }
+    }
+
+    return dirCell
+  }
+
+  getPlatformCell(dep) {
+    const platformCell = document.createElement("td")
+    platformCell.className = "bright mmm-pthub-platform"
+    platformCell.textContent = dep.platform || "-"
+    return platformCell
+  }
+
+  getColumnCell(column, dep) {
+    switch (column) {
+      case "time":
+        return this.getTimeCell(dep)
+      case "line":
+        return this.getLineCell(dep)
+      case "direction":
+        return this.getDirectionCell(dep)
+      case "platform":
+        return this.getPlatformCell(dep)
+      default:
+        return null
+    }
+  }
+
   getDeparturesDom(departures, lastUpdate) {
     const wrapper = document.createElement("div")
     wrapper.className = "mmm-pthub-wrapper"
@@ -139,88 +246,17 @@ export default class PtDomBuilder {
           row.classList.add("mmm-pthub-unreachable")
         }
 
-        const timeCell = document.createElement("td")
-        timeCell.className = "bright mmm-pthub-time"
-        timeCell.textContent = this.getDisplayedTime(dep)
+        const columns = Array.isArray(this.config.columnOrder)
+          ? this.config.columnOrder
+          : ["time", "line", "direction", "platform"]
 
-        if (this.config.showDelay !== false) {
-          const delayLabel = this.getDelayLabel(dep.delay)
-          if (delayLabel) {
-            const delaySpan = document.createElement("span")
-            delaySpan.className
-              = Number(dep.delay) > 0
-                ? "mmm-pthub-delay mmm-pthub-delay-late"
-                : "mmm-pthub-delay mmm-pthub-delay-early"
-            delaySpan.textContent = delayLabel
-            timeCell.appendChild(delaySpan)
+        for (const column of columns) {
+          const cell = this.getColumnCell(column, dep)
+          if (cell) {
+            row.appendChild(cell)
           }
         }
 
-        if (this.config.showRealtimeIndicator !== false && dep.realTime) {
-          timeCell.classList.add("mmm-pthub-time-realtime")
-        }
-
-        if (dep.canceled) {
-          const canceledSpan = document.createElement("span")
-          canceledSpan.className = "mmm-pthub-badge mmm-pthub-badge-canceled"
-          canceledSpan.textContent = "X"
-          timeCell.appendChild(canceledSpan)
-        }
-
-        const lineCell = document.createElement("td")
-        lineCell.className = "bright mmm-pthub-line"
-
-        const lineBadge = document.createElement("div")
-        lineBadge.className = "mmm-pthub-line-sign"
-        lineBadge.textContent = this.getProcessedLineName(dep.line)
-
-        const lineTokens = getLineStyleTokens(dep.line)
-        lineBadge.dataset.product = lineTokens.product
-        lineBadge.dataset.lineId = lineTokens.lineId
-
-        if (this.config.lineStylePreset !== "plain") {
-          lineBadge.dataset.productToken = lineTokens.productToken
-          lineBadge.dataset.lineToken = lineTokens.lineToken
-
-          if (lineTokens.productToken) {
-            lineBadge.classList.add(`mmm-pthub-product-${lineTokens.productToken}`)
-          }
-
-          if (lineTokens.lineToken) {
-            lineBadge.classList.add(`mmm-pthub-line-${lineTokens.lineToken}`)
-          }
-        }
-
-        lineCell.appendChild(lineBadge)
-
-        const dirCell = document.createElement("td")
-        dirCell.className = "bright mmm-pthub-direction"
-        dirCell.textContent = dep.direction || "?"
-
-        if (this.config.showRemarks !== false) {
-          const remarksText = this.getRemarksText(dep)
-          if (remarksText) {
-            const remarksEl = document.createElement("div")
-            const hasWarning = (dep.remarks || []).some(
-              remark =>
-                String(remark?.type || "").toLowerCase() === "warning",
-            )
-            remarksEl.className = hasWarning
-              ? "xsmall mmm-pthub-remarks mmm-pthub-remarks-warning"
-              : "xsmall mmm-pthub-remarks"
-            remarksEl.textContent = remarksText
-            dirCell.appendChild(remarksEl)
-          }
-        }
-
-        const platformCell = document.createElement("td")
-        platformCell.className = "bright mmm-pthub-platform"
-        platformCell.textContent = dep.platform || "-"
-
-        row.appendChild(timeCell)
-        row.appendChild(lineCell)
-        row.appendChild(dirCell)
-        row.appendChild(platformCell)
         table.appendChild(row)
       }
 
