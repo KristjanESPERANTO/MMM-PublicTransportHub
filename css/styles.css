@@ -1,30 +1,34 @@
 .mmm-pthub-wrapper {
   table {
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     border-collapse: collapse;
   }
 
   td {
-    padding: 2px 6px 2px 0;
+    padding: 2px 3px 2px 0;
     white-space: nowrap;
     text-align: left;
   }
 
   .mmm-pthub-direction {
-    width: 100%;
-    /* `max-width: 0` lets the cell shrink so ellipsis works (td is nowrap). */
-    max-width: 0;
+    width: auto;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .mmm-pthub-line {
-    min-width: 4.5ch;
+    min-width: 3.5ch;
   }
 
   .mmm-pthub-line-sign {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
     min-width: 2.5ch;
+    width: auto;
+    max-width: 4.5ch;
     margin: 0.1rem auto;
     padding: 0.2rem;
     background: #3d3d3d;
@@ -34,7 +38,9 @@
     letter-spacing: 0.01em;
     position: relative;
     text-align: center;
-    width: max-content;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .mmm-pthub-line-sign:where([data-product-token="bus"]) {
@@ -91,11 +97,11 @@
 
   .mmm-pthub-platform {
     text-align: right;
-    min-width: 2ch;
+    width: 2ch;
   }
 
   .mmm-pthub-time {
-    min-width: 7ch;
+    width: 7ch;
   }
 
   .mmm-pthub-time-realtime {
