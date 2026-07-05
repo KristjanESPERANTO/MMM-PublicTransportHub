@@ -25,11 +25,20 @@ function isTimeoutError(error) {
 
 function isNetworkError(error) {
   const message = String(error?.message || "").toLowerCase()
+  const code = String(error?.code || error?.errno || "").toLowerCase()
+
+  if (["err_stream_premature_close"].includes(code)) {
+    return true
+  }
+
   return [
     "econnreset",
     "econnrefused",
     "enotfound",
     "eai_again",
+    "premature close",
+    "invalid response body",
+    "aborted",
     "fetch failed",
     "network",
   ].some(term => message.includes(term))

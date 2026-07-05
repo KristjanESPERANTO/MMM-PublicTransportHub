@@ -35,6 +35,34 @@ test("fetchWithRetry retries timeout and network-like errors", async () => {
   assert.equal(provider.attempts, 3)
 })
 
+test("fetchWithRetry retries on premature stream close errors", async () => {
+  const helper = loadNodeHelperModuleForTests()
+
+  const provider = {
+    attempts: 0,
+    async fetchDepartures() {
+      this.attempts += 1
+      if (this.attempts === 1) {
+        throw withFetchError(
+          "Invalid response body while trying to fetch endpoint: Premature close",
+          { code: "ERR_STREAM_PREMATURE_CLOSE" },
+        )
+      }
+
+      return [{ id: 99 }]
+    },
+  }
+
+  const result = await helper.fetchWithRetry(provider, {
+    timeoutMs: 12000,
+    retries: 2,
+    context: "[test]",
+  })
+
+  assert.equal(result.length, 1)
+  assert.equal(provider.attempts, 2)
+})
+
 test("fetchWithRetry does not retry client-side 4xx errors", async () => {
   const helper = loadNodeHelperModuleForTests()
 
