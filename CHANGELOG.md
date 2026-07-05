@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.4](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.3...v0.1.4) (2026-07-05)
+
+
+### Added
+
+* add configurable columnOrder for table layout ([6bf1abc](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/6bf1abce3f7db484a1de2c051bbc5eb5e31bf52f))
+
+
+### Fixed
+
+* compact departure table column spacing ([22b5dc2](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/22b5dc229022529a95f7f26d804cab5a1b910451))
+* **hub:** retry on premature-close fetch errors ([f4a2da8](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/f4a2da849337118498c7ad6e26539f4e81ec12a2))
+
+
+### Chores
+
+* add missing terms to cspell config ([13c0601](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/13c0601e051d0d31689de7fd34b762b837101c87))
+* update checkout action to v7 ([8dfbe08](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/8dfbe08d8876fa3ebf0a182e09549ea80756b9b2))
+* update dependencies ([57bb81e](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/57bb81e63c99ece1071bde3139cde5bec7fcb019))
+
 ## [0.1.3](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.2...v0.1.3) (2026-05-19)
 
 
