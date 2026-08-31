@@ -5,10 +5,8 @@ import { geocode, stoptimes } from "@motis-project/motis-client"
 const DEFAULT_BASE_URL = "https://api.transitous.org"
 const DEFAULT_CONTACT
   = "https://github.com/KristjanESPERANTO/MMM-PublicTransportHub"
-const DEFAULT_HAFAS_PROFILE = "db"
-const DEFAULT_VENDO_PROFILE = "db"
 
-function getUserInput(prompt = "Enter an address or station name: ") {
+function getUserInput(prompt = "Station or address to search (e.g. 'Gotha Hbf'): ") {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -36,19 +34,23 @@ function buildClientUserAgent() {
   return process.env.PTH_USER_AGENT || "MMM-PublicTransportHub-query"
 }
 
+function errorMessage(error) {
+  if (typeof error === "string" && error.trim() !== "") {
+    return error
+  }
+
+  return error?.message || error?.error || String(error)
+}
+
 function parseProfileList(input, defaultProfile) {
   if (!input || input.length === 0) {
-    return [defaultProfile]
+    return defaultProfile ? [defaultProfile] : []
   }
 
   return input
     .split(",")
     .map(p => p.trim())
     .filter(p => p.length > 0)
-}
-
-function normalizeText(value) {
-  return String(value || "").trim().toLowerCase()
 }
 
 function uniqueModes(stopTimes = []) {
@@ -136,13 +138,18 @@ async function queryTransitous(searchText) {
     .filter(location => Boolean(location.id))
     .slice(0, 10)
 
-  for (const location of locations.slice(0, 3)) {
-    location.activeModes = await loadStopModes({
-      baseUrl,
-      headers,
-      stopId: location.id,
-    })
-  }
+  const modeResults = await Promise.all(
+    locations.slice(0, 3).map(location =>
+      loadStopModes({
+        baseUrl,
+        headers,
+        stopId: location.id,
+      }),
+    ),
+  )
+  modeResults.forEach((activeModes, index) => {
+    locations[index].activeModes = activeModes
+  })
 
   return locations
 }
@@ -212,23 +219,66 @@ function printHafasLikeOverview(label, profileName, locations) {
   }
 }
 
-function printUsageGuide() {
-  console.info("\n\nHow to use the station information:\n")
-  console.info("1. Choose your preferred provider from the results above.")
-  console.info("2. Add the station ID to your MMM-PublicTransportHub config:\n")
+function printUsageGuide({ provider, stationId, hafasProfile, vendoProfile }) {
+  console.info("\n\nConfig for the selected station:\n")
+  console.info("Copy this block into your MagicMirror config:\n")
   console.info(
     "   {\n"
     + "     module: \"MMM-PublicTransportHub\",\n"
+    + "     position: \"bottom_left\",\n"
     + "     config: {\n"
-    + "       provider: \"transitous\",  // or \"hafas\" or \"vendo\"\n"
-    + "       stationId: \"<ID from above>\",\n"
-    + "       hafasProfile: \"db\",       // only for provider: \"hafas\"\n"
-    + "       vendoProfile: \"db\",       // only for provider: \"vendo\"\n"
+    + `       provider: "${provider}",\n`
+    + `       stationId: "${stationId}",\n`
+    + (provider === "transitous"
+      ? "       contact: \"______YOUR_EMAIL_OR_FORUM_ALIAS______\",\n"
+      : "")
+    + (provider === "hafas" ? `       hafasProfile: "${hafasProfile}",\n` : "")
+    + (provider === "vendo" ? `       vendoProfile: "${vendoProfile}",\n` : "")
     + "     }\n"
-    + "   }\n",
+    + "   },\n",
   )
-  console.info("3. Adjust other settings (maxDepartures, filters, etc.) as needed.")
-  console.info("4. See README for all configuration options.\n")
+  console.info("Adjust other settings (maxDepartures, filters, etc.) as needed.")
+  console.info("See README for all configuration options.\n")
+}
+
+function printCandidateSelection(candidates) {
+  console.info("\nAvailable station results:\n")
+  candidates.forEach((candidate, index) => {
+    const provider = candidate.provider[0].toUpperCase()
+      + candidate.provider.slice(1)
+    const profile = candidate.profile ? ` / profile: ${candidate.profile}` : ""
+    console.info(
+      ` [${index + 1}] ${candidate.location.name}\n`
+      + `     Provider: ${provider}${profile}\n`
+      + `     Station ID: ${candidate.location.id}`,
+    )
+  })
+  console.info("\nEnter a result number to generate its config, or press Enter to quit.")
+}
+
+async function selectCandidate(candidates) {
+  while (true) {
+    const selection = await getUserInput(
+      "Enter result number, or press Enter to quit: ",
+    )
+    if (!selection) {
+      return null
+    }
+
+    if (!/^\d+$/.test(selection)) {
+      console.info("Please enter one of the displayed result numbers.")
+      continue
+    }
+
+    const candidate = candidates[Number(selection) - 1]
+    if (candidate) {
+      return candidate
+    }
+
+    console.info(
+      `Please enter a number between 1 and ${candidates.length}.`,
+    )
+  }
 }
 
 async function main() {
@@ -240,27 +290,27 @@ async function main() {
       return
     }
 
-    const useDefaultProfiles = await getUserInput(
-      `Use default profiles (HAFAS: ${DEFAULT_HAFAS_PROFILE}, Vendo: ${DEFAULT_VENDO_PROFILE})? (y/n): `,
+    console.info(
+      "Transitous is always queried. HAFAS and Vendo are optional; press Enter to skip either one.",
     )
-    const isDefault = normalizeText(useDefaultProfiles).startsWith("y")
+    const hafasInput = await getUserInput(
+      "Optional HAFAS profile(s), comma-separated (e.g. 'vmt,insa,vbb'; Enter to skip): ",
+    )
+    const vendoInput = await getUserInput(
+      "Optional Vendo profile(s), comma-separated (e.g. 'db'; Enter to skip): ",
+    )
 
-    let hafasProfiles = [DEFAULT_HAFAS_PROFILE]
-    let vendoProfiles = [DEFAULT_VENDO_PROFILE]
+    const hafasProfiles = parseProfileList(hafasInput, "")
+    const vendoProfiles = parseProfileList(vendoInput, "")
 
-    if (!isDefault) {
-      const hafasInput = await getUserInput(
-        "Enter HAFAS profile(s) (comma-separated, e.g. 'db,insa,vbb'): ",
-      )
-      const vendoInput = await getUserInput(
-        "Enter Vendo profile(s) (comma-separated, or empty for default): ",
-      )
-
-      hafasProfiles = parseProfileList(hafasInput, DEFAULT_HAFAS_PROFILE)
-      vendoProfiles = parseProfileList(vendoInput, DEFAULT_VENDO_PROFILE)
-    }
-
-    console.info(`\nSearching providers for '${stationName}'...\n`)
+    const selectedProfiles = [
+      "Transitous",
+      ...hafasProfiles.map(profile => `HAFAS (${profile})`),
+      ...vendoProfiles.map(profile => `Vendo (${profile})`),
+    ]
+    console.info(
+      `\nSearching '${stationName}' with ${selectedProfiles.join(", ")}...\n`,
+    )
 
     const hafasQueries = hafasProfiles.map(profile =>
       queryHafasLike({
@@ -290,6 +340,10 @@ async function main() {
 
     const transitousLocations
       = transitousResult.status === "fulfilled" ? transitousResult.value : []
+    const candidates = transitousLocations.slice(0, 3).map(location => ({
+      location,
+      provider: "transitous",
+    }))
 
     printTransitousOverview(transitousLocations)
 
@@ -297,11 +351,16 @@ async function main() {
       const result = hafasResults[i]
       const locations
         = result.status === "fulfilled" ? result.value : []
+      candidates.push(...locations.slice(0, 3).map(location => ({
+        location,
+        profile: hafasProfiles[i],
+        provider: "hafas",
+      })))
       console.info("")
       printHafasLikeOverview("HAFAS", hafasProfiles[i], locations)
 
       if (result.status === "rejected") {
-        console.info(`  Error: ${result.reason?.message || result.reason}`)
+        console.info(`  Error: ${errorMessage(result.reason)}`)
       }
     }
 
@@ -309,25 +368,47 @@ async function main() {
       const result = vendoResults[i]
       const locations
         = result.status === "fulfilled" ? result.value : []
+      candidates.push(...locations.slice(0, 3).map(location => ({
+        location,
+        profile: vendoProfiles[i],
+        provider: "vendo",
+      })))
       console.info("")
       printHafasLikeOverview("Vendo", vendoProfiles[i], locations)
 
       if (result.status === "rejected") {
-        console.info(`  Error: ${result.reason?.message || result.reason}`)
+        console.info(`  Error: ${errorMessage(result.reason)}`)
       }
     }
 
     if (transitousResult.status === "rejected") {
       console.info(
-        `\nTransitous query failed: ${transitousResult.reason?.message || transitousResult.reason}`,
+        `\nTransitous query failed: ${errorMessage(transitousResult.reason)}`,
       )
     }
 
-    printUsageGuide()
+    if (candidates.length === 0) {
+      console.info("\nNo station results are available to configure.\n")
+      return
+    }
+
+    printCandidateSelection(candidates)
+    const selectedCandidate = await selectCandidate(candidates)
+    if (!selectedCandidate) {
+      console.info("No station result selected. Exiting.")
+      return
+    }
+
+    printUsageGuide({
+      provider: selectedCandidate.provider,
+      stationId: selectedCandidate.location.id,
+      hafasProfile: selectedCandidate.profile,
+      vendoProfile: selectedCandidate.profile,
+    })
   }
   catch (error) {
     console.error(
-      `\nError occurred while searching: ${error?.message || error}\n`,
+      `\nError occurred while searching: ${errorMessage(error)}\n`,
     )
     process.exitCode = 1
   }

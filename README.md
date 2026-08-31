@@ -151,18 +151,24 @@ Use the interactive helper to find station IDs and ready-to-copy config snippets
 node --run query
 ```
 
-The script asks for a station/location name, then queries Transitous, HAFAS, and Vendo. You can choose to use default profiles (HAFAS: `db`, Vendo: `db`) or specify custom ones (comma-separated for multiple profiles per provider).
+The script asks for a station/location name, then queries Transitous by default. HAFAS and Vendo queries are optional: enter the desired profiles when prompted, or leave them empty to skip them. This avoids relying on DB profiles that may currently be blocked by the Deutsche Bahn API.
 
 Example flow:
 
 ```sh
-Enter an address or station name: Leipzig Hbf
-Use default profiles (HAFAS: db, Vendo: db)? (y/n): n
-Enter HAFAS profile(s) (comma-separated, e.g. 'db,insa,vbb'): insa
-Enter Vendo profile(s) (comma-separated, or empty for default): db
+Station or address to search (e.g. 'Gotha Hbf'): Leipzig Hbf
+Transitous is always queried. HAFAS and Vendo are optional; press Enter to skip either one.
+Optional HAFAS profile(s), comma-separated (e.g. 'vmt,insa,vbb'; Enter to skip): insa
+Optional Vendo profile(s), comma-separated (e.g. 'db'; Enter to skip):
+
+Select the station result to use in your configuration:
+ 1. transitous - Leipzig Hbf | de-...
+ 2. hafas (insa) - Leipzig, Hauptbahnhof | 801...
+Enter a result number to generate its config, or press Enter to quit.
+2
 ```
 
-The script then queries all providers and prints recommended config blocks ready to copy.
+The script then queries Transitous and any selected profiles. Select the result you want to use, and the script prints a matching config block ready to copy. The selected profile is included automatically for HAFAS or Vendo results. For Transitous results, replace the generated `YOUR_EMAIL_OR_FORUM_ALIAS` placeholder with a reachable email address or MagicMirror forum alias before using the config. Leave the selection empty to exit without generating a config.
 
 ## Credits
 
