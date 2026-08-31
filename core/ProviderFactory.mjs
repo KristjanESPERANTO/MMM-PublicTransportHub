@@ -1,10 +1,9 @@
-import BaseProvider from "./providers/BaseProvider.mjs"
 import TransitousProvider from "./providers/TransitousProvider.mjs"
 import HafasProvider from "./providers/HafasProvider.mjs"
 import VendoProvider from "./providers/VendoProvider.mjs"
 
 export async function createProvider(config) {
-  switch (config.provider) {
+  switch (config?.provider) {
     case "transitous":
       return new TransitousProvider(config)
     case "hafas":
@@ -12,6 +11,8 @@ export async function createProvider(config) {
     case "vendo":
       return new VendoProvider(config)
     default:
-      return new BaseProvider(config)
+      throw new Error(
+        `Unknown provider: "${config?.provider}". Supported providers: transitous, hafas, vendo.`,
+      )
   }
 }

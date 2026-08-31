@@ -1,8 +1,16 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 
+import { createProvider } from "../core/ProviderFactory.mjs"
 import HafasProvider from "../core/providers/HafasProvider.mjs"
 import VendoProvider from "../core/providers/VendoProvider.mjs"
+
+test("ProviderFactory rejects unknown providers", async () => {
+  await assert.rejects(
+    createProvider({ provider: "unknown" }),
+    /Unknown provider: "unknown".*Supported providers:/,
+  )
+})
 
 test("HafasProvider initClient keeps original error as cause", async () => {
   const provider = new HafasProvider({
