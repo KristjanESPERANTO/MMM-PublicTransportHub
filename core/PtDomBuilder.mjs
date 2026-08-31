@@ -68,31 +68,51 @@ export default class PtDomBuilder {
   getRemarksText(departure) {
     const remarks = Array.isArray(departure.remarks) ? departure.remarks : []
     return remarks
-      .map(remark => remark.summary || remark.text || "")
+      .map(remark => this.stripMarkup(remark.summary || remark.text || ""))
       .filter(Boolean)
       .slice(0, 2)
       .join(" | ")
+  }
+
+  stripMarkup(value) {
+    const markup = String(value)
+    if (typeof document !== "undefined") {
+      const container = document.createElement("div")
+      container.innerHTML = markup
+      return container.textContent.trim()
+    }
+
+    return markup
+      .replace(/<[^>]*>/g, "")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .trim()
   }
 
   getProcessedLineName(line) {
     const originalName = String(line?.name || "")
     const replacements = this.config.replaceInLineNames
 
+    let processed = originalName
     if (
-      !replacements
-      || typeof replacements !== "object"
-      || Array.isArray(replacements)
+      replacements
+      && typeof replacements === "object"
+      && !Array.isArray(replacements)
     ) {
-      return originalName || String(line?.id || "?")
+      for (const [search, replacement] of Object.entries(replacements)) {
+        if (!search) {
+          continue
+        }
+
+        processed = processed.split(search).join(String(replacement ?? ""))
+      }
     }
 
-    let processed = originalName
-    for (const [search, replacement] of Object.entries(replacements)) {
-      if (!search) {
-        continue
-      }
-
-      processed = processed.split(search).join(String(replacement ?? ""))
+    if (String(line?.product || "").toLowerCase() === "bus") {
+      processed = processed.replace(/^bus\s+/iu, "")
     }
 
     const trimmed = processed.trim()

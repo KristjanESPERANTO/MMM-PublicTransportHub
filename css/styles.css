@@ -1,24 +1,31 @@
 .mmm-pthub-wrapper {
+  width: fit-content;
+  max-width: 100%;
+
   table {
     width: auto;
     max-width: 100%;
+    table-layout: auto;
     border-collapse: collapse;
   }
 
   td {
     padding: 2px 3px 2px 0;
-    white-space: nowrap;
     text-align: left;
+    vertical-align: top;
   }
 
   .mmm-pthub-direction {
     width: auto;
+    max-width: 30ch;
     overflow: hidden;
     text-overflow: ellipsis;
+    overflow-wrap: anywhere;
   }
 
   .mmm-pthub-line {
-    min-width: 3.5ch;
+    width: 4.5ch;
+    min-width: 4.5ch;
   }
 
   .mmm-pthub-line-sign {
@@ -98,6 +105,7 @@
   .mmm-pthub-platform {
     text-align: right;
     width: 2ch;
+    min-width: 2ch;
   }
 
   .mmm-pthub-time {
@@ -154,9 +162,10 @@
   .mmm-pthub-remarks {
     margin-top: 2px;
     color: #d0d0d0;
-    white-space: nowrap;
+    white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
+    overflow-wrap: anywhere;
   }
 
   .mmm-pthub-remarks-warning {
