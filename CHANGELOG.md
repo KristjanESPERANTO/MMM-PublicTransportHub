@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.5](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.4...v0.1.5) (2026-08-31)
+
+### Added
+
+* **query:** add station result selection ([df9620a](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/df9620a68fc8451dda322e246285c7e4661720bc))
+
+### Fixed
+
+* **config:** reject unknown providers ([74c89a1](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/74c89a13fcf3df6b53daacbe1eaf7af82b25c33a))
+* **factory:** reject unknown providers ([cfa1390](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/cfa13904fddfce57b49ce702f1f47fff57c3f5c0))
+
+### Chores
+
+* update dependencies ([e8851b8](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/e8851b86fd75e0ee05153d1d600ae207c4083542))
+* update Node.js setup action ([dd62266](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/dd62266ed3afedb22c1ed5b4fb1449aff8b90c24))
 ## [0.1.4](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.3...v0.1.4) (2026-07-05)
 
 
