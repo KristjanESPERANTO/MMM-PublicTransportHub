@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.6](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.5...v0.1.6) (2026-08-31)
+
+### Fixed
+
+* **ui:** clean remarks and bus labels ([6f119f3](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/6f119f3472135afc98a25254abad3443ffb24779))
+
+### Code Refactoring
+
+* **config:** remove vendo and db configs (not working) ([1b17e73](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/1b17e73bc90d318b144304bb2075474dab4934cb))
 ## [0.1.5](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.4...v0.1.5) (2026-08-31)
 
 ### Added
