@@ -71,7 +71,7 @@ Module.register("MMM-PublicTransportHub", {
   },
 
   async start() {
-    this.sanitizeConfig()
+    const configError = this.sanitizeConfig()
     Log.info(`[MMM-PublicTransportHub] Starting module ${this.identifier}`)
 
     this.departures = []
@@ -81,6 +81,12 @@ Module.register("MMM-PublicTransportHub", {
 
     const { default: PtDomBuilder } = await import("./core/PtDomBuilder.mjs")
     this.domBuilder = new PtDomBuilder(this.config)
+
+    if (configError) {
+      this.lastError = { message: configError }
+      this.updateDom(this.config.animationSpeed)
+      return
+    }
 
     if (!this.config.stationId) {
       this.lastError = { message: "No stationId configured." }
@@ -126,6 +132,15 @@ Module.register("MMM-PublicTransportHub", {
   },
 
   sanitizeConfig() {
+    const allowedProviders = new Set(["transitous", "hafas", "vendo"])
+    const requestedProvider = String(this.config.provider || "transitous")
+      .trim()
+      .toLowerCase()
+    const providerError = allowedProviders.has(requestedProvider)
+      ? null
+      : `Unknown provider: "${requestedProvider}". Supported providers: transitous, hafas, vendo.`
+    this.config.provider = requestedProvider
+
     const defaultColumnOrder = ["time", "line", "direction", "platform"]
     const allowedTableColumns = new Set(defaultColumnOrder)
 
@@ -216,6 +231,8 @@ Module.register("MMM-PublicTransportHub", {
     this.config.columnOrder = sanitizedColumnOrder.length > 0
       ? sanitizedColumnOrder
       : defaultColumnOrder
+
+    return providerError
   },
 
   getStyles() {

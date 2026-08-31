@@ -3,6 +3,33 @@ import test from "node:test"
 
 import { loadModuleDefinition } from "./test-helpers.mjs"
 
+test("sanitizeConfig normalizes supported provider names", () => {
+  const moduleDefinition = loadModuleDefinition()
+  const context = {
+    config: {
+      provider: " HAFAS ",
+    },
+  }
+
+  const result = moduleDefinition.sanitizeConfig.call(context)
+
+  assert.equal(result, null)
+  assert.equal(context.config.provider, "hafas")
+})
+
+test("sanitizeConfig reports unknown providers", () => {
+  const moduleDefinition = loadModuleDefinition()
+  const context = {
+    config: {
+      provider: "unsupported",
+    },
+  }
+
+  const result = moduleDefinition.sanitizeConfig.call(context)
+
+  assert.match(result, /Unknown provider: "unsupported"/)
+})
+
 test("sanitizeConfig clamps timeInFutureMinutes to minimum 1", () => {
   const moduleDefinition = loadModuleDefinition()
   const context = {
