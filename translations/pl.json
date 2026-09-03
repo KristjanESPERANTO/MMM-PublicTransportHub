@@ -7,5 +7,7 @@
   "PTH_ERROR_AUTH": "Uwierzytelnienie u dostawcy nie powiodlo sie. Sprawdz skonfigurowany apiKey.",
   "PTH_ERROR_SERVER": "Blad serwera dostawcy. Sprobuj ponownie za chwile.",
   "PTH_ERROR_CLIENT": "Nieprawidlowe zapytanie dla wybranej konfiguracji dostawcy.",
-  "PTH_ERROR_NOT_INITIALIZED": "Dostawca nie zostal jeszcze zainicjowany."
+  "PTH_ERROR_NOT_INITIALIZED": "Dostawca nie zostal jeszcze zainicjowany.",
+  "PTH_LAST_UPDATE": "Zaktualizowano",
+  "PTH_NO_DEPARTURES": "Brak odjazdow."
 }

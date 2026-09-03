@@ -83,7 +83,7 @@ Module.register("MMM-PublicTransportHub", {
     this.initialized = false
 
     const { default: PtDomBuilder } = await import("./core/PtDomBuilder.mjs")
-    this.domBuilder = new PtDomBuilder(this.config)
+    this.domBuilder = new PtDomBuilder(this.config, this.translate.bind(this))
 
     if (configError) {
       this.lastError = { message: configError }

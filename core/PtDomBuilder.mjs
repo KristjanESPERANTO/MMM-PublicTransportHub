@@ -1,8 +1,9 @@
 import { getLineStyleTokens } from "./LineStyleTokens.mjs"
 
 export default class PtDomBuilder {
-  constructor(config) {
+  constructor(config, translate) {
     this.config = config
+    this.translate = typeof translate === "function" ? translate : key => key
   }
 
   getEffectiveTimeFormat() {
@@ -247,7 +248,7 @@ export default class PtDomBuilder {
     if (departures.length === 0) {
       const empty = document.createElement("div")
       empty.className = "small dimmed"
-      empty.textContent = "No departures."
+      empty.textContent = this.translate("PTH_NO_DEPARTURES")
       wrapper.appendChild(empty)
     }
     else {
@@ -286,7 +287,7 @@ export default class PtDomBuilder {
     if (this.config.showLastUpdate && lastUpdate) {
       const footer = document.createElement("div")
       footer.className = "xsmall dimmed"
-      footer.textContent = `Updated: ${lastUpdate.toLocaleTimeString()}`
+      footer.textContent = `${this.translate("PTH_LAST_UPDATE")}: ${lastUpdate.toLocaleTimeString()}`
       wrapper.appendChild(footer)
     }
 

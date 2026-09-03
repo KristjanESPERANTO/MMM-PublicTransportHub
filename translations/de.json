@@ -7,5 +7,7 @@
   "PTH_ERROR_AUTH": "Anmeldung beim Anbieter fehlgeschlagen. Bitte den konfigurierten apiKey pruefen.",
   "PTH_ERROR_SERVER": "Serverfehler beim Anbieter. Bitte gleich erneut versuchen.",
   "PTH_ERROR_CLIENT": "Ungueltige Anfrage fuer die aktuelle Anbieter-Konfiguration.",
-  "PTH_ERROR_NOT_INITIALIZED": "Anbieter ist noch nicht initialisiert."
+  "PTH_ERROR_NOT_INITIALIZED": "Anbieter ist noch nicht initialisiert.",
+  "PTH_LAST_UPDATE": "Aktualisiert",
+  "PTH_NO_DEPARTURES": "Keine Abfahrten."
 }

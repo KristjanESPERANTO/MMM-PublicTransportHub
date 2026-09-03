@@ -7,5 +7,7 @@
   "PTH_ERROR_AUTH": "Authentication with the provider failed. Please check the configured apiKey.",
   "PTH_ERROR_SERVER": "Provider server error. Please try again shortly.",
   "PTH_ERROR_CLIENT": "Invalid request for the selected provider configuration.",
-  "PTH_ERROR_NOT_INITIALIZED": "Provider is not initialized yet."
+  "PTH_ERROR_NOT_INITIALIZED": "Provider is not initialized yet.",
+  "PTH_LAST_UPDATE": "Updated",
+  "PTH_NO_DEPARTURES": "No departures."
 }

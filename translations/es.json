@@ -7,5 +7,7 @@
   "PTH_ERROR_AUTH": "Fallo la autenticacion con el proveedor. Verifica el apiKey configurado.",
   "PTH_ERROR_SERVER": "Error del servidor del proveedor. Intentalo de nuevo en breve.",
   "PTH_ERROR_CLIENT": "Solicitud no valida para la configuracion actual del proveedor.",
-  "PTH_ERROR_NOT_INITIALIZED": "El proveedor aun no esta inicializado."
+  "PTH_ERROR_NOT_INITIALIZED": "El proveedor aun no esta inicializado.",
+  "PTH_LAST_UPDATE": "Actualizado",
+  "PTH_NO_DEPARTURES": "Sin salidas."
 }
