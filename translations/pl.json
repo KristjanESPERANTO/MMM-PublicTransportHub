@@ -1,0 +1,11 @@
+{
+  "PTH_ERROR_PREFIX": "Blad",
+  "LOADING": "Wczytywanie odjazdow...",
+  "PTH_ERROR_TIMEOUT": "Zapytanie do dostawcy trwalo zbyt dlugo. Sprobuj ponownie za chwile.",
+  "PTH_ERROR_NETWORK": "Blad sieci podczas laczenia z dostawca.",
+  "PTH_ERROR_RATE_LIMIT": "Osiagnieto limit zapytan dostawcy. Sprobuj ponownie pozniej.",
+  "PTH_ERROR_AUTH": "Uwierzytelnienie u dostawcy nie powiodlo sie. Sprawdz skonfigurowany apiKey.",
+  "PTH_ERROR_SERVER": "Blad serwera dostawcy. Sprobuj ponownie za chwile.",
+  "PTH_ERROR_CLIENT": "Nieprawidlowe zapytanie dla wybranej konfiguracji dostawcy.",
+  "PTH_ERROR_NOT_INITIALIZED": "Dostawca nie zostal jeszcze zainicjowany."
+}

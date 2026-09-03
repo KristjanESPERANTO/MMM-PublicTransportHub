@@ -267,6 +267,7 @@ Module.register("MMM-PublicTransportHub", {
       en: "translations/en.json",
       de: "translations/de.json",
       es: "translations/es.json",
+      pl: "translations/pl.json",
     }
   },
 
