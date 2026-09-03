@@ -74,6 +74,10 @@ function classifyError(error) {
     return "rate-limit"
   }
 
+  if (status === 401 || status === 403) {
+    return "auth"
+  }
+
   if (status != null && status >= 500) {
     return "server"
   }
@@ -93,6 +97,8 @@ function toErrorCode(errorClass) {
       return "NETWORK"
     case "rate-limit":
       return "RATE_LIMIT"
+    case "auth":
+      return "AUTH"
     case "server":
       return "SERVER"
     case "client":

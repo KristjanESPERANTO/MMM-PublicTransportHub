@@ -122,6 +122,18 @@ let config = {
         includeRelatedStations: false,
       },
     },
+    {
+      module: "MMM-PublicTransportHub",
+      position: "bottom_center",
+      header: "PLK",
+      config: {
+        provider: "plk",
+        // Request a free key at https://pdp-api.plk-sa.pl/ and put it here.
+        apiKey: "YOUR_PLK_API_KEY",
+        stationId: "33605",
+        updatesEvery: 60,
+      },
+    },
   ],
 }
 

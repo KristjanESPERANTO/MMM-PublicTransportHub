@@ -24,6 +24,8 @@ function getErrorTranslationKey(errorCode) {
       return "PTH_ERROR_NETWORK"
     case "RATE_LIMIT":
       return "PTH_ERROR_RATE_LIMIT"
+    case "AUTH":
+      return "PTH_ERROR_AUTH"
     case "SERVER":
       return "PTH_ERROR_SERVER"
     case "CLIENT":
@@ -40,7 +42,7 @@ Module.register("MMM-PublicTransportHub", {
 
   defaults: {
     name: "MMM-PublicTransportHub",
-    provider: "transitous", // transitous | hafas | vendo
+    provider: "transitous", // transitous | hafas | vendo | plk
     stationId: "",
     updatesEvery: 60,
     maxDepartures: 7,
@@ -62,6 +64,7 @@ Module.register("MMM-PublicTransportHub", {
     replaceInLineNames: {},
     lineStylePreset: "none",
     contact: "",
+    apiKey: "",
     userAgent: "",
     clientVersion: "",
     hafasProfile: "db",
@@ -107,12 +110,25 @@ Module.register("MMM-PublicTransportHub", {
       return
     }
 
+    if (
+      this.config.provider === "plk"
+      && String(this.config.apiKey || "").trim() === ""
+    ) {
+      this.lastError = {
+        message:
+          "The plk provider requires config.apiKey to be set. Request a key at https://pdp-api.plk-sa.pl/.",
+      }
+      this.updateDom(this.config.animationSpeed)
+      return
+    }
+
     this.sendSocketNotification("PTH_CREATE_FETCHER", {
       identifier: this.identifier,
       provider: this.config.provider,
       stationId: this.config.stationId,
       maxDepartures: this.config.maxDepartures,
       contact: this.config.contact,
+      apiKey: this.config.apiKey,
       userAgent: this.config.userAgent,
       clientVersion: this.config.clientVersion,
       hafasProfile: this.config.hafasProfile,
@@ -132,13 +148,13 @@ Module.register("MMM-PublicTransportHub", {
   },
 
   sanitizeConfig() {
-    const allowedProviders = new Set(["transitous", "hafas", "vendo"])
+    const allowedProviders = new Set(["transitous", "hafas", "vendo", "plk"])
     const requestedProvider = String(this.config.provider || "transitous")
       .trim()
       .toLowerCase()
     const providerError = allowedProviders.has(requestedProvider)
       ? null
-      : `Unknown provider: "${requestedProvider}". Supported providers: transitous, hafas, vendo.`
+      : `Unknown provider: "${requestedProvider}". Supported providers: transitous, hafas, vendo, plk.`
     this.config.provider = requestedProvider
 
     const defaultColumnOrder = ["time", "line", "direction", "platform"]

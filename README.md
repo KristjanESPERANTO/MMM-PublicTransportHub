@@ -2,7 +2,7 @@
 
 A [MagicMirror²](https://magicmirror.builders/) module to show public transport departures on your mirror, with broad international coverage and per-instance provider switching.
 
-This module supports multiple providers in one place (`transitous`, `hafas`, `vendo`), so you can choose the backend that works best for each station.
+This module supports multiple providers in one place (`transitous`, `hafas`, `vendo`, `plk`), so you can choose the backend that works best for each station.
 
 Compared with earlier public transport modules that were tied to one backend, [Transitous](https://transitous.org/sources/) gives this module much broader regional coverage out of the box.
 
@@ -14,14 +14,14 @@ Transitous is also a community-driven open-source project, which fits well with 
 
 ## Provider Comparison
 
-|                      | Transitous                                                | HAFAS                                                                               | Vendo                                               |
-| -------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------- |
-| **Geographic scope** | 🌍 Global                                                 | 🌍 mostly Europe (per profile)                                                      | 🇩🇪 Germany                                          |
-| **Coverage model**   | Community-aggregated open data (GTFS/GTFS-RT)             | Single-operator API per profile                                                     | Deutsche Bahn official API                          |
-| **Profiles**         | — (one global instance)                                   | ~20 operator-specific profiles                                                      | `db`, `dbnav`, `dbbahnhof`, `dbregioguide`, `dbris` |
-| **Real-time data**   | Where upstream feeds provide it                           | Yes, per operator                                                                   | Yes                                                 |
-| **Best for**         | International or mixed regions                            | Local operators (e.g. BVG, ÖBB, SNCB)                                               | Deutsche Bahn trains/Germany                        |
-| **Coverage details** | [transitous.org/sources](https://transitous.org/sources/) | [profile list](https://github.com/public-transport/hafas-client/tree/main/p#readme) | primarily DE, some AT/CH                            |
+|                      | Transitous                                                | HAFAS                                                                               | Vendo                                               | PLK                                                                              |
+| -------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Geographic scope** | 🌍 Global                                                 | 🌍 mostly Europe (per profile)                                                      | 🇩🇪 Germany                                          | 🇵🇱 Poland                                                                        |
+| **Coverage model**   | Community-aggregated open data (GTFS/GTFS-RT)             | Single-operator API per profile                                                     | Deutsche Bahn official API                          | PKP PLK official rail infrastructure API                                         |
+| **Profiles**         | — (one global instance)                                   | ~20 operator-specific profiles                                                      | `db`, `dbnav`, `dbbahnhof`, `dbregioguide`, `dbris` | — (one global instance)                                                          |
+| **Real-time data**   | Where upstream feeds provide it                           | Yes, per operator                                                                   | Yes                                                 | Yes                                                                              |
+| **Best for**         | International or mixed regions                            | Local operators (e.g. BVG, ÖBB, SNCB)                                               | Deutsche Bahn trains/Germany                        | Rail traffic within Poland                                                       |
+| **Coverage details** | [transitous.org/sources](https://transitous.org/sources/) | [profile list](https://github.com/public-transport/hafas-client/tree/main/p#readme) | primarily DE, some AT/CH                            | [API docs](https://pdp-api.plk-sa.pl/api-documentation), requires a free API key |
 
 ## Choosing a Provider
 
@@ -30,14 +30,16 @@ Providers differ in coverage and data quality per region — no single provider 
 - **Transitous** is a good first choice: it covers most of Europe and many regions worldwide via aggregated open GTFS feeds.
 - **HAFAS** (with the right profile) often provides richer real-time data and better stop matching for specific operators.
 - **Vendo** (`db`/`dbnav`) is the strongest choice for Deutsche Bahn long-distance and regional trains within Germany.
+- **PLK** (`plk`) queries the official PKP PLK "Otwarte Dane Kolejowe" API directly and is a good fit for stations within Poland. It requires a free API key (see below).
 
-Recommendation: test all three providers for your specific station and pick the one that gives the best results locally.
+Recommendation: test the providers available for your specific station and pick the one that gives the best results locally.
 
 Limitations/trade-offs to keep in mind:
 
 - Providers still differ in line naming, products, and platform semantics.
 - Timeout/retry is intentionally simple (fixed backoff, no circuit breaker).
 - Reachability currently uses only configured `timeToStation` and departure timestamps.
+- The `plk` provider doesn't yet cross-reference the `/disruptions` endpoint, so `showRemarks` has no effect for it.
 
 ## Installation
 
@@ -112,8 +114,8 @@ npm ci --omit=dev
 
 | Option                     | Default                                     | Notes                                                                                                                                                                                                   |
 | -------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `provider`                 | `"transitous"`                              | Provider to use: `transitous`, `hafas`, `vendo`.                                                                                                                                                        |
-| `stationId`                | `""`                                        | Required for all providers.                                                                                                                                                                             |
+| `provider`                 | `"transitous"`                              | Provider to use: `transitous`, `hafas`, `vendo`, `plk`.                                                                                                                                                 |
+| `stationId`                | `""`                                        | Required for all providers. For `plk`, use the numeric PLK station ID (see `/api/v1/dictionaries/stations`).                                                                                            |
 | `updatesEvery`             | `60`                                        | Seconds between updates. Clamped to minimum `30`.                                                                                                                                                       |
 | `maxDepartures`            | `7`                                         | Maximum departures to render. Minimum `1`.                                                                                                                                                              |
 | `animationSpeed`           | `1000`                                      | DOM update animation speed in ms.                                                                                                                                                                       |
@@ -134,6 +136,7 @@ npm ci --omit=dev
 | `replaceInLineNames`       | `{}`                                        | String replacements before rendering line labels.                                                                                                                                                       |
 | `lineStylePreset`          | `"none"`                                    | `none`, `plain`, or city preset: `berlin`, `duesseldorf`, `graz`, `halle`, `hamburg`, `hannover`, `leipzig`, `magdeburg`, `munich`, `nuernberg`, `stuttgart`. Invalid values fall back to `none`.       |
 | `contact`                  | `""`                                        | Required for `provider: "transitous"`. Use a reachable email address or MagicMirror forum alias.                                                                                                        |
+| `apiKey`                   | `""`                                        | Required for `provider: "plk"`. Request a free key at [pdp-api.plk-sa.pl](https://pdp-api.plk-sa.pl/).                                                                                                  |
 | `userAgent`                | `""`                                        | Optional custom User-Agent suffix for provider requests.                                                                                                                                                |
 | `clientVersion`            | `""`                                        | Optional client version string sent to provider clients.                                                                                                                                                |
 | `hafasProfile`             | `"db"`                                      | HAFAS profile when `provider: "hafas"` (for example `insa`, `vbb`).                                                                                                                                     |
