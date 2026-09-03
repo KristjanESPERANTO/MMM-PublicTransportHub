@@ -125,7 +125,7 @@ let config = {
     {
       module: "MMM-PublicTransportHub",
       position: "bottom_center",
-      header: "PLK",
+      header: "PLK - Warszawa Centralna",
       config: {
         provider: "plk",
         // Request a free key at https://pdp-api.plk-sa.pl/ and put it here.
