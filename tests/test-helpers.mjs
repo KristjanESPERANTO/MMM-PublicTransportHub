@@ -67,3 +67,10 @@ export function loadNodeHelperModuleForTests() {
 
   return helperModule
 }
+
+export function withFetchError(message, extra = {}) {
+  return {
+    message,
+    ...extra,
+  }
+}
