@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.7](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.6...v0.1.7) (2026-09-03)
+
+### Added
+
+* add PLK provider for Polish rail departures ([08c4b7b](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/08c4b7bfc91795f58623bacc29dc390460897bac))
+* add Polish translations for error messages and loading status ([12da72e](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/12da72e4bde14e980ef43e9e69cfd78d57ffbb43))
+* localize remaining hardcoded strings ([65ffc6b](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/65ffc6be642bf56954c5d4d44f98adf1e93c415f))
+
+### Chores
+
+* update devDependencies ([afd07d9](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/afd07d97418c5a7e55d4beec23b704ba82f0f484))
+* update PLK demo header ([deb8f95](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/deb8f95540c885a56443e2c532e1985bdca0f5fc))
+
+### Tests
+
+* restructure test files with describe() blocks and split by concern ([ee2b2a0](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/ee2b2a09a227e9cf311c0f6648411646e5c37d73))
 ## [0.1.6](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.5...v0.1.6) (2026-08-31)
 
 ### Fixed
