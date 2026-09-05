@@ -15,6 +15,32 @@
     vertical-align: top;
   }
 
+  th {
+    padding: 0 3px 2px 0;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .mmm-pthub-header-cell {
+    color: #888888;
+    font-weight: normal;
+    text-align: left;
+  }
+
+  .mmm-pthub-header-platform {
+    position: relative;
+    min-width: 4ch;
+    padding-right: 0;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .mmm-pthub-header-platform > i {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
   .mmm-pthub-direction {
     width: auto;
     max-width: 30ch;
@@ -103,9 +129,9 @@
   }
 
   .mmm-pthub-platform {
+    min-width: 4ch;
     text-align: right;
-    width: 2ch;
-    min-width: 2ch;
+    white-space: nowrap;
   }
 
   .mmm-pthub-time {

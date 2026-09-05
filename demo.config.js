@@ -97,7 +97,7 @@ let config = {
           " (Tram/Bus)": "",
           ", Halle (Saale)": "",
         },
-        showTableHeaders: false,
+        showTableHeaders: true,
       },
     },
     {

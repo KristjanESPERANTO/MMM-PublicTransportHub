@@ -1,5 +1,12 @@
 import { getLineStyleTokens } from "./LineStyleTokens.mjs"
 
+const HEADER_SYMBOLS = {
+  direction: "fa fa-exchange",
+  line: "fa fa-bus",
+  platform: "fa fa-map-marker",
+  time: "fa fa-clock-o",
+}
+
 export default class PtDomBuilder {
   constructor(config, translate) {
     this.config = config
@@ -223,6 +230,36 @@ export default class PtDomBuilder {
     return platformCell
   }
 
+  getHeaderCell(column) {
+    const symbolClass = HEADER_SYMBOLS[column]
+    if (!symbolClass) {
+      return null
+    }
+
+    const cell = document.createElement("th")
+    cell.className = `mmm-pthub-header-cell mmm-pthub-header-${column}`
+    cell.scope = "col"
+    const symbol = document.createElement("i")
+    symbol.className = symbolClass
+    cell.appendChild(symbol)
+
+    return cell
+  }
+
+  getHeaderRow(columns) {
+    const row = document.createElement("tr")
+    row.className = "mmm-pthub-header-row"
+
+    for (const column of columns) {
+      const cell = this.getHeaderCell(column)
+      if (cell) {
+        row.appendChild(cell)
+      }
+    }
+
+    return row
+  }
+
   getColumnCell(column, dep) {
     switch (column) {
       case "time":
@@ -255,6 +292,16 @@ export default class PtDomBuilder {
       const table = document.createElement("table")
       table.className = "small"
 
+      const columns = Array.isArray(this.config.columnOrder)
+        ? this.config.columnOrder
+        : ["time", "line", "direction", "platform"]
+
+      if (this.config.showTableHeaders !== false) {
+        const tableHead = document.createElement("thead")
+        tableHead.appendChild(this.getHeaderRow(columns))
+        table.appendChild(tableHead)
+      }
+
       for (const dep of departures) {
         const row = document.createElement("tr")
         row.className = "mmm-pthub-row"
@@ -266,10 +313,6 @@ export default class PtDomBuilder {
         if (dep.reachable === false) {
           row.classList.add("mmm-pthub-unreachable")
         }
-
-        const columns = Array.isArray(this.config.columnOrder)
-          ? this.config.columnOrder
-          : ["time", "line", "direction", "platform"]
 
         for (const column of columns) {
           const cell = this.getColumnCell(column, dep)

@@ -103,6 +103,7 @@ Module.register("MMM-PublicTransportHub", {
     showDelay: false,
     showRealtimeIndicator: true,
     showRemarks: true,
+    showTableHeaders: true,
     columnOrder: ["time", "line", "direction", "platform"],
     timeToStation: 0,
     maxUnreachableDepartures: 2,
