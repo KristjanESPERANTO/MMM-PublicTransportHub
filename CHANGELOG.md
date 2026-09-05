@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.8](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.7...v0.1.8) (2026-09-05)
+
+### Added
+
+* add outgoing transit alerts ([eba20b5](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/eba20b503482e71baabef61c8b63614c54378eb8))
+
+### Chores
+
+* update devDependencies ([62a4a5e](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/62a4a5e367d0f32d0ce6ef7cfb19711facd16704))
 ## [0.1.7](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.6...v0.1.7) (2026-09-03)
 
 ### Added
