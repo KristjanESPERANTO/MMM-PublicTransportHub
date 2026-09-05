@@ -1,6 +1,6 @@
 {
   "name": "mmm-publictransporthub",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "A module for MagicMirror² to display public transport departures - with pluggable providers.",
   "keywords": [
     "MagicMirror",

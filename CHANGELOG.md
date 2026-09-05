@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.9](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.8...v0.1.9) (2026-09-05)
+
+### Added
+
+* add departure table header ([6f27d96](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/6f27d966eb4cffc73be1a36ca06ae79a178fb16e))
+
+### Fixed
+
+* simplify platform labels ([7854ea5](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/7854ea54d9ca8894fc053ee2d0ab179a2ea14c41))
 ## [0.1.8](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.7...v0.1.8) (2026-09-05)
 
 ### Added
