@@ -9,5 +9,13 @@
   "PTH_ERROR_CLIENT": "Nieprawidlowe zapytanie dla wybranej konfiguracji dostawcy.",
   "PTH_ERROR_NOT_INITIALIZED": "Dostawca nie zostal jeszcze zainicjowany.",
   "PTH_LAST_UPDATE": "Zaktualizowano",
-  "PTH_NO_DEPARTURES": "Brak odjazdow."
+  "PTH_NO_DEPARTURES": "Brak odjazdow.",
+  "PTH_ALERT_CANCELLATION_TITLE": "Odjazd {line} odwolany",
+  "PTH_ALERT_CANCELLATION_BODY": "Odjazd o {time} w kierunku {direction} zostal odwolany.",
+  "PTH_ALERT_DELAY_TITLE": "Odjazd {line} opozniony",
+  "PTH_ALERT_DELAY_BODY": "Odjazd o {time} w kierunku {direction} jest opozniony o {minutes} minut.",
+  "PTH_ALERT_REMARK_TITLE": "Informacja o kursie {line}",
+  "PTH_ALERT_DESTINATION": "skonfigurowanego celu",
+  "PTH_ALERT_NO_DEPARTURES_TITLE": "Brak dostepnych odjazdow",
+  "PTH_ALERT_NO_DEPARTURES_BODY": "Obecnie brak dostepnych odjazdow w skonfigurowanym czasie."
 }

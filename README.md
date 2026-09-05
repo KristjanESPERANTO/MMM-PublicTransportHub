@@ -12,6 +12,13 @@ Transitous is also a community-driven open-source project, which fits well with 
 
 ![Screenshot](screenshot.png)
 
+### Service alerts
+
+When `outgoingNotifications` is enabled, service alerts can be displayed by a
+receiver such as [MMM-MessageCenter](https://github.com/bwente/MMM-MessageCenter).
+
+![MMM-MessageCenter service alerts](screenshotmmmmessages.png)
+
 ## Provider Comparison
 
 |                      | Transitous                                                | HAFAS                                                                               | Vendo                                               | PLK                                                                              |
@@ -104,6 +111,14 @@ npm ci --omit=dev
         replaceInLineNames: { "Bus ": "" },
         requestTimeoutMs: 12000,
         fetchRetries: 1,
+        outgoingNotifications: {
+          enabled: true,
+          includeCancellations: true,
+          includeDelays: true,
+          includeRemarks: true,
+          delayThresholdMinutes: 10,
+          includeNoDepartures: false,
+        },
         // For Transitous, set this to a reachable email address or your MagicMirror forum alias.
         contact: "you@example.com",
       }
@@ -143,6 +158,11 @@ npm ci --omit=dev
 | `vendoProfile`             | `"db"`                                      | Vendo profile when `provider: "vendo"` (`db`, `dbnav`, `dbbahnhof`, `dbregioguide`, `dbris`).                                                                                                           |
 | `timeInFutureMinutes`      | `90`                                        | Look-ahead window in minutes for provider queries. Minimum `1`.                                                                                                                                         |
 | `includeRelatedStations`   | `false`                                     | Include nearby/related stops if supported by the provider.                                                                                                                                              |
+| `outgoingNotifications`    | disabled                                    | Optional global notifications for cancellations, delays, service remarks, and no reachable departures. Alerts are sent only when their state changes.                                                   |
+
+`outgoingNotifications` is disabled by default. Alerts are sent with the fixed MagicMirror notification name `PTH_SERVICE_ALERT`. The payload contains a stable `id`, `kind`, `active`, normalized departure data, and timestamps. A receiving module such as MMM-MessageCenter can retain, update, display, and clear these alerts.
+
+Alerts respect the line, direction, and product filters, but are evaluated before display limits and `excludeCanceled`, so canceled departures can still generate notifications when they are hidden from the table.
 
 Note: legacy option `showColoredLineBadges` has been replaced by `lineStylePreset`.
 

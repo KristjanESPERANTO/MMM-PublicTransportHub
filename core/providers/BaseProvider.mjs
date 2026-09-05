@@ -160,7 +160,7 @@ export default class BaseProvider {
         : null
     const excludeCanceled = Boolean(this.config.excludeCanceled)
 
-    const filteredAndSorted = (departures || [])
+    const normalizedDepartures = (departures || [])
       .map(departure => this.withDirectionReplacements(departure))
       .map(departure => this.withReachability(departure, nowTs))
       .filter((departure) => {
@@ -169,10 +169,6 @@ export default class BaseProvider {
           departureTs !== Number.MAX_SAFE_INTEGER
           && departureTs < minDepartureTs
         ) {
-          return false
-        }
-
-        if (excludeCanceled && departure.canceled) {
           return false
         }
 
@@ -193,6 +189,11 @@ export default class BaseProvider {
 
         return lineMatches && directionMatches && productMatches
       })
+
+    this.serviceAlertDepartures = normalizedDepartures
+
+    const filteredAndSorted = normalizedDepartures
+      .filter(departure => !(excludeCanceled && departure.canceled))
       .sort((a, b) => this.toTimestamp(a) - this.toTimestamp(b))
 
     return this.withUnreachableLimit(

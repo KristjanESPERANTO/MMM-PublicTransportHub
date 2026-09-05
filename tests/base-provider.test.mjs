@@ -91,6 +91,8 @@ describe("finalizeDepartures", () => {
     assert.equal(result.length, 1)
     assert.equal(result[0].direction, "Valid")
     assert.equal(result[0].reachable, true)
+    assert.equal(provider.serviceAlertDepartures.length, 3)
+    assert.equal(provider.serviceAlertDepartures.some(departure => departure.canceled), true)
   })
 
   test("requires line, direction and product filters to match together", () => {

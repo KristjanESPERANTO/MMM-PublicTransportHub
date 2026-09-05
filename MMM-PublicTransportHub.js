@@ -37,6 +37,58 @@ function getErrorTranslationKey(errorCode) {
   }
 }
 
+function replaceTranslationValues(template, values) {
+  return Object.entries(values).reduce(
+    (text, [key, value]) => text.replaceAll(`{${key}}`, String(value)),
+    template,
+  )
+}
+
+function getAlertTimeLabel(module, alert) {
+  const timestamp = alert.departureTime || alert.scheduledTime
+  const date = timestamp ? new Date(timestamp) : null
+  if (date && !Number.isNaN(date.getTime())) {
+    const configuredTimeFormat = Number.isFinite(module.config?.timeFormat)
+      ? module.config.timeFormat
+      : globalThis.config?.timeFormat
+    const hour12 = configuredTimeFormat === 12
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12,
+    })
+  }
+
+  return alert.departureTimeLabel || "unknown time"
+}
+
+function localizeServiceAlert(module, alert) {
+  if (!alert?.active || !alert.kind) {
+    return alert
+  }
+
+  const direction = alert.direction || module.translate("PTH_ALERT_DESTINATION")
+  const values = {
+    line: alert.lineName || alert.line?.name || alert.line?.id || "Unknown line",
+    time: getAlertTimeLabel(module, alert),
+    direction,
+    minutes: Math.round((alert.delaySeconds || 0) / 60),
+  }
+  const keys = {
+    cancellation: ["PTH_ALERT_CANCELLATION_TITLE", "PTH_ALERT_CANCELLATION_BODY"],
+    delay: ["PTH_ALERT_DELAY_TITLE", "PTH_ALERT_DELAY_BODY"],
+    remark: ["PTH_ALERT_REMARK_TITLE", null],
+    no_departures: ["PTH_ALERT_NO_DEPARTURES_TITLE", "PTH_ALERT_NO_DEPARTURES_BODY"],
+  }
+  const [titleKey, bodyKey] = keys[alert.kind] || []
+
+  return {
+    ...alert,
+    title: titleKey ? replaceTranslationValues(module.translate(titleKey), values) : alert.title,
+    body: bodyKey ? replaceTranslationValues(module.translate(bodyKey), values) : alert.body,
+  }
+}
+
 Module.register("MMM-PublicTransportHub", {
   requiresVersion: "2.33.0",
 
@@ -71,6 +123,14 @@ Module.register("MMM-PublicTransportHub", {
     vendoProfile: "db",
     timeInFutureMinutes: 90,
     includeRelatedStations: false,
+    outgoingNotifications: {
+      enabled: false,
+      includeCancellations: true,
+      includeDelays: true,
+      includeRemarks: true,
+      delayThresholdMinutes: 10,
+      includeNoDepartures: false,
+    },
   },
 
   async start() {
@@ -138,6 +198,7 @@ Module.register("MMM-PublicTransportHub", {
       timeToStation: this.config.timeToStation,
       maxUnreachableDepartures: this.config.maxUnreachableDepartures,
       excludeCanceled: this.config.excludeCanceled,
+      outgoingNotifications: this.config.outgoingNotifications,
       requestTimeoutMs: this.config.requestTimeoutMs,
       fetchRetries: this.config.fetchRetries,
       lineFilter: this.config.lineFilter,
@@ -191,6 +252,25 @@ Module.register("MMM-PublicTransportHub", {
     this.config.timeInFutureMinutes = Number.isFinite(this.config.timeInFutureMinutes)
       ? Math.max(1, Math.floor(this.config.timeInFutureMinutes))
       : 90
+
+    const outgoingNotifications = this.config.outgoingNotifications
+    const hasOutgoingNotificationsObject
+      = outgoingNotifications != null
+        && typeof outgoingNotifications === "object"
+        && !Array.isArray(outgoingNotifications)
+    const notificationConfig = hasOutgoingNotificationsObject
+      ? outgoingNotifications
+      : {}
+    this.config.outgoingNotifications = {
+      enabled: Boolean(notificationConfig.enabled),
+      includeCancellations: notificationConfig.includeCancellations !== false,
+      includeDelays: notificationConfig.includeDelays !== false,
+      includeRemarks: notificationConfig.includeRemarks !== false,
+      delayThresholdMinutes: Number.isFinite(notificationConfig.delayThresholdMinutes)
+        ? Math.max(0, Math.floor(notificationConfig.delayThresholdMinutes))
+        : 10,
+      includeNoDepartures: Boolean(notificationConfig.includeNoDepartures),
+    }
 
     const hasPlainObjectReplacements
       = this.config.replaceInDirections != null
@@ -301,6 +381,13 @@ Module.register("MMM-PublicTransportHub", {
         this.lastUpdate = new Date()
         this.lastError = null
         this.updateDom(this.config.animationSpeed)
+        break
+
+      case "PTH_SERVICE_ALERT":
+        this.sendNotification(
+          payload.notification,
+          localizeServiceAlert(this, payload.payload),
+        )
         break
 
       case "PTH_ERROR":

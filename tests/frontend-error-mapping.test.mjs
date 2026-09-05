@@ -71,4 +71,69 @@ describe("toUserFacingError", () => {
 
     assert.equal(result.message, "Unknown error")
   })
+
+  test("forwards service alerts to MagicMirror", () => {
+    const moduleDefinition = loadModuleDefinition()
+    const notifications = []
+    const context = {
+      identifier: "module_1",
+      sendNotification(notification, payload) {
+        notifications.push({ notification, payload })
+      },
+    }
+
+    moduleDefinition.socketNotificationReceived.call(context, "PTH_SERVICE_ALERT", {
+      identifier: "module_1",
+      notification: "PTH_SERVICE_ALERT",
+      payload: {
+        active: true,
+        title: "Train cancelled",
+        body: "The train was cancelled.",
+      },
+    })
+
+    assert.deepEqual(notifications, [{
+      notification: "PTH_SERVICE_ALERT",
+      payload: {
+        active: true,
+        title: "Train cancelled",
+        body: "The train was cancelled.",
+      },
+    }])
+  })
+
+  test("formats service alert departure times in 24-hour format", () => {
+    const moduleDefinition = loadModuleDefinition()
+    const notifications = []
+    const context = {
+      identifier: "module_1",
+      config: { timeFormat: 24 },
+      translate(key) {
+        const translations = {
+          PTH_ALERT_CANCELLATION_TITLE: "{line} Abfahrt fällt aus",
+          PTH_ALERT_CANCELLATION_BODY: "Die Abfahrt um {time} Richtung {direction} fällt aus.",
+        }
+        return translations[key] || key
+      },
+      sendNotification(notification, payload) {
+        notifications.push({ notification, payload })
+      },
+    }
+
+    moduleDefinition.socketNotificationReceived.call(context, "PTH_SERVICE_ALERT", {
+      identifier: "module_1",
+      notification: "PTH_SERVICE_ALERT",
+      payload: {
+        active: true,
+        kind: "cancellation",
+        lineName: "12",
+        direction: "Trotha",
+        departureTime: new Date("2026-09-05T12:17:00").getTime(),
+        departureTimeLabel: "12:17 PM",
+      },
+    })
+
+    assert.match(notifications[0].payload.body, /12:17/)
+    assert.doesNotMatch(notifications[0].payload.body, /AM|PM/)
+  })
 })

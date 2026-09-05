@@ -153,6 +153,7 @@ function toErrorMessage(error) {
 module.exports = NodeHelper.create({
   start() {
     this.providers = new Map()
+    this.serviceAlertDetectors = new Map()
   },
 
   async fetchWithTimeout(provider, timeoutMs) {
@@ -217,8 +218,27 @@ module.exports = NodeHelper.create({
 
     try {
       const { createProvider } = await import("./core/ProviderFactory.mjs")
+      const { default: ServiceAlertDetector } = await import(
+        "./core/ServiceAlertDetector.mjs",
+      )
       const provider = await createProvider(payload)
       this.providers.set(payload.identifier, provider)
+      this.serviceAlertDetectors.set(
+        payload.identifier,
+        new ServiceAlertDetector({
+          config: provider.config?.outgoingNotifications || {},
+          identifier: payload.identifier,
+          provider: provider.config?.provider || payload.provider,
+          stationId: provider.config?.stationId || payload.stationId,
+          sendNotification: (notification, alertPayload) => {
+            this.sendSocketNotification("PTH_SERVICE_ALERT", {
+              identifier: payload.identifier,
+              notification,
+              payload: alertPayload,
+            })
+          },
+        }),
+      )
       Log.info(`Fetcher created ${context}`)
       this.sendSocketNotification("PTH_FETCHER_READY", {
         identifier: payload.identifier,
@@ -267,6 +287,9 @@ module.exports = NodeHelper.create({
         retries,
         context,
       })
+      this.serviceAlertDetectors?.get(payload.identifier)?.process(
+        provider.serviceAlertDepartures || departures,
+      )
       Log.info(`Fetched ${departures.length} departures ${context}`)
       this.sendSocketNotification("PTH_DEPARTURES", {
         identifier: payload.identifier,

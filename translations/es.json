@@ -9,5 +9,13 @@
   "PTH_ERROR_CLIENT": "Solicitud no valida para la configuracion actual del proveedor.",
   "PTH_ERROR_NOT_INITIALIZED": "El proveedor aun no esta inicializado.",
   "PTH_LAST_UPDATE": "Actualizado",
-  "PTH_NO_DEPARTURES": "Sin salidas."
+  "PTH_NO_DEPARTURES": "Sin salidas.",
+  "PTH_ALERT_CANCELLATION_TITLE": "Salida cancelada de {line}",
+  "PTH_ALERT_CANCELLATION_BODY": "La salida de las {time} hacia {direction} ha sido cancelada.",
+  "PTH_ALERT_DELAY_TITLE": "Salida retrasada de {line}",
+  "PTH_ALERT_DELAY_BODY": "La salida de las {time} hacia {direction} tiene un retraso de {minutes} minutos.",
+  "PTH_ALERT_REMARK_TITLE": "Informacion del servicio de {line}",
+  "PTH_ALERT_DESTINATION": "el destino configurado",
+  "PTH_ALERT_NO_DEPARTURES_TITLE": "No hay salidas accesibles",
+  "PTH_ALERT_NO_DEPARTURES_BODY": "No hay salidas accesibles dentro del periodo configurado."
 }

@@ -7,6 +7,18 @@ let config = {
   units: "metric",
   modules: [
     {
+      module: "MMM-MessageCenter",
+      position: "middle_center",
+      config: {
+        displayMode: "line",
+        maxVisibleMessages: 3,
+        lineShowBody: true,
+        showControls: false,
+        showSummary: false,
+        showToasts: true,
+      },
+    },
+    {
       module: "MMM-PublicTransportHub",
       position: "top_left",
       header: "Reileck · Transitous",
@@ -30,6 +42,14 @@ let config = {
         },
         timeInFutureMinutes: 90,
         includeRelatedStations: true,
+        outgoingNotifications: {
+          enabled: true,
+          includeCancellations: true,
+          includeDelays: true,
+          includeRemarks: true,
+          delayThresholdMinutes: 10,
+          includeNoDepartures: true,
+        },
       },
     },
     {

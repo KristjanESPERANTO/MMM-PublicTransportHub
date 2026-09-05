@@ -51,4 +51,41 @@ describe("fetchDepartures", () => {
     assert.equal(sentNotifications[0].notification, "PTH_ERROR")
     assert.equal(sentNotifications[0].payload.error.code, "SERVER")
   })
+
+  test("passes normalized alert departures to the detector", async () => {
+    const helper = loadNodeHelperModuleForTests()
+    const sentNotifications = []
+    const alertDepartures = [{ tripId: "cancelled-trip", canceled: true }]
+    const detectorCalls = []
+    const provider = {
+      config: {
+        requestTimeoutMs: 12000,
+        fetchRetries: 0,
+        provider: "transitous",
+        stationId: "x",
+      },
+      serviceAlertDepartures: alertDepartures,
+      async fetchDepartures() {
+        return []
+      },
+    }
+
+    helper.providers = new Map([["id-1", provider]])
+    helper.serviceAlertDetectors = new Map([[
+      "id-1",
+      {
+        process(departures) {
+          detectorCalls.push(departures)
+        },
+      },
+    ]])
+    helper.sendSocketNotification = (notification, payload) => {
+      sentNotifications.push({ notification, payload })
+    }
+
+    await helper.fetchDepartures({ identifier: "id-1" })
+
+    assert.deepEqual(detectorCalls, [alertDepartures])
+    assert.equal(sentNotifications[0].notification, "PTH_DEPARTURES")
+  })
 })

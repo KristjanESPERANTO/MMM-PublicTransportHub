@@ -74,6 +74,32 @@ describe("sanitizeConfig", () => {
     })
   })
 
+  describe("outgoingNotifications", () => {
+    test("sanitizes notification settings and defaults", () => {
+      const moduleDefinition = loadModuleDefinition()
+      const context = {
+        config: {
+          outgoingNotifications: {
+            enabled: true,
+            delayThresholdMinutes: 12.8,
+            includeRemarks: false,
+          },
+        },
+      }
+
+      moduleDefinition.sanitizeConfig.call(context)
+
+      assert.deepEqual(context.config.outgoingNotifications, {
+        enabled: true,
+        includeCancellations: true,
+        includeDelays: true,
+        includeRemarks: false,
+        delayThresholdMinutes: 12,
+        includeNoDepartures: false,
+      })
+    })
+  })
+
   describe("columnOrder", () => {
     test("keeps valid values", () => {
       const moduleDefinition = loadModuleDefinition()
