@@ -226,8 +226,16 @@ export default class PtDomBuilder {
   getPlatformCell(dep) {
     const platformCell = document.createElement("td")
     platformCell.className = "bright mmm-pthub-platform"
-    platformCell.textContent = dep.platform || "-"
+    platformCell.textContent = this.getPlatformLabel(dep.platform)
     return platformCell
+  }
+
+  getPlatformLabel(platform) {
+    if (!platform) {
+      return "-"
+    }
+
+    return String(platform).replace(/^Pos\. /, "") || "-"
   }
 
   getHeaderCell(column) {

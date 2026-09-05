@@ -43,6 +43,16 @@ describe("PtDomBuilder", () => {
     })
   })
 
+  describe("getPlatformLabel", () => {
+    test("removes the provider prefix", () => {
+      const builder = new PtDomBuilder({})
+
+      assert.equal(builder.getPlatformLabel("Pos. 6"), "6")
+      assert.equal(builder.getPlatformLabel("6"), "6")
+      assert.equal(builder.getPlatformLabel(null), "-")
+    })
+  })
+
   describe("getHeaderRow", () => {
     test("renders symbols in column order", () => {
       const originalDocument = globalThis.document
