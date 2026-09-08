@@ -168,30 +168,24 @@ Note: legacy option `showColoredLineBadges` has been replaced by `lineStylePrese
 
 ## Station Query Helper
 
-Use the interactive helper to find station IDs and ready-to-copy config snippets:
+Use the local browser-based helper to find station IDs and ready-to-copy config snippets:
 
 ```bash
 node --run query
 ```
 
-The script asks for a station/location name, then queries Transitous by default. HAFAS and Vendo queries are optional: enter the desired profiles when prompted, or leave them empty to skip them. This avoids relying on DB profiles that may currently be blocked by the Deutsche Bahn API.
-
-Example flow:
+This starts a small local web server on the stable URL `http://127.0.0.1:8765/` (bound to `127.0.0.1`, never reachable from the network):
 
 ```sh
-Station or address to search (e.g. 'Gotha Hbf'): Leipzig Hbf
-Transitous is always queried. HAFAS and Vendo are optional; press Enter to skip either one.
-Optional HAFAS profile(s), comma-separated (e.g. 'vmt,insa,vbb'; Enter to skip): insa
-Optional Vendo profile(s), comma-separated (e.g. 'db'; Enter to skip):
-
-Select the station result to use in your configuration:
- 1. transitous - Leipzig Hbf | de-...
- 2. hafas (insa) - Leipzig, Hauptbahnhof | 801...
-Enter a result number to generate its config, or press Enter to quit.
-2
+Station query tool running at http://127.0.0.1:8765/
+Open that URL in your browser. Press Ctrl+C to stop.
 ```
 
-The script then queries Transitous and any selected profiles. Select the result you want to use, and the script prints a matching config block ready to copy. The selected profile is included automatically for HAFAS or Vendo results. For Transitous results, replace the generated `YOUR_EMAIL_OR_FORUM_ALIAS` placeholder with a reachable email address or MagicMirror forum alias before using the config. Leave the selection empty to exit without generating a config.
+To use another local port, set `PTH_QUERY_PORT`, for example `PTH_QUERY_PORT=8766 node --run query`.
+
+Open that URL in your browser. Enter a station or address, tick the provider(s) you want to search (Transitous, HAFAS, Vendo, PLK), and provide profiles/API key where needed - HAFAS and Vendo profile fields default to `db` if left empty. PLK requires an API key (see the [PLK provider](#choosing-a-provider) above); it's entered as a password field, only used in-memory for that search, and never logged or written to disk.
+
+Select a station result to immediately generate a ready-to-copy config block. Use the live departure test if needed, then click "Copy config". For Transitous results, replace the generated `YOUR_EMAIL_OR_FORUM_ALIAS` placeholder with a reachable email address or MagicMirror forum alias. For PLK results, replace the `YOUR_PLK_API_KEY` placeholder with your key - but keep it out of files you commit to version control.
 
 ## Credits
 
