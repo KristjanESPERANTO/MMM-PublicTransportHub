@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.10](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.9...v0.1.10) (2026-09-08)
+
+### Added
+
+* replace CLI with browser query helper ([531fc3b](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/531fc3bdd7fdcaeaad9633ab25d7225f0785cd7f))
+
+### Chores
+
+* update devDependencies ([d78ea13](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/d78ea1380211ec76f742009b4ab0a5a54f88ba37))
 ## [0.1.9](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.8...v0.1.9) (2026-09-05)
 
 ### Added
