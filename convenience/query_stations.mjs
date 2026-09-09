@@ -474,6 +474,8 @@ const HTML_PAGE = String.raw`<!doctype html>
   button.select-station { border-color: var(--success); background: var(--success); color: white; }
   button.select-station:hover { border-color: var(--success); filter: brightness(1.08); }
   button:disabled { cursor: wait; opacity: 0.65; }
+  .button-spinner { display: inline-block; width: 0.85em; height: 0.85em; margin-right: 0.45em; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; vertical-align: -0.1em; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
   .result-group { margin-bottom: 1.5rem; }
   .result-group h2 { font-size: 1rem; margin: 0 0 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid #8888; }
   .result-count { font-weight: normal; opacity: 0.7; font-size: 0.85em; margin-left: 0.4rem; }
@@ -563,7 +565,7 @@ const HTML_PAGE = String.raw`<!doctype html>
             <p class="muted">PLK searches the beginning of the name and is sensitive to Polish letters, for example Wrocław.</p>
           </div>
 
-          <p><button class="primary" type="submit">Search stations</button></p>
+          <p><button id="search-button" class="primary" type="submit"><span id="search-button-spinner" class="button-spinner" hidden aria-hidden="true"></span><span id="search-button-label">Search stations</span></button></p>
         </form>
       </div>
     </section>
@@ -613,6 +615,9 @@ const HTML_PAGE = String.raw`<!doctype html>
     var statusEl = document.getElementById("status")
     var resultsEl = document.getElementById("results")
     var resultsSection = document.getElementById("results-section")
+    var searchButton = document.getElementById("search-button")
+    var searchButtonLabel = document.getElementById("search-button-label")
+    var searchButtonSpinner = document.getElementById("search-button-spinner")
     var selectedSection = document.getElementById("selected-section")
     var selectedName = document.getElementById("selected-name")
     var selectedDetails = document.getElementById("selected-details")
@@ -648,6 +653,15 @@ const HTML_PAGE = String.raw`<!doctype html>
       return Array.prototype.map.call(select.selectedOptions, function (option) {
         return option.value
       })
+    }
+
+    function setSearchLoading(isLoading, profileCount) {
+      searchButton.disabled = isLoading
+      searchButtonSpinner.hidden = !isLoading
+      searchButton.setAttribute("aria-busy", String(isLoading))
+      searchButtonLabel.textContent = isLoading
+        ? "Searching" + (profileCount > 1 ? " " + profileCount + " profiles" : "") + "..."
+        : "Search stations"
     }
 
     function buildConfig(entry, location, contact, plkKey) {
@@ -938,6 +952,9 @@ const HTML_PAGE = String.raw`<!doctype html>
       }
 
       statusEl.textContent = "Searching..."
+      var selectedProfileCount = getSelectedOptionValues("hafas-profiles").length
+        + getSelectedOptionValues("vendo-profiles").length
+      setSearchLoading(true, selectedProfileCount)
       resultsEl.innerHTML = ""
       resultsSection.hidden = false
       selectedSection.hidden = true
@@ -963,10 +980,12 @@ const HTML_PAGE = String.raw`<!doctype html>
           return response.json()
         })
         .then(function (data) {
+          setSearchLoading(false, 0)
           statusEl.textContent = ""
           renderResults(data)
         })
         .catch(function (error) {
+          setSearchLoading(false, 0)
           statusEl.textContent = "Error: " + error.message
         })
     })
