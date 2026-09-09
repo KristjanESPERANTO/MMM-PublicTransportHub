@@ -833,7 +833,7 @@ const HTML_PAGE = String.raw`<!doctype html>
       if (!departures || departures.length === 0) {
         var emptyMsg = document.createElement("p")
         emptyMsg.className = "muted"
-        emptyMsg.textContent = "No departures returned."
+        emptyMsg.textContent = "No departures were found in the current look-ahead window. The station may still be correct; try again later or check another provider."
         testOutput.appendChild(emptyMsg)
         return
       }
