@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.11](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.10...v0.1.11) (2026-09-21)
+
+### Added
+
+* **query:** add search loading indicator ([2adc4ee](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/2adc4ee537321057bdddead11bd0c45c54036f12))
+* **query:** improve no departures message ([a096551](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/a0965513b1b7b2c8c8baa390b19dd404d076bf5e))
+* **time:** add relative departure display modes ([803b111](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/803b11188e069b0b8430f82d3b926b16e2705b55))
+
+### Chores
+
+* update dependencies ([1c9de96](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/1c9de96aa906ac185ffb9856832e6328929b3f3f))
+
 ## [0.1.10](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.9...v0.1.10) (2026-09-08)
 
 ### Added
