@@ -9,6 +9,8 @@
   "PTH_ERROR_CLIENT": "Ungültige Anfrage für die aktuelle Anbieter-Konfiguration.",
   "PTH_ERROR_NOT_INITIALIZED": "Anbieter ist noch nicht initialisiert.",
   "PTH_LAST_UPDATE": "Aktualisiert",
+  "PTH_RELATIVE_TIME": "in {minutes} Min.",
+  "PTH_RELATIVE_TIME_NOW": "jetzt",
   "PTH_NO_DEPARTURES": "Keine Abfahrten.",
   "PTH_ALERT_CANCELLATION_TITLE": "{line} Abfahrt fällt aus",
   "PTH_ALERT_CANCELLATION_BODY": "Die Abfahrt um {time} Richtung {direction} fällt aus.",

@@ -100,6 +100,10 @@ Module.register("MMM-PublicTransportHub", {
     maxDepartures: 7,
     animationSpeed: 1000,
     showLastUpdate: true,
+    timeDisplay: {
+      mode: "relative-under",
+      thresholdMinutes: 10,
+    },
     showDelay: false,
     showRealtimeIndicator: true,
     showRemarks: true,
@@ -233,6 +237,32 @@ Module.register("MMM-PublicTransportHub", {
     this.config.timeToStation = Number.isFinite(this.config.timeToStation)
       ? Math.max(0, Math.floor(this.config.timeToStation))
       : 0
+
+    const configuredTimeDisplay = this.config.timeDisplay
+    const hasTimeDisplayObject = configuredTimeDisplay != null
+      && typeof configuredTimeDisplay === "object"
+      && !Array.isArray(configuredTimeDisplay)
+    const requestedTimeDisplay = hasTimeDisplayObject
+      ? configuredTimeDisplay
+      : {}
+    const allowedTimeDisplayModes = new Set([
+      "absolute",
+      "relative",
+      "relative-under",
+    ])
+    const requestedTimeDisplayMode = String(
+      requestedTimeDisplay.mode || "relative-under",
+    )
+      .trim()
+      .toLowerCase()
+    this.config.timeDisplay = {
+      mode: allowedTimeDisplayModes.has(requestedTimeDisplayMode)
+        ? requestedTimeDisplayMode
+        : "relative-under",
+      thresholdMinutes: Number.isFinite(requestedTimeDisplay.thresholdMinutes)
+        ? Math.max(1, Math.floor(requestedTimeDisplay.thresholdMinutes))
+        : 10,
+    }
 
     this.config.maxUnreachableDepartures
       = Number.isFinite(this.config.maxUnreachableDepartures)
@@ -424,10 +454,21 @@ Module.register("MMM-PublicTransportHub", {
       clearInterval(this._timer)
     }
 
+    if (this._relativeTimeTimer) {
+      clearInterval(this._relativeTimeTimer)
+    }
+
     this._timer = setInterval(
       () => this.fetchNow(),
       this.config.updatesEvery * 1000,
     )
+
+    if (this.config.timeDisplay.mode !== "absolute") {
+      this._relativeTimeTimer = setInterval(
+        () => this.updateDom(this.config.animationSpeed),
+        30000,
+      )
+    }
   },
 
   fetchNow() {

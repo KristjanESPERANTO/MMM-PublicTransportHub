@@ -9,6 +9,8 @@
   "PTH_ERROR_CLIENT": "Nieprawidlowe zapytanie dla wybranej konfiguracji dostawcy.",
   "PTH_ERROR_NOT_INITIALIZED": "Dostawca nie zostal jeszcze zainicjowany.",
   "PTH_LAST_UPDATE": "Zaktualizowano",
+  "PTH_RELATIVE_TIME": "za {minutes} min",
+  "PTH_RELATIVE_TIME_NOW": "teraz",
   "PTH_NO_DEPARTURES": "Brak odjazdow.",
   "PTH_ALERT_CANCELLATION_TITLE": "Odjazd {line} odwolany",
   "PTH_ALERT_CANCELLATION_BODY": "Odjazd o {time} w kierunku {direction} zostal odwolany.",

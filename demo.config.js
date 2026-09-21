@@ -27,6 +27,10 @@ let config = {
         contact: "KristjanESPERANTO",
         stationId: "de-DELFI_de:15002:5257::01",
         updatesEvery: 60,
+        timeDisplay: {
+          mode: "relative-under",
+          thresholdMinutes: 10,
+        },
         lineStylePreset: "halle",
         maxUnreachableDepartures: 2,
         replaceInDirections: {
@@ -61,6 +65,10 @@ let config = {
         stationId: "8080580",
         hafasProfile: "insa",
         updatesEvery: 60,
+        timeDisplay: {
+          mode: "relative-under",
+          thresholdMinutes: 10,
+        },
         lineStylePreset: "halle",
         showRemarks: false,
         replaceInDirections: {
@@ -109,6 +117,10 @@ let config = {
         contact: "KristjanESPERANTO",
         stationId: "de-DELFI_de:11000:900003201",
         updatesEvery: 60,
+        timeDisplay: {
+          mode: "relative-under",
+          thresholdMinutes: 10,
+        },
         lineStylePreset: "berlin",
         replaceInLineNames: {
           "bus ": "",
@@ -129,6 +141,10 @@ let config = {
         stationId: "900003201",
         hafasProfile: "vbb",
         updatesEvery: 60,
+        timeDisplay: {
+          mode: "relative-under",
+          thresholdMinutes: 10,
+        },
         lineStylePreset: "berlin",
         replaceInLineNames: {
           "bus ": "",
@@ -152,6 +168,10 @@ let config = {
         apiKey: "YOUR_PLK_API_KEY",
         stationId: "33605",
         updatesEvery: 60,
+        timeDisplay: {
+          mode: "relative-under",
+          thresholdMinutes: 10,
+        },
       },
     },
   ],

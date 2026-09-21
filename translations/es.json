@@ -9,6 +9,8 @@
   "PTH_ERROR_CLIENT": "Solicitud no valida para la configuracion actual del proveedor.",
   "PTH_ERROR_NOT_INITIALIZED": "El proveedor aun no esta inicializado.",
   "PTH_LAST_UPDATE": "Actualizado",
+  "PTH_RELATIVE_TIME": "en {minutes} min",
+  "PTH_RELATIVE_TIME_NOW": "ahora",
   "PTH_NO_DEPARTURES": "Sin salidas.",
   "PTH_ALERT_CANCELLATION_TITLE": "Salida cancelada de {line}",
   "PTH_ALERT_CANCELLATION_BODY": "La salida de las {time} hacia {direction} ha sido cancelada.",

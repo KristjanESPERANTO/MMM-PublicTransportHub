@@ -43,6 +43,91 @@ describe("PtDomBuilder", () => {
     })
   })
 
+  describe("formatRelativeTime", () => {
+    const translate = key => ({
+      PTH_RELATIVE_TIME: "in {minutes} min",
+      PTH_RELATIVE_TIME_NOW: "now",
+    }[key])
+
+    test("floors remaining time to the current minute", () => {
+      const builder = new PtDomBuilder(
+        { timeDisplay: { mode: "relative", thresholdMinutes: 10 } },
+        translate,
+      )
+      const now = Date.parse("2026-09-21T12:00:00Z")
+
+      assert.equal(
+        builder.formatRelativeTime("2026-09-21T12:02:01Z", now),
+        "in 2 min",
+      )
+    })
+
+    test("returns the translated now label", () => {
+      const builder = new PtDomBuilder(
+        { timeDisplay: { mode: "relative", thresholdMinutes: 10 } },
+        translate,
+      )
+
+      assert.equal(
+        builder.formatRelativeTime(
+          "2026-09-21T12:00:30Z",
+          Date.parse("2026-09-21T12:00:31Z"),
+        ),
+        "now",
+      )
+    })
+  })
+
+  describe("getDisplayedTime", () => {
+    const translate = key => ({
+      PTH_RELATIVE_TIME: "in {minutes} min",
+      PTH_RELATIVE_TIME_NOW: "now",
+    }[key])
+
+    test("uses relative time in relative mode", () => {
+      const builder = new PtDomBuilder(
+        { timeDisplay: { mode: "relative", thresholdMinutes: 10 } },
+        translate,
+      )
+      const originalDateNow = Date.now
+      Date.now = () => Date.parse("2026-09-21T12:00:00Z")
+
+      try {
+        assert.equal(
+          builder.getDisplayedTime({ rawWhen: "2026-09-21T12:03:00Z" }),
+          "in 3 min",
+        )
+      }
+      finally {
+        Date.now = originalDateNow
+      }
+    })
+
+    test("uses relative time only below the configured threshold", () => {
+      const builder = new PtDomBuilder(
+        { timeDisplay: { mode: "relative-under", thresholdMinutes: 10 } },
+        translate,
+      )
+      const now = Date.parse("2026-09-21T12:00:00Z")
+      const originalDateNow = Date.now
+      Date.now = () => now
+
+      try {
+        assert.equal(
+          builder.getDisplayedTime({ rawWhen: "2026-09-21T12:09:59Z" }),
+          "in 9 min",
+        )
+        assert.match(
+          builder.getDisplayedTime({ rawWhen: "2026-09-21T12:10:00Z" }),
+          /^\d{2}:\d{2}$/,
+        )
+      }
+      finally {
+        Date.now = originalDateNow
+      }
+    })
+  })
+
   describe("getPlatformLabel", () => {
     test("removes the provider prefix", () => {
       const builder = new PtDomBuilder({})

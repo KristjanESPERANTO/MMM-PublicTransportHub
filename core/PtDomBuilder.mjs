@@ -46,8 +46,59 @@ export default class PtDomBuilder {
     })
   }
 
+  formatRelativeTime(rawWhen, now = Date.now()) {
+    if (!rawWhen) {
+      return null
+    }
+
+    const departureTime = new Date(rawWhen).getTime()
+    if (Number.isNaN(departureTime)) {
+      return null
+    }
+
+    const remainingMinutes = Math.floor((departureTime - now) / 60000)
+    if (remainingMinutes <= 0) {
+      return this.translate("PTH_RELATIVE_TIME_NOW")
+    }
+
+    return this.translate("PTH_RELATIVE_TIME").replace(
+      "{minutes}",
+      String(remainingMinutes),
+    )
+  }
+
+  isWithinRelativeThreshold(rawWhen, now = Date.now()) {
+    if (!rawWhen) {
+      return false
+    }
+
+    const departureTime = new Date(rawWhen).getTime()
+    if (Number.isNaN(departureTime)) {
+      return false
+    }
+
+    const thresholdMinutes = this.config.timeDisplay.thresholdMinutes
+    const remainingMilliseconds = departureTime - now
+    return remainingMilliseconds > 0
+      && remainingMilliseconds < thresholdMinutes * 60000
+  }
+
   getDisplayedTime(departure) {
     const rawWhen = departure.rawWhen || departure.rawPlannedWhen || null
+    const timeDisplayMode = this.config.timeDisplay?.mode
+    const useRelativeTime = timeDisplayMode === "relative"
+      || (
+        timeDisplayMode === "relative-under"
+        && this.isWithinRelativeThreshold(rawWhen)
+      )
+
+    if (useRelativeTime) {
+      const relative = this.formatRelativeTime(rawWhen)
+      if (relative !== null) {
+        return relative
+      }
+    }
+
     const formatted = this.formatDisplayTime(rawWhen)
     if (formatted !== "--:--") {
       return formatted

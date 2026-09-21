@@ -4,6 +4,58 @@ import test, { describe } from "node:test"
 import { loadModuleDefinition } from "./test-helpers.mjs"
 
 describe("sanitizeConfig", () => {
+  describe("timeDisplay", () => {
+    test("defaults to relative-under mode", () => {
+      const moduleDefinition = loadModuleDefinition()
+      const defaultContext = { config: {} }
+
+      moduleDefinition.sanitizeConfig.call(defaultContext)
+
+      assert.deepEqual(defaultContext.config.timeDisplay, {
+        mode: "relative-under",
+        thresholdMinutes: 10,
+      })
+    })
+
+    test("preserves valid mode and sanitizes threshold", () => {
+      const moduleDefinition = loadModuleDefinition()
+      const context = {
+        config: {
+          timeDisplay: {
+            mode: " RELATIVE-UNDER ",
+            thresholdMinutes: 12.8,
+          },
+        },
+      }
+
+      moduleDefinition.sanitizeConfig.call(context)
+
+      assert.deepEqual(context.config.timeDisplay, {
+        mode: "relative-under",
+        thresholdMinutes: 12,
+      })
+    })
+
+    test("falls back for invalid values", () => {
+      const moduleDefinition = loadModuleDefinition()
+      const context = {
+        config: {
+          timeDisplay: {
+            mode: "invalid",
+            thresholdMinutes: 0,
+          },
+        },
+      }
+
+      moduleDefinition.sanitizeConfig.call(context)
+
+      assert.deepEqual(context.config.timeDisplay, {
+        mode: "relative-under",
+        thresholdMinutes: 1,
+      })
+    })
+  })
+
   describe("provider", () => {
     test("normalizes supported provider names", () => {
       const moduleDefinition = loadModuleDefinition()
