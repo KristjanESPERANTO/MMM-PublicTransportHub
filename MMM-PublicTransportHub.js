@@ -97,6 +97,7 @@ Module.register("MMM-PublicTransportHub", {
     provider: "transitous", // transitous | hafas | vendo | plk
     stationId: "",
     updatesEvery: 60,
+    maxStaleMinutes: 5,
     maxDepartures: 7,
     animationSpeed: 1000,
     showLastUpdate: true,
@@ -149,6 +150,7 @@ Module.register("MMM-PublicTransportHub", {
 
     const { default: PtDomBuilder } = await import("./core/PtDomBuilder.mjs")
     this.domBuilder = new PtDomBuilder(this.config, this.translate.bind(this))
+    this.staleDataHelper = await import("./core/StaleDataHelper.mjs")
 
     if (configError) {
       this.lastError = { message: configError }
@@ -229,6 +231,10 @@ Module.register("MMM-PublicTransportHub", {
     this.config.updatesEvery = Number.isFinite(this.config.updatesEvery)
       ? Math.max(30, Math.floor(this.config.updatesEvery))
       : 60
+
+    this.config.maxStaleMinutes = Number.isFinite(this.config.maxStaleMinutes)
+      ? Math.max(0, Math.floor(this.config.maxStaleMinutes))
+      : 5
 
     this.config.maxDepartures = Number.isFinite(this.config.maxDepartures)
       ? Math.max(1, Math.floor(this.config.maxDepartures))
@@ -383,7 +389,14 @@ Module.register("MMM-PublicTransportHub", {
   },
 
   getDom() {
-    if (this.lastError) {
+    const canShowStaleData = this.lastError
+      && this.departures.length > 0
+      && this.staleDataHelper.canUseStaleData(
+        this.lastUpdate,
+        this.config.maxStaleMinutes,
+      )
+
+    if (this.lastError && !canShowStaleData) {
       return this.domBuilder.getMessageDom(`${this.translate("PTH_ERROR_PREFIX")}: ${getErrorMessage(this.lastError)}`)
     }
 
@@ -391,7 +404,11 @@ Module.register("MMM-PublicTransportHub", {
       return this.domBuilder.getMessageDom(this.translate("LOADING"))
     }
 
-    return this.domBuilder.getDeparturesDom(this.departures, this.lastUpdate)
+    const wrapper = this.domBuilder.getDeparturesDom(this.departures, this.lastUpdate)
+    if (this.lastError) {
+      wrapper.appendChild(this.domBuilder.getMessageDom(`${this.translate("PTH_ERROR_PREFIX")}: ${getErrorMessage(this.lastError)}`))
+    }
+    return wrapper
   },
 
   socketNotificationReceived(notification, payload) {
@@ -423,6 +440,7 @@ Module.register("MMM-PublicTransportHub", {
 
       case "PTH_ERROR":
         this.lastError = this.toUserFacingError(payload.error)
+        this.departures = this.staleDataHelper.getVisibleDepartures(this.departures)
         this.updateDom(this.config.animationSpeed)
         break
     }
