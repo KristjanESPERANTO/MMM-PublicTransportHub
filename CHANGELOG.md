@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.12](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.11...v0.1.12) (2026-09-27)
+
+### Fixed
+
+* ignore outdated fetch results and clarify stale-data UI ([7458487](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/74584873dc7ff01d9ea894bcae0f2412b1f15047))
+* retain departures after provider errors ([4513b3f](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/4513b3f217cc377ca780c631786687de373eab39))
+
+### Chores
+
+* update devDependencies ([f8cce81](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/f8cce810f38bc228c5011da46e5cf1d637ed92c4))
+
 ## [0.1.11](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.10...v0.1.11) (2026-09-21)
 
 ### Added
