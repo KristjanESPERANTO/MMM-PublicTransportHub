@@ -406,7 +406,11 @@ Module.register("MMM-PublicTransportHub", {
 
     const wrapper = this.domBuilder.getDeparturesDom(this.departures, this.lastUpdate)
     if (this.lastError) {
-      wrapper.appendChild(this.domBuilder.getMessageDom(`${this.translate("PTH_ERROR_PREFIX")}: ${getErrorMessage(this.lastError)}`))
+      const staleMessage = replaceTranslationValues(
+        this.translate("PTH_STALE_DATA"),
+        { error: getErrorMessage(this.lastError) },
+      )
+      wrapper.appendChild(this.domBuilder.getMessageDom(staleMessage))
     }
     return wrapper
   },

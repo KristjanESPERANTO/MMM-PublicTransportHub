@@ -88,4 +88,52 @@ describe("fetchDepartures", () => {
     assert.deepEqual(detectorCalls, [alertDepartures])
     assert.equal(sentNotifications[0].notification, "PTH_DEPARTURES")
   })
+
+  test("ignores results from older overlapping requests", async () => {
+    const helper = loadNodeHelperModuleForTests()
+    const sentNotifications = []
+    let resolveFirst
+    let resolveSecond
+    let callCount = 0
+    const provider = {
+      config: {
+        requestTimeoutMs: 12000,
+        fetchRetries: 0,
+        provider: "transitous",
+        stationId: "x",
+      },
+      fetchDepartures() {
+        callCount += 1
+        return new Promise((resolve) => {
+          if (callCount === 1) {
+            resolveFirst = resolve
+          }
+          else {
+            resolveSecond = resolve
+          }
+        })
+      },
+    }
+
+    helper.providers = new Map([["id-1", provider]])
+    helper.sendSocketNotification = (notification, payload) => {
+      sentNotifications.push({ notification, payload })
+    }
+
+    const firstRequest = helper.fetchDepartures({ identifier: "id-1" })
+    const secondRequest = helper.fetchDepartures({ identifier: "id-1" })
+
+    resolveSecond([{ tripId: "new" }])
+    await secondRequest
+    resolveFirst([{ tripId: "old" }])
+    await firstRequest
+
+    assert.deepEqual(sentNotifications, [{
+      notification: "PTH_DEPARTURES",
+      payload: {
+        identifier: "id-1",
+        departures: [{ tripId: "new" }],
+      },
+    }])
+  })
 })

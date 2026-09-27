@@ -72,6 +72,70 @@ describe("toUserFacingError", () => {
     assert.equal(result.message, "Unknown error")
   })
 
+  test("shows stale departures while the stale-data window is active", () => {
+    const moduleDefinition = loadModuleDefinition()
+    const context = {
+      config: { maxStaleMinutes: 5 },
+      departures: [{ rawWhen: "2026-09-27T10:10:00.000Z" }],
+      initialized: true,
+      lastError: { message: "Network error" },
+      lastUpdate: new Date("2026-09-27T10:05:00.000Z"),
+      staleDataHelper: {
+        canUseStaleData() {
+          return true
+        },
+      },
+      translate(key) {
+        return key === "PTH_STALE_DATA" ? "Stale: {error}" : key
+      },
+      domBuilder: {
+        getDeparturesDom() {
+          return {
+            children: [],
+            appendChild(child) {
+              this.children.push(child)
+            },
+          }
+        },
+        getMessageDom(message) {
+          return { message }
+        },
+      },
+    }
+
+    const dom = moduleDefinition.getDom.call(context)
+
+    assert.equal(dom.children[0].message, "Stale: Network error")
+  })
+
+  test("shows only the error after stale data expires", () => {
+    const moduleDefinition = loadModuleDefinition()
+    const context = {
+      config: { maxStaleMinutes: 5 },
+      departures: [{ rawWhen: "2026-09-27T10:10:00.000Z" }],
+      initialized: true,
+      lastError: { message: "Network error" },
+      lastUpdate: new Date("2026-09-27T10:00:00.000Z"),
+      staleDataHelper: {
+        canUseStaleData() {
+          return false
+        },
+      },
+      translate(key) {
+        return key
+      },
+      domBuilder: {
+        getMessageDom(message) {
+          return { message }
+        },
+      },
+    }
+
+    const dom = moduleDefinition.getDom.call(context)
+
+    assert.deepEqual(dom, { message: "PTH_ERROR_PREFIX: Network error" })
+  })
+
   test("forwards service alerts to MagicMirror", () => {
     const moduleDefinition = loadModuleDefinition()
     const notifications = []

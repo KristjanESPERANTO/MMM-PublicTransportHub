@@ -8,6 +8,7 @@
   "PTH_ERROR_SERVER": "Error del servidor del proveedor. Intentalo de nuevo en breve.",
   "PTH_ERROR_CLIENT": "Solicitud no valida para la configuracion actual del proveedor.",
   "PTH_ERROR_NOT_INITIALIZED": "El proveedor aun no esta inicializado.",
+  "PTH_STALE_DATA": "Se muestran las ultimas salidas disponibles. La ultima actualizacion fallo: {error}",
   "PTH_LAST_UPDATE": "Actualizado",
   "PTH_RELATIVE_TIME": "en {minutes} min",
   "PTH_RELATIVE_TIME_NOW": "ahora",

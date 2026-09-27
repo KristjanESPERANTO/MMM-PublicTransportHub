@@ -8,6 +8,7 @@
   "PTH_ERROR_SERVER": "Serverfehler beim Anbieter. Bitte gleich erneut versuchen.",
   "PTH_ERROR_CLIENT": "Ungültige Anfrage für die aktuelle Anbieter-Konfiguration.",
   "PTH_ERROR_NOT_INITIALIZED": "Anbieter ist noch nicht initialisiert.",
+  "PTH_STALE_DATA": "Die letzten erfolgreichen Abfahrten werden angezeigt. Die aktuelle Aktualisierung ist fehlgeschlagen: {error}",
   "PTH_LAST_UPDATE": "Aktualisiert",
   "PTH_RELATIVE_TIME": "in {minutes} Min.",
   "PTH_RELATIVE_TIME_NOW": "jetzt",

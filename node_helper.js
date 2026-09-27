@@ -154,6 +154,7 @@ module.exports = NodeHelper.create({
   start() {
     this.providers = new Map()
     this.serviceAlertDetectors = new Map()
+    this.fetchRequestIds = new Map()
   },
 
   async fetchWithTimeout(provider, timeoutMs) {
@@ -254,6 +255,10 @@ module.exports = NodeHelper.create({
   },
 
   async fetchDepartures(payload) {
+    this.fetchRequestIds ||= new Map()
+    const previousRequestId = this.fetchRequestIds.get(payload.identifier) || 0
+    const requestId = previousRequestId + 1
+    this.fetchRequestIds.set(payload.identifier, requestId)
     const provider = this.providers.get(payload.identifier)
     const context = getProviderContext(provider?.config || payload)
 
@@ -287,6 +292,12 @@ module.exports = NodeHelper.create({
         retries,
         context,
       })
+
+      if (this.fetchRequestIds.get(payload.identifier) !== requestId) {
+        Log.info(`Ignoring outdated departure result ${context}`)
+        return
+      }
+
       this.serviceAlertDetectors?.get(payload.identifier)?.process(
         provider.serviceAlertDepartures || departures,
       )
@@ -297,6 +308,11 @@ module.exports = NodeHelper.create({
       })
     }
     catch (error) {
+      if (this.fetchRequestIds.get(payload.identifier) !== requestId) {
+        Log.info(`Ignoring outdated departure error ${context}`)
+        return
+      }
+
       Log.error(`Fetch failed ${context}`, error)
       this.sendSocketNotification("PTH_ERROR", {
         identifier: payload.identifier,
