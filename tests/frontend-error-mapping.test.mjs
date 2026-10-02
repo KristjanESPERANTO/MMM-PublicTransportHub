@@ -25,6 +25,23 @@ describe("toUserFacingError", () => {
     assert.equal(result.message, "Localized timeout message")
   })
 
+  test("maps DB_BLOCKED to its localized guidance", () => {
+    const moduleDefinition = loadModuleDefinition()
+    const context = {
+      translate(key) {
+        return key === "PTH_ERROR_DB_BLOCKED" ? "Localized DB endpoint guidance" : key
+      },
+    }
+
+    const result = moduleDefinition.toUserFacingError.call(context, {
+      code: "DB_BLOCKED",
+      message: "DB endpoint blocked",
+    })
+
+    assert.equal(result.code, "DB_BLOCKED")
+    assert.equal(result.message, "Localized DB endpoint guidance")
+  })
+
   test("falls back to raw message when translation is missing", () => {
     const moduleDefinition = loadModuleDefinition()
     const context = {

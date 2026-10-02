@@ -60,7 +60,24 @@ function getHttpStatus(error) {
   return null
 }
 
-function classifyError(error) {
+function usesDbProfile(providerConfig = {}) {
+  const profile = providerConfig.provider === "vendo"
+    ? providerConfig.vendoProfile
+    : providerConfig.provider === "hafas"
+      ? providerConfig.hafasProfile
+      : null
+
+  return ["db", "dbweb"].includes(profile)
+}
+
+function classifyError(error, providerConfig) {
+  if (
+    error?.code === "OPS_BLOCKED"
+    || (getHttpStatus(error) === 452 && usesDbProfile(providerConfig))
+  ) {
+    return "db-blocked"
+  }
+
   if (isTimeoutError(error)) {
     return "timeout"
   }
@@ -91,6 +108,8 @@ function classifyError(error) {
 
 function toErrorCode(errorClass) {
   switch (errorClass) {
+    case "db-blocked":
+      return "DB_BLOCKED"
     case "timeout":
       return "TIMEOUT"
     case "network":
@@ -108,14 +127,14 @@ function toErrorCode(errorClass) {
   }
 }
 
-function isRetryableError(error) {
+function isRetryableError(error, providerConfig) {
   return ["timeout", "network", "rate-limit", "server"].includes(
-    classifyError(error),
+    classifyError(error, providerConfig),
   )
 }
 
-function toSocketErrorPayload(error) {
-  const errorClass = classifyError(error)
+function toSocketErrorPayload(error, providerConfig) {
+  const errorClass = classifyError(error, providerConfig)
   return {
     message: toErrorMessage(error),
     code: toErrorCode(errorClass),
@@ -185,8 +204,9 @@ module.exports = NodeHelper.create({
         return await this.fetchWithTimeout(provider, timeoutMs)
       }
       catch (error) {
-        const shouldRetry = attempt < maxAttempts && isRetryableError(error)
-        const errorClass = classifyError(error)
+        const errorClass = classifyError(error, provider.config)
+        const shouldRetry = attempt < maxAttempts
+          && isRetryableError(error, provider.config)
 
         if (!shouldRetry) {
           throw error
@@ -249,7 +269,7 @@ module.exports = NodeHelper.create({
       Log.error(`Failed to create provider ${context}`, error)
       this.sendSocketNotification("PTH_ERROR", {
         identifier: payload.identifier,
-        error: toSocketErrorPayload(error),
+        error: toSocketErrorPayload(error, payload),
       })
     }
   },
@@ -316,7 +336,7 @@ module.exports = NodeHelper.create({
       Log.error(`Fetch failed ${context}`, error)
       this.sendSocketNotification("PTH_ERROR", {
         identifier: payload.identifier,
-        error: toSocketErrorPayload(error),
+        error: toSocketErrorPayload(error, provider.config),
       })
     }
   },

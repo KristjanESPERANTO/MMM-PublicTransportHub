@@ -52,6 +52,51 @@ describe("fetchDepartures", () => {
     assert.equal(sentNotifications[0].payload.error.code, "SERVER")
   })
 
+  test("classifies HTTP 452 as DB_BLOCKED only for DB profiles", async () => {
+    for (const testCase of [
+      {
+        provider: "vendo",
+        vendoProfile: "db",
+        expectedCode: "DB_BLOCKED",
+      },
+      {
+        provider: "hafas",
+        hafasProfile: "dbweb",
+        expectedCode: "DB_BLOCKED",
+      },
+      {
+        provider: "transitous",
+        expectedCode: "CLIENT",
+      },
+    ]) {
+      const helper = loadNodeHelperModuleForTests()
+      const sentNotifications = []
+      let attempts = 0
+      const provider = {
+        config: {
+          requestTimeoutMs: 12000,
+          fetchRetries: 2,
+          stationId: "x",
+          ...testCase,
+        },
+        async fetchDepartures() {
+          attempts += 1
+          throw withFetchError("DB endpoint blocked", { statusCode: 452 })
+        },
+      }
+
+      helper.providers = new Map([["id-1", provider]])
+      helper.sendSocketNotification = (notification, payload) => {
+        sentNotifications.push({ notification, payload })
+      }
+
+      await helper.fetchDepartures({ identifier: "id-1" })
+
+      assert.equal(sentNotifications[0].payload.error.code, testCase.expectedCode)
+      assert.equal(attempts, 1)
+    }
+  })
+
   test("passes normalized alert departures to the detector", async () => {
     const helper = loadNodeHelperModuleForTests()
     const sentNotifications = []
