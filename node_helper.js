@@ -157,6 +157,16 @@ function toSocketErrorPayload(error, providerConfig) {
   }
 }
 
+function logFailure(message, error, socketError) {
+  // Classified failures are expected conditions; a stack trace only helps with unexpected ones.
+  if (socketError.code === "UNKNOWN") {
+    Log.error(message, error)
+    return
+  }
+
+  Log.error(`${message} (${socketError.code}): ${socketError.message}`)
+}
+
 function getProviderContext(config = {}) {
   const provider = config.provider || "unknown"
   const stationId = config.stationId || "unknown"
@@ -288,10 +298,11 @@ module.exports = NodeHelper.create({
       })
     }
     catch (error) {
-      Log.error(`Failed to create provider ${context}`, error)
+      const socketError = toSocketErrorPayload(error, payload)
+      logFailure(`Failed to create provider ${context}`, error, socketError)
       this.sendSocketNotification("PTH_ERROR", {
         identifier: payload.identifier,
-        error: toSocketErrorPayload(error, payload),
+        error: socketError,
       })
     }
   },
@@ -355,10 +366,11 @@ module.exports = NodeHelper.create({
         return
       }
 
-      Log.error(`Fetch failed ${context}`, error)
+      const socketError = toSocketErrorPayload(error, provider.config)
+      logFailure(`Fetch failed ${context}`, error, socketError)
       this.sendSocketNotification("PTH_ERROR", {
         identifier: payload.identifier,
-        error: toSocketErrorPayload(error, provider.config),
+        error: socketError,
       })
     }
   },

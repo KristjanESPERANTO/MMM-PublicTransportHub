@@ -30,7 +30,7 @@ export function loadModuleDefinition() {
   return definition
 }
 
-export function loadNodeHelperModuleForTests() {
+export function loadNodeHelperModuleForTests(logger = {}) {
   const modulePath = require.resolve("../node_helper.js")
   const originalLoad = Module._load
 
@@ -40,6 +40,7 @@ export function loadNodeHelperModuleForTests() {
         info() {},
         warn() {},
         error() {},
+        ...logger,
       }
     }
 

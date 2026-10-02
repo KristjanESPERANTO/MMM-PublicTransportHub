@@ -148,6 +148,35 @@ describe("fetchDepartures", () => {
     }
   })
 
+  test("logs expected failures as one line and unexpected ones with the error", async () => {
+    const authError = Object.assign(
+      new Error("PLK API request to /api/v1/operations failed with status 401: Invalid API key."),
+      { statusCode: 401 },
+    )
+    const unexpectedError = new TypeError("Cannot read properties of undefined")
+
+    const logged = []
+    for (const error of [authError, unexpectedError]) {
+      const helper = loadNodeHelperModuleForTests({
+        error: (...args) => logged.push(args),
+      })
+      helper.providers = new Map([["id-1", {
+        config: { fetchRetries: 0, provider: "plk", stationId: "1" },
+        async fetchDepartures() {
+          throw error
+        },
+      }]])
+      helper.sendSocketNotification = () => {}
+
+      await helper.fetchDepartures({ identifier: "id-1" })
+    }
+
+    assert.equal(logged[0].length, 1)
+    assert.match(logged[0][0], /Fetch failed .*\(AUTH\): PLK API request .*401/)
+    assert.equal(logged[1].length, 2)
+    assert.equal(logged[1][1], unexpectedError)
+  })
+
   test("passes normalized alert departures to the detector", async () => {
     const helper = loadNodeHelperModuleForTests()
     const sentNotifications = []
