@@ -1,6 +1,7 @@
 import assert from "node:assert/strict"
 import test, { describe } from "node:test"
 
+import PlkProvider from "../core/providers/PlkProvider.mjs"
 import { loadNodeHelperModuleForTests, withFetchError } from "./test-helpers.mjs"
 
 describe("fetchDepartures", () => {
@@ -175,6 +176,38 @@ describe("fetchDepartures", () => {
     assert.match(logged[0][0], /Fetch failed .*\(AUTH\): PLK API request .*401/)
     assert.equal(logged[1].length, 2)
     assert.equal(logged[1][1], unexpectedError)
+  })
+
+  test("reports a missing PLK apiKey as AUTH without a network request", async () => {
+    const originalFetch = globalThis.fetch
+    let requests = 0
+    globalThis.fetch = () => {
+      requests += 1
+      throw new Error("unexpected request")
+    }
+
+    try {
+      const helper = loadNodeHelperModuleForTests()
+      const sentNotifications = []
+      helper.providers = new Map([["id-1", new PlkProvider({
+        provider: "plk",
+        stationId: "33605",
+        apiKey: "  ",
+        fetchRetries: 0,
+      })]])
+      helper.sendSocketNotification = (notification, payload) => {
+        sentNotifications.push({ notification, payload })
+      }
+
+      await helper.fetchDepartures({ identifier: "id-1" })
+
+      assert.equal(sentNotifications[0].payload.error.code, "AUTH")
+      assert.match(sentNotifications[0].payload.error.message, /requires an apiKey/)
+      assert.equal(requests, 0)
+    }
+    finally {
+      globalThis.fetch = originalFetch
+    }
   })
 
   test("passes normalized alert departures to the detector", async () => {

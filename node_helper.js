@@ -105,7 +105,7 @@ function classifyError(error, providerConfig) {
     return "rate-limit"
   }
 
-  if (status === 401 || status === 403) {
+  if (status === 401 || status === 403 || error?.code === "AUTH") {
     return "auth"
   }
 

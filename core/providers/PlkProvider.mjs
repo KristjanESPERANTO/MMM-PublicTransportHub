@@ -99,6 +99,13 @@ export default class PlkProvider extends BaseProvider {
   }
 
   async fetchDepartures({ signal } = {}) {
+    if (!this.apiKey) {
+      throw Object.assign(
+        new Error("PLK requires an apiKey. Request a free key at https://pdp-api.plk-sa.pl/."),
+        { code: "AUTH" },
+      )
+    }
+
     const stationId = this.config.stationId
 
     const operationsResponse = await this.apiGet("/api/v1/operations", {
