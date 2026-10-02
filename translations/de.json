@@ -7,7 +7,7 @@
   "PTH_ERROR_AUTH": "Anmeldung beim Anbieter fehlgeschlagen. Bitte den konfigurierten apiKey prüfen.",
   "PTH_ERROR_SERVER": "Serverfehler beim Anbieter. Bitte gleich erneut versuchen.",
   "PTH_ERROR_CLIENT": "Ungültige Anfrage für die aktuelle Anbieter-Konfiguration.",
-  "PTH_ERROR_DB_BLOCKED": "Der DB-Endpunkt ist blockiert (HTTP 452). Verwenden Sie das Profil dbweb oder ein regionales Anbieterprofil.",
+  "PTH_ERROR_DB_BLOCKED": "Der DB-Endpunkt ist blockiert (HTTP 452/403). Bitte später erneut versuchen oder ein regionales Anbieterprofil verwenden.",
   "PTH_ERROR_NOT_INITIALIZED": "Anbieter ist noch nicht initialisiert.",
   "PTH_STALE_DATA": "Die letzten erfolgreichen Abfahrten werden angezeigt. Die aktuelle Aktualisierung ist fehlgeschlagen: {error}",
   "PTH_LAST_UPDATE": "Aktualisiert",

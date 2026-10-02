@@ -52,23 +52,39 @@ describe("fetchDepartures", () => {
     assert.equal(sentNotifications[0].payload.error.code, "SERVER")
   })
 
-  test("classifies HTTP 452 as DB_BLOCKED only for DB profiles", async () => {
+  test("classifies HTTP 403/452 as DB_BLOCKED only for DB profiles", async () => {
     for (const testCase of [
       {
         provider: "vendo",
         vendoProfile: "db",
+        statusCode: 452,
+        expectedCode: "DB_BLOCKED",
+      },
+      {
+        provider: "vendo",
+        vendoProfile: "dbweb",
+        statusCode: 403,
         expectedCode: "DB_BLOCKED",
       },
       {
         provider: "hafas",
         hafasProfile: "dbweb",
+        statusCode: 452,
         expectedCode: "DB_BLOCKED",
       },
       {
+        provider: "vendo",
+        vendoProfile: "oebb",
+        statusCode: 403,
+        expectedCode: "AUTH",
+      },
+      {
         provider: "transitous",
+        statusCode: 452,
         expectedCode: "CLIENT",
       },
     ]) {
+      const { statusCode, expectedCode, ...providerConfig } = testCase
       const helper = loadNodeHelperModuleForTests()
       const sentNotifications = []
       let attempts = 0
@@ -77,11 +93,11 @@ describe("fetchDepartures", () => {
           requestTimeoutMs: 12000,
           fetchRetries: 2,
           stationId: "x",
-          ...testCase,
+          ...providerConfig,
         },
         async fetchDepartures() {
           attempts += 1
-          throw withFetchError("DB endpoint blocked", { statusCode: 452 })
+          throw withFetchError("Request rejected", { statusCode })
         },
       }
 
@@ -92,7 +108,7 @@ describe("fetchDepartures", () => {
 
       await helper.fetchDepartures({ identifier: "id-1" })
 
-      assert.equal(sentNotifications[0].payload.error.code, testCase.expectedCode)
+      assert.equal(sentNotifications[0].payload.error.code, expectedCode)
       assert.equal(attempts, 1)
     }
   })

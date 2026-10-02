@@ -71,9 +71,10 @@ function usesDbProfile(providerConfig = {}) {
 }
 
 function classifyError(error, providerConfig) {
+  // DB profiles use no credentials, so 403 is a block (body: OPS_BLOCKED), not bad auth.
   if (
     error?.code === "OPS_BLOCKED"
-    || (getHttpStatus(error) === 452 && usesDbProfile(providerConfig))
+    || ([403, 452].includes(getHttpStatus(error)) && usesDbProfile(providerConfig))
   ) {
     return "db-blocked"
   }
