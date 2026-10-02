@@ -113,6 +113,41 @@ describe("fetchDepartures", () => {
     }
   })
 
+  test("classifies unknown stations as NOT_FOUND without retrying", async () => {
+    for (const failure of [
+      { provider: "hafas", error: withFetchError("LOCATION: location/stop not found", { code: "NOT_FOUND" }) },
+      { provider: "transitous", error: { error: "unknown feed id \"\"" } },
+      { provider: "transitous", error: { error: "no radius: stop_found=false, center_parsed=false" } },
+      { provider: "plk", error: withFetchError("Not found", { statusCode: 404 }) },
+    ]) {
+      const helper = loadNodeHelperModuleForTests()
+      const sentNotifications = []
+      let attempts = 0
+      const provider = {
+        config: {
+          requestTimeoutMs: 12000,
+          fetchRetries: 2,
+          provider: failure.provider,
+          stationId: "x",
+        },
+        async fetchDepartures() {
+          attempts += 1
+          throw failure.error
+        },
+      }
+
+      helper.providers = new Map([["id-1", provider]])
+      helper.sendSocketNotification = (notification, payload) => {
+        sentNotifications.push({ notification, payload })
+      }
+
+      await helper.fetchDepartures({ identifier: "id-1" })
+
+      assert.equal(sentNotifications[0].payload.error.code, "NOT_FOUND")
+      assert.equal(attempts, 1)
+    }
+  })
+
   test("passes normalized alert departures to the detector", async () => {
     const helper = loadNodeHelperModuleForTests()
     const sentNotifications = []

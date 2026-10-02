@@ -70,6 +70,15 @@ function usesDbProfile(providerConfig = {}) {
   return ["db", "dbweb"].includes(profile)
 }
 
+function isNotFoundError(error) {
+  const text = String(error?.error || error?.message || "").toLowerCase()
+
+  return error?.code === "NOT_FOUND"
+    || getHttpStatus(error) === 404
+    || text.includes("unknown feed id")
+    || text.includes("stop_found=false")
+}
+
 function classifyError(error, providerConfig) {
   // DB profiles use no credentials, so 403 is a block (body: OPS_BLOCKED), not bad auth.
   if (
@@ -77,6 +86,10 @@ function classifyError(error, providerConfig) {
     || ([403, 452].includes(getHttpStatus(error)) && usesDbProfile(providerConfig))
   ) {
     return "db-blocked"
+  }
+
+  if (isNotFoundError(error)) {
+    return "not-found"
   }
 
   if (isTimeoutError(error)) {
@@ -111,6 +124,8 @@ function toErrorCode(errorClass) {
   switch (errorClass) {
     case "db-blocked":
       return "DB_BLOCKED"
+    case "not-found":
+      return "NOT_FOUND"
     case "timeout":
       return "TIMEOUT"
     case "network":

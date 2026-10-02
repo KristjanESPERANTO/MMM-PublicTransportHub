@@ -42,6 +42,23 @@ describe("toUserFacingError", () => {
     assert.equal(result.message, "Localized DB endpoint guidance")
   })
 
+  test("maps NOT_FOUND to its localized guidance", () => {
+    const moduleDefinition = loadModuleDefinition()
+    const context = {
+      translate(key) {
+        return key === "PTH_ERROR_NOT_FOUND" ? "Localized station guidance" : key
+      },
+    }
+
+    const result = moduleDefinition.toUserFacingError.call(context, {
+      code: "NOT_FOUND",
+      message: "LOCATION: location/stop not found",
+    })
+
+    assert.equal(result.code, "NOT_FOUND")
+    assert.equal(result.message, "Localized station guidance")
+  })
+
   test("falls back to raw message when translation is missing", () => {
     const moduleDefinition = loadModuleDefinition()
     const context = {

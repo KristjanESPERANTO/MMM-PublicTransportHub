@@ -8,6 +8,7 @@
   "PTH_ERROR_SERVER": "Blad serwera dostawcy. Sprobuj ponownie za chwile.",
   "PTH_ERROR_CLIENT": "Nieprawidlowe zapytanie dla wybranej konfiguracji dostawcy.",
   "PTH_ERROR_DB_BLOCKED": "Endpoint DB jest zablokowany (HTTP 452/403). Sprobuj ponownie pozniej lub uzyj regionalnego profilu dostawcy.",
+  "PTH_ERROR_NOT_FOUND": "Nie znaleziono przystanku. Sprawdz skonfigurowany stationId.",
   "PTH_ERROR_NOT_INITIALIZED": "Dostawca nie zostal jeszcze zainicjowany.",
   "PTH_STALE_DATA": "Wyswietlane sa ostatnie udane odjazdy. Ostatnia aktualizacja nie powiodla sie: {error}",
   "PTH_LAST_UPDATE": "Zaktualizowano",

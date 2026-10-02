@@ -8,6 +8,7 @@
   "PTH_ERROR_SERVER": "Provider server error. Please try again shortly.",
   "PTH_ERROR_CLIENT": "Invalid request for the selected provider configuration.",
   "PTH_ERROR_DB_BLOCKED": "The DB endpoint is blocked (HTTP 452/403). Try again later or use a regional provider profile.",
+  "PTH_ERROR_NOT_FOUND": "Station not found. Please check the configured stationId.",
   "PTH_ERROR_NOT_INITIALIZED": "Provider is not initialized yet.",
   "PTH_STALE_DATA": "Showing the last successful departures. Latest update failed: {error}",
   "PTH_LAST_UPDATE": "Updated",

@@ -20,6 +20,8 @@ function getErrorTranslationKey(errorCode) {
   switch (errorCode) {
     case "DB_BLOCKED":
       return "PTH_ERROR_DB_BLOCKED"
+    case "NOT_FOUND":
+      return "PTH_ERROR_NOT_FOUND"
     case "TIMEOUT":
       return "PTH_ERROR_TIMEOUT"
     case "NETWORK":
