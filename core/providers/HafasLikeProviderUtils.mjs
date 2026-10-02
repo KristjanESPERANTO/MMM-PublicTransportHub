@@ -24,7 +24,7 @@ function getRawPlannedWhen(departure) {
 
 function toDelaySeconds(departure, rawWhen, rawPlannedWhen) {
   if (Number.isFinite(departure.delay)) {
-    return departure.delay * 60
+    return departure.delay
   }
 
   if (!rawWhen || !rawPlannedWhen) {

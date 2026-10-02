@@ -82,11 +82,11 @@ describe("normalizeHafasLikeDeparture", () => {
     const result = normalizeHafasLikeDeparture({
       when: "2026-03-22T10:07:00.000Z",
       plannedWhen: "2026-03-22T10:05:00.000Z",
-      delay: 5,
+      delay: 150,
       line: { id: "S1", name: "S1", product: "suburban" },
     })
 
-    assert.equal(result.delay, 300)
+    assert.equal(result.delay, 150)
   })
 
   test("computes delay from timestamps when delay is missing", () => {
