@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.13](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.12...v0.1.13) (2026-10-02)
+
+### Fixed
+
+* abort timed-out provider requests ([aad40d5](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/aad40d5a1c229dcc36e3ef763c9c5e23249415c5))
+* detect DB blocks reported as 403 ([a7e10e7](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/a7e10e7eef9d4013f4da772bb0880dbe8810da53))
+* identify blocked DB endpoints ([f3eacf8](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/f3eacf884999906061509f92db08db2be0a56d5c))
+* log expected provider errors without stack trace ([7df89c3](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/7df89c3a8341bd9724c48a37b12d64bc7ab772aa))
+* reject missing PLK apiKey before requesting ([daffbf8](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/daffbf8ac86bd4d306114b34023534ba425081b4))
+* report unknown stations clearly ([5a36582](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/5a36582b7f177d6a649817e6119585d6961cbcd2))
+* treat provider delay as seconds ([c0c5352](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/c0c535263715c6eb16236e6b24b3da0451403064))
+
+### Chores
+
+* update devDependencies ([fe64bd9](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/fe64bd90e85d5413dfb0a328e9e9d7a36d9ab919))
+
 ## [0.1.12](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.11...v0.1.12) (2026-09-27)
 
 ### Fixed
