@@ -118,7 +118,7 @@ export default class TransitousProvider extends BaseProvider {
     this.includeRelatedStations = Boolean(config.includeRelatedStations)
   }
 
-  async fetchDepartures() {
+  async fetchDepartures({ signal } = {}) {
     const now = new Date()
     const maxDepartures = this.config.maxDepartures || 7
     const fetchCount = Math.max(maxDepartures * 4, 40)
@@ -128,6 +128,7 @@ export default class TransitousProvider extends BaseProvider {
       throwOnError: true,
       baseUrl: this.baseUrl,
       headers: this.headers,
+      signal,
       query: {
         stopId: "",
         time: now.toISOString(),

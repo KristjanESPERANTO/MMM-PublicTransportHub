@@ -58,7 +58,7 @@ export default class PlkProvider extends BaseProvider {
     }
   }
 
-  async apiGet(path, query = {}) {
+  async apiGet(path, query = {}, signal) {
     const url = new URL(path, this.baseUrl)
     for (const [key, value] of Object.entries(query)) {
       if (value === undefined || value === null || value === "") {
@@ -68,7 +68,7 @@ export default class PlkProvider extends BaseProvider {
       url.searchParams.set(key, value)
     }
 
-    const response = await fetch(url, { headers: this.headers })
+    const response = await fetch(url, { headers: this.headers, signal })
 
     if (!response.ok) {
       let details = ""
@@ -98,14 +98,14 @@ export default class PlkProvider extends BaseProvider {
     )
   }
 
-  async fetchDepartures() {
+  async fetchDepartures({ signal } = {}) {
     const stationId = this.config.stationId
 
     const operationsResponse = await this.apiGet("/api/v1/operations", {
       stations: stationId,
       withPlanned: true,
       fullRoutes: true,
-    })
+    }, signal)
 
     const trains = operationsResponse?.trains || []
     if (trains.length === 0) {
@@ -123,7 +123,7 @@ export default class PlkProvider extends BaseProvider {
       dateTo: operatingDates[operatingDates.length - 1],
       fullRoute: true,
       dictionaries: true,
-    })
+    }, signal)
 
     const operationsStations = operationsResponse?.stations || {}
     const scheduleStations = schedulesResponse?.dictionaries?.stations || {}

@@ -193,16 +193,22 @@ module.exports = NodeHelper.create({
   },
 
   async fetchWithTimeout(provider, timeoutMs) {
+    const controller = new AbortController()
     let timeoutId
 
     const timeoutPromise = new Promise((_, reject) => {
       timeoutId = setTimeout(() => {
-        reject(new Error(`Fetch timed out after ${timeoutMs}ms`))
+        const error = new Error(`Fetch timed out after ${timeoutMs}ms`)
+        controller.abort(error)
+        reject(error)
       }, timeoutMs)
     })
 
     try {
-      return await Promise.race([provider.fetchDepartures(), timeoutPromise])
+      return await Promise.race([
+        provider.fetchDepartures({ signal: controller.signal }),
+        timeoutPromise,
+      ])
     }
     finally {
       clearTimeout(timeoutId)
