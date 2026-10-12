@@ -405,7 +405,7 @@ export default class PtDomBuilder {
     if (this.config.showLastUpdate && lastUpdate) {
       const footer = document.createElement("div")
       footer.className = "xsmall dimmed"
-      footer.textContent = `${this.translate("PTH_LAST_UPDATE")}: ${lastUpdate.toLocaleTimeString()}`
+      footer.textContent = `${this.translate("PTH_LAST_UPDATE")}: ${this.formatDisplayTime(lastUpdate)}`
       wrapper.appendChild(footer)
     }
 

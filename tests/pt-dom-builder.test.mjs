@@ -344,4 +344,30 @@ describe("PtDomBuilder", () => {
       }
     })
   })
+
+  describe("getDeparturesDom", () => {
+    test("formats the last-update footer with the configured time format", () => {
+      const originalDocument = globalThis.document
+      globalThis.document = { createElement }
+
+      try {
+        const builder = new PtDomBuilder({
+          showLastUpdate: true,
+          timeFormat: 12,
+        }, key => key === "PTH_LAST_UPDATE" ? "Updated" : key)
+        const lastUpdate = new Date("2026-09-21T16:25:00Z")
+        lastUpdate.toLocaleTimeString = () => "native default format"
+
+        const dom = builder.getDeparturesDom([], lastUpdate)
+
+        assert.equal(
+          dom.children.at(-1).textContent,
+          `Updated: ${builder.formatDisplayTime(lastUpdate)}`,
+        )
+      }
+      finally {
+        globalThis.document = originalDocument
+      }
+    })
+  })
 })
