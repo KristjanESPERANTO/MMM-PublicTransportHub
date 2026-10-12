@@ -7,6 +7,18 @@ import {
 } from "../core/StaleDataHelper.mjs"
 
 describe("stale departure data", () => {
+  test("uses advisory delays and keeps unknown departure times", () => {
+    const plannedWhen = "2026-09-27T10:00:00.000Z"
+    const delayed = { rawWhen: plannedWhen, rawPlannedWhen: plannedWhen, delay: 600 }
+    const early = { rawWhen: plannedWhen, rawPlannedWhen: plannedWhen, delay: -600 }
+    const unknown = { rawWhen: "invalid" }
+
+    assert.deepEqual(
+      getVisibleDepartures([delayed, early, unknown], Date.parse(plannedWhen)),
+      [delayed, unknown],
+    )
+  })
+
   test("allows data inside the configured age window", () => {
     assert.equal(canUseStaleData(1000, 10, 1000 + 10 * 60 * 1000), true)
     assert.equal(canUseStaleData(1000, 10, 1000 + 10 * 60 * 1000 + 1), false)

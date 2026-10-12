@@ -1,3 +1,4 @@
+import { getEffectiveDepartureTimestamp } from "./DepartureTime.mjs"
 import { getLineStyleTokens } from "./LineStyleTokens.mjs"
 
 const HEADER_SYMBOLS = {
@@ -29,7 +30,7 @@ export default class PtDomBuilder {
   }
 
   formatDisplayTime(rawWhen) {
-    if (!rawWhen) {
+    if (rawWhen == null || rawWhen === "") {
       return "--:--"
     }
 
@@ -47,7 +48,7 @@ export default class PtDomBuilder {
   }
 
   formatRelativeTime(rawWhen, now = Date.now()) {
-    if (!rawWhen) {
+    if (rawWhen == null || rawWhen === "") {
       return null
     }
 
@@ -68,7 +69,7 @@ export default class PtDomBuilder {
   }
 
   isWithinRelativeThreshold(rawWhen, now = Date.now()) {
-    if (!rawWhen) {
+    if (rawWhen == null || rawWhen === "") {
       return false
     }
 
@@ -85,7 +86,7 @@ export default class PtDomBuilder {
 
   getDisplayedTime(departure) {
     const timeDisplayMode = this.config.timeDisplay?.mode
-    const actualWhen = departure.rawWhen || departure.rawPlannedWhen || null
+    const actualWhen = getEffectiveDepartureTimestamp(departure)
     const rawWhen
       = timeDisplayMode === "absolute" && this.config.showPlannedTime
         ? departure.rawPlannedWhen || actualWhen

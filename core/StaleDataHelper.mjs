@@ -1,3 +1,5 @@
+import { getEffectiveDepartureTimestamp } from "./DepartureTime.mjs"
+
 /**
  * Removes departures that have already passed.
  * @param {Array<object>} departures - Departure data to filter.
@@ -6,10 +8,8 @@
  */
 export function getVisibleDepartures(departures, now = Date.now()) {
   return departures.filter((departure) => {
-    const departureTime = Date.parse(
-      departure.rawWhen || departure.when || departure.rawPlannedWhen,
-    )
-    return !Number.isFinite(departureTime) || departureTime > now
+    const departureTime = getEffectiveDepartureTimestamp(departure)
+    return departureTime === null || departureTime > now
   })
 }
 

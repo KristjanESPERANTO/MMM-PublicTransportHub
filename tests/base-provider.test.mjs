@@ -1,11 +1,56 @@
 import assert from "node:assert/strict"
 import test, { describe } from "node:test"
 
+import { getEffectiveDepartureTimestamp } from "../core/DepartureTime.mjs"
 import BaseProvider from "../core/providers/BaseProvider.mjs"
 
 function isoInMinutes(minutes) {
   return new Date(Date.now() + minutes * 60 * 1000).toISOString()
 }
+
+describe("getEffectiveDepartureTimestamp", () => {
+  const plannedWhen = "2026-09-21T12:00:00Z"
+  const liveWhen = "2026-09-21T12:15:00Z"
+
+  test("prefers a distinct live timestamp without adding delay again", () => {
+    assert.equal(getEffectiveDepartureTimestamp({
+      rawWhen: liveWhen,
+      rawPlannedWhen: plannedWhen,
+      delay: 900,
+    }), Date.parse(liveWhen))
+  })
+
+  test("uses planned time plus delay when the live timestamp is missing or invalid", () => {
+    for (const rawWhen of [null, "invalid"]) {
+      assert.equal(getEffectiveDepartureTimestamp({
+        rawWhen,
+        rawPlannedWhen: plannedWhen,
+        delay: 900,
+      }), Date.parse(liveWhen))
+    }
+  })
+
+  test("uses a live-only timestamp without adding delay", () => {
+    assert.equal(getEffectiveDepartureTimestamp({
+      rawWhen: liveWhen,
+      delay: 900,
+    }), Date.parse(liveWhen))
+  })
+
+  test("ignores non-finite delays", () => {
+    for (const delay of [undefined, null, NaN, Infinity, "900"]) {
+      assert.equal(getEffectiveDepartureTimestamp({
+        rawPlannedWhen: plannedWhen,
+        delay,
+      }), Date.parse(plannedWhen))
+    }
+  })
+
+  test("returns null when neither timestamp is valid", () => {
+    assert.equal(getEffectiveDepartureTimestamp({ rawWhen: "invalid" }), null)
+    assert.equal(getEffectiveDepartureTimestamp({}), null)
+  })
+})
 
 describe("normalizeFilterList", () => {
   test("supports arrays and comma strings", () => {

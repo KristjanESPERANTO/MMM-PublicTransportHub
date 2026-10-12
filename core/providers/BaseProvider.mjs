@@ -1,10 +1,4 @@
-function parseTimestamp(raw) {
-  if (!raw) {
-    return null
-  }
-  const ts = new Date(raw).getTime()
-  return Number.isFinite(ts) ? ts : null
-}
+import { getEffectiveDepartureTimestamp } from "../DepartureTime.mjs"
 
 export default class BaseProvider {
   constructor(config) {
@@ -12,21 +6,7 @@ export default class BaseProvider {
   }
 
   toTimestamp(departure) {
-    // Prefer the live `when` if it differs from planned; otherwise fall back to
-    // planned + delay so HAFAS advisory delays (where `when` mirrors planned)
-    // don't make us treat a delayed departure as departing on time.
-    const plannedTs = parseTimestamp(departure?.rawPlannedWhen)
-    const liveTs = parseTimestamp(departure?.rawWhen)
-
-    if (liveTs !== null && liveTs !== plannedTs) {
-      return liveTs
-    }
-
-    if (plannedTs !== null && Number.isFinite(departure?.delay)) {
-      return plannedTs + departure.delay * 1000
-    }
-
-    return plannedTs ?? liveTs ?? Number.MAX_SAFE_INTEGER
+    return getEffectiveDepartureTimestamp(departure) ?? Number.MAX_SAFE_INTEGER
   }
 
   normalizeFilterList(value) {

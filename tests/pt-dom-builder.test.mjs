@@ -92,6 +92,51 @@ describe("PtDomBuilder", () => {
       PTH_RELATIVE_TIME_NOW: "now",
     }[key])
 
+    test("uses advisory delays for relative time and its threshold", () => {
+      const plannedWhen = "2026-09-21T12:00:00Z"
+      const builder = new PtDomBuilder(
+        { timeDisplay: { mode: "relative-under", thresholdMinutes: 10 } },
+        translate,
+      )
+      const originalDateNow = Date.now
+      Date.now = () => Date.parse(plannedWhen)
+
+      try {
+        assert.equal(builder.getDisplayedTime({
+          rawWhen: plannedWhen,
+          rawPlannedWhen: plannedWhen,
+          delay: 300,
+        }), "in 5 min")
+        assert.equal(builder.getDisplayedTime({
+          rawWhen: "2026-09-21T12:10:00Z",
+          rawPlannedWhen: "2026-09-21T12:10:00Z",
+          delay: -300,
+        }), "in 5 min")
+      }
+      finally {
+        Date.now = originalDateNow
+      }
+    })
+
+    test("uses advisory delays for absolute expected time but not planned time", () => {
+      const departure = {
+        rawWhen: "2026-09-21T12:00:00Z",
+        rawPlannedWhen: "2026-09-21T12:00:00Z",
+        delay: 900,
+      }
+      const builder = new PtDomBuilder({ timeDisplay: { mode: "absolute" } })
+
+      assert.equal(
+        builder.getDisplayedTime(departure),
+        builder.formatDisplayTime("2026-09-21T12:15:00Z"),
+      )
+      builder.config.showPlannedTime = true
+      assert.equal(
+        builder.getDisplayedTime(departure),
+        builder.formatDisplayTime(departure.rawPlannedWhen),
+      )
+    })
+
     test("uses relative time in relative mode", () => {
       const builder = new PtDomBuilder(
         { timeDisplay: { mode: "relative", thresholdMinutes: 10 } },
