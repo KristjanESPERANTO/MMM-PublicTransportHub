@@ -4,6 +4,42 @@ import test, { describe } from "node:test"
 import { loadNodeHelperModuleForTests, withFetchError } from "./test-helpers.mjs"
 
 describe("fetchWithRetry", () => {
+  test("adds jitter to retry delays", async () => {
+    const originalRandom = Math.random
+    Math.random = () => 0.999
+    const warnings = []
+    const helper = loadNodeHelperModuleForTests({
+      warn(message) {
+        warnings.push(message)
+      },
+    })
+    const provider = {
+      attempts: 0,
+      async fetchDepartures() {
+        this.attempts += 1
+        if (this.attempts === 1) {
+          throw withFetchError("Service unavailable", { statusCode: 503 })
+        }
+
+        return [{ id: 1 }]
+      },
+    }
+
+    try {
+      const result = await helper.fetchWithRetry(provider, {
+        timeoutMs: 12000,
+        retries: 1,
+        context: "[test]",
+      })
+
+      assert.equal(result.length, 1)
+      assert.match(warnings[0], /retrying in 720ms/u)
+    }
+    finally {
+      Math.random = originalRandom
+    }
+  })
+
   test("retries timeout and network-like errors", async () => {
     const helper = loadNodeHelperModuleForTests()
 

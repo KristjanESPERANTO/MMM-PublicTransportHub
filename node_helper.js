@@ -16,6 +16,19 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+/**
+ * Adds +/-20% jitter to spread simultaneous retries, capped at 3000 ms.
+ * @param {number} attempt 1-based retry attempt number.
+ * @returns {number} Retry delay in milliseconds.
+ */
+function getRetryBackoffMs(attempt) {
+  const baseBackoffMs = Math.min(3000, 600 * attempt)
+  const jitteredBackoffMs = Math.round(
+    baseBackoffMs * (0.8 + Math.random() * 0.4),
+  )
+  return Math.min(3000, jitteredBackoffMs)
+}
+
 function isTimeoutError(error) {
   const message = String(error?.message || "").toLowerCase()
   return ["timeout", "timed out", "etimedout"].some(term =>
@@ -244,7 +257,7 @@ module.exports = NodeHelper.create({
           throw error
         }
 
-        const backoffMs = Math.min(3000, 600 * attempt)
+        const backoffMs = getRetryBackoffMs(attempt)
         Log.warn(
           `Fetch attempt ${attempt}/${maxAttempts} failed (${errorClass}), retrying in ${backoffMs}ms ${context}: ${toErrorMessage(error)}`,
         )
