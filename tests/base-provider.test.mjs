@@ -254,4 +254,29 @@ describe("finalizeDepartures", () => {
     assert.equal(result[0].direction, "Delayed")
     assert.equal(result[0].reachable, true)
   })
+
+  test("uses early delay when rawWhen equals rawPlannedWhen", () => {
+    const plannedWhen = isoInMinutes(10)
+    const provider = new BaseProvider({
+      timeToStation: 7,
+      maxUnreachableDepartures: null,
+      maxDepartures: 10,
+    })
+    const departure = {
+      rawWhen: plannedWhen,
+      rawPlannedWhen: plannedWhen,
+      delay: -5 * 60,
+      direction: "Early",
+      line: { name: "RE1", id: "re1", product: "regional" },
+    }
+
+    const result = provider.finalizeDepartures([departure])
+
+    assert.equal(
+      provider.toTimestamp(departure),
+      Date.parse(plannedWhen) - 5 * 60 * 1000,
+    )
+    assert.equal(result.length, 1)
+    assert.equal(result[0].reachable, false)
+  })
 })

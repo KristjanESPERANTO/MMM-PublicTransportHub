@@ -22,7 +22,7 @@ export default class BaseProvider {
       return liveTs
     }
 
-    if (plannedTs !== null && departure?.delay > 0) {
+    if (plannedTs !== null && Number.isFinite(departure?.delay)) {
       return plannedTs + departure.delay * 1000
     }
 
