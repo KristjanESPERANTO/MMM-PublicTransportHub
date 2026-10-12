@@ -3,7 +3,9 @@ import http from "node:http"
 import test, { describe } from "node:test"
 
 import PlkProvider from "../core/providers/PlkProvider.mjs"
+import HafasProvider from "../core/providers/HafasProvider.mjs"
 import TransitousProvider from "../core/providers/TransitousProvider.mjs"
+import VendoProvider from "../core/providers/VendoProvider.mjs"
 import { loadNodeHelperModuleForTests } from "./test-helpers.mjs"
 
 function startHangingServer() {
@@ -111,5 +113,63 @@ describe("request abort on timeout", () => {
     finally {
       globalThis.fetch = originalFetch
     }
+  })
+
+  test("HafasProvider forwards the signal through departures and locations", async () => {
+    const provider = new HafasProvider({ stationId: "main" })
+    const controller = new AbortController()
+    const seenSignals = []
+    provider.getClient = async () => ({
+      async departures(_station, options) {
+        seenSignals.push(options.signal)
+        return []
+      },
+      async locations(_station, options) {
+        seenSignals.push(options.signal)
+        return []
+      },
+    })
+
+    await provider.fetchDepartures({ signal: controller.signal })
+
+    assert.deepEqual(seenSignals, [controller.signal, controller.signal])
+  })
+
+  test("HafasProvider stops fallback queries after abort", async () => {
+    const provider = new HafasProvider({ stationId: "main" })
+    const controller = new AbortController()
+    let departureCalls = 0
+    provider.getClient = async () => ({
+      async departures() {
+        departureCalls += 1
+        return []
+      },
+      async locations() {
+        controller.abort(new Error("Fetch timed out"))
+        return [{ id: "nearby-1" }, { id: "nearby-2" }]
+      },
+    })
+
+    await assert.rejects(
+      provider.fetchDepartures({ signal: controller.signal }),
+      /Fetch timed out/u,
+    )
+    assert.equal(departureCalls, 1)
+  })
+
+  test("VendoProvider forwards the abort signal to departures", async () => {
+    const provider = new VendoProvider({ stationId: "main" })
+    const controller = new AbortController()
+    let seenSignal
+    provider.getClient = async () => ({
+      async departures(_station, options) {
+        seenSignal = options.signal
+        return []
+      },
+    })
+
+    await provider.fetchDepartures({ signal: controller.signal })
+
+    assert.equal(seenSignal, controller.signal)
   })
 })

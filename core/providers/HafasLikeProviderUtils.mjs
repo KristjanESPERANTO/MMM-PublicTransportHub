@@ -14,6 +14,23 @@ function formatClockTime(when) {
   })
 }
 
+export function withAbortSignalProfile(profile) {
+  const transformReq = profile.transformReq
+
+  return {
+    ...profile,
+    transformReq(context, requestOptions) {
+      const transformedOptions = transformReq
+        ? transformReq.call(this, context, requestOptions)
+        : requestOptions
+
+      return context.opt?.signal
+        ? { ...transformedOptions, signal: context.opt.signal }
+        : transformedOptions
+    },
+  }
+}
+
 function getRawWhen(departure) {
   return departure.when || departure.plannedWhen || null
 }

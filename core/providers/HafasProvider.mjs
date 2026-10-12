@@ -1,5 +1,8 @@
 import BaseProvider from "./BaseProvider.mjs"
-import { normalizeHafasLikeDeparture } from "./HafasLikeProviderUtils.mjs"
+import {
+  normalizeHafasLikeDeparture,
+  withAbortSignalProfile,
+} from "./HafasLikeProviderUtils.mjs"
 
 function uniqueByTripAndTime(departures) {
   const seen = new Set()
@@ -36,7 +39,10 @@ export default class HafasProvider extends BaseProvider {
       const { profile } = await import(
         `hafas-client/p/${profileName}/index.js`,
       )
-      return createClient(profile, "MMM-PublicTransportHub")
+      return createClient(
+        withAbortSignalProfile(profile),
+        "MMM-PublicTransportHub",
+      )
     }
     catch (error) {
       const details = error instanceof Error ? error.message : String(error)
@@ -47,7 +53,7 @@ export default class HafasProvider extends BaseProvider {
     }
   }
 
-  async fetchDepartures() {
+  async fetchDepartures({ signal } = {}) {
     const client = await this.getClient()
     const maxDepartures = this.config.maxDepartures || 7
     const targetCount = Math.max(maxDepartures * 4, 25)
@@ -60,6 +66,7 @@ export default class HafasProvider extends BaseProvider {
       duration,
       remarks: true,
       linesOfStops: false,
+      signal,
     }
 
     const response = await client.departures(
@@ -77,10 +84,15 @@ export default class HafasProvider extends BaseProvider {
         stations: true,
         addresses: false,
         poi: false,
+        signal,
       })
 
       const fallbackDepartures = []
       for (const location of locations || []) {
+        if (signal?.aborted) {
+          throw signal.reason || new Error("Request aborted")
+        }
+
         if (!location?.id || location.id === this.config.stationId) {
           continue
         }
@@ -100,6 +112,10 @@ export default class HafasProvider extends BaseProvider {
           }
         }
         catch {
+          if (signal?.aborted) {
+            throw signal.reason || new Error("Request aborted")
+          }
+
           // Skip individual fallback IDs and continue.
         }
       }

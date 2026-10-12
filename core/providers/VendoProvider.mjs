@@ -1,5 +1,8 @@
 import BaseProvider from "./BaseProvider.mjs"
-import { normalizeHafasLikeDeparture } from "./HafasLikeProviderUtils.mjs"
+import {
+  normalizeHafasLikeDeparture,
+  withAbortSignalProfile,
+} from "./HafasLikeProviderUtils.mjs"
 
 export default class VendoProvider extends BaseProvider {
   constructor(config) {
@@ -23,7 +26,10 @@ export default class VendoProvider extends BaseProvider {
       const { profile } = await import(
         `db-vendo-client/p/${profileName}/index.js`,
       )
-      return createClient(profile, "MMM-PublicTransportHub")
+      return createClient(
+        withAbortSignalProfile(profile),
+        "MMM-PublicTransportHub",
+      )
     }
     catch (error) {
       const details = error instanceof Error ? error.message : String(error)
@@ -34,7 +40,7 @@ export default class VendoProvider extends BaseProvider {
     }
   }
 
-  async fetchDepartures() {
+  async fetchDepartures({ signal } = {}) {
     const client = await this.getClient()
     const maxDepartures = this.config.maxDepartures || 7
     const targetCount = Math.max(maxDepartures * 4, 25)
@@ -47,6 +53,7 @@ export default class VendoProvider extends BaseProvider {
       duration,
       remarks: true,
       linesOfStops: false,
+      signal,
     })
 
     const departures = Array.isArray(response)

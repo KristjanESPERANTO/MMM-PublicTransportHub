@@ -1,7 +1,33 @@
 import assert from "node:assert/strict"
 import test, { describe } from "node:test"
 
-import { normalizeHafasLikeDeparture } from "../core/providers/HafasLikeProviderUtils.mjs"
+import {
+  normalizeHafasLikeDeparture,
+  withAbortSignalProfile,
+} from "../core/providers/HafasLikeProviderUtils.mjs"
+
+describe("withAbortSignalProfile", () => {
+  test("preserves request transforms and adds the current signal", () => {
+    const originalTransformReq = (_context, options) => ({
+      ...options,
+      headers: { "x-custom": "value" },
+    })
+    const profile = { transformReq: originalTransformReq }
+    const abortableProfile = withAbortSignalProfile(profile)
+    const controller = new AbortController()
+    const requestOptions = { method: "GET" }
+
+    const transformed = abortableProfile.transformReq(
+      { opt: { signal: controller.signal } },
+      requestOptions,
+    )
+
+    assert.equal(profile.transformReq, originalTransformReq)
+    assert.equal(transformed.method, "GET")
+    assert.equal(transformed.headers["x-custom"], "value")
+    assert.equal(transformed.signal, controller.signal)
+  })
+})
 
 describe("normalizeHafasLikeDeparture", () => {
   test("maps a typical API departure shape", () => {
