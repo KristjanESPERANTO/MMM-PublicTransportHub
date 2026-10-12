@@ -247,51 +247,66 @@ describe("fetchDepartures", () => {
     assert.equal(sentNotifications[0].notification, "PTH_DEPARTURES")
   })
 
-  test("ignores results from older overlapping requests", async () => {
+  test("skips overlapping requests for one instance without blocking others", async () => {
     const helper = loadNodeHelperModuleForTests()
     const sentNotifications = []
     let resolveFirst
-    let resolveSecond
-    let callCount = 0
-    const provider = {
-      config: {
-        requestTimeoutMs: 12000,
-        fetchRetries: 0,
-        provider: "transitous",
-        stationId: "x",
-      },
+    let firstCallCount = 0
+    let secondCallCount = 0
+    const firstProvider = {
+      config: { requestTimeoutMs: 12000, fetchRetries: 0, provider: "hafas", stationId: "one" },
       fetchDepartures() {
-        callCount += 1
+        firstCallCount += 1
         return new Promise((resolve) => {
-          if (callCount === 1) {
-            resolveFirst = resolve
-          }
-          else {
-            resolveSecond = resolve
-          }
+          resolveFirst = resolve
         })
       },
     }
+    const secondProvider = {
+      config: { requestTimeoutMs: 12000, fetchRetries: 0, provider: "hafas", stationId: "two" },
+      fetchDepartures() {
+        secondCallCount += 1
+        return Promise.resolve([{ tripId: "other-instance" }])
+      },
+    }
 
-    helper.providers = new Map([["id-1", provider]])
+    helper.providers = new Map([
+      ["id-1", firstProvider],
+      ["id-2", secondProvider],
+    ])
     helper.sendSocketNotification = (notification, payload) => {
       sentNotifications.push({ notification, payload })
     }
 
     const firstRequest = helper.fetchDepartures({ identifier: "id-1" })
-    const secondRequest = helper.fetchDepartures({ identifier: "id-1" })
-
-    resolveSecond([{ tripId: "new" }])
-    await secondRequest
-    resolveFirst([{ tripId: "old" }])
+    await helper.fetchDepartures({ identifier: "id-1" })
+    await helper.fetchDepartures({ identifier: "id-2" })
+    resolveFirst([{ tripId: "first-instance" }])
     await firstRequest
 
-    assert.deepEqual(sentNotifications, [{
-      notification: "PTH_DEPARTURES",
-      payload: {
-        identifier: "id-1",
-        departures: [{ tripId: "new" }],
-      },
-    }])
+    assert.equal(firstCallCount, 1)
+    assert.equal(secondCallCount, 1)
+    assert.deepEqual(
+      sentNotifications.map(({ notification, payload }) => ({
+        notification,
+        payload,
+      })),
+      [
+        {
+          notification: "PTH_DEPARTURES",
+          payload: {
+            identifier: "id-2",
+            departures: [{ tripId: "other-instance" }],
+          },
+        },
+        {
+          notification: "PTH_DEPARTURES",
+          payload: {
+            identifier: "id-1",
+            departures: [{ tripId: "first-instance" }],
+          },
+        },
+      ],
+    )
   })
 })

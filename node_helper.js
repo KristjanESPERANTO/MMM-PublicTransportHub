@@ -212,7 +212,7 @@ module.exports = NodeHelper.create({
   start() {
     this.providers = new Map()
     this.serviceAlertDetectors = new Map()
-    this.fetchRequestIds = new Map()
+    this.activeFetches = new Set()
   },
 
   async fetchWithTimeout(provider, timeoutMs) {
@@ -321,10 +321,7 @@ module.exports = NodeHelper.create({
   },
 
   async fetchDepartures(payload) {
-    this.fetchRequestIds ||= new Map()
-    const previousRequestId = this.fetchRequestIds.get(payload.identifier) || 0
-    const requestId = previousRequestId + 1
-    this.fetchRequestIds.set(payload.identifier, requestId)
+    this.activeFetches ||= new Set()
     const provider = this.providers.get(payload.identifier)
     const context = getProviderContext(provider?.config || payload)
 
@@ -339,6 +336,13 @@ module.exports = NodeHelper.create({
       })
       return
     }
+
+    if (this.activeFetches.has(payload.identifier)) {
+      Log.info(`Skipping overlapping departure fetch ${context}`)
+      return
+    }
+
+    this.activeFetches.add(payload.identifier)
 
     try {
       const timeoutMs = toIntInRange(
@@ -359,11 +363,6 @@ module.exports = NodeHelper.create({
         context,
       })
 
-      if (this.fetchRequestIds.get(payload.identifier) !== requestId) {
-        Log.info(`Ignoring outdated departure result ${context}`)
-        return
-      }
-
       this.serviceAlertDetectors?.get(payload.identifier)?.process(
         provider.serviceAlertDepartures || departures,
       )
@@ -374,17 +373,15 @@ module.exports = NodeHelper.create({
       })
     }
     catch (error) {
-      if (this.fetchRequestIds.get(payload.identifier) !== requestId) {
-        Log.info(`Ignoring outdated departure error ${context}`)
-        return
-      }
-
       const socketError = toSocketErrorPayload(error, provider.config)
       logFailure(`Fetch failed ${context}`, error, socketError)
       this.sendSocketNotification("PTH_ERROR", {
         identifier: payload.identifier,
         error: socketError,
       })
+    }
+    finally {
+      this.activeFetches.delete(payload.identifier)
     }
   },
 })
