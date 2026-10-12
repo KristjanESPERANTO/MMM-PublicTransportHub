@@ -50,7 +50,7 @@
   }
 
   .mmm-pthub-line {
-    width: 4.5ch;
+    width: auto;
     min-width: 4.5ch;
   }
 
@@ -59,9 +59,9 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    min-width: 2.5ch;
-    width: auto;
-    max-width: 4.5ch;
+    min-width: calc(1lh + 0.4rem);
+    width: max-content;
+    max-width: 10ch;
     margin: 0.1rem auto;
     padding: 0.2rem;
     background: #3d3d3d;
