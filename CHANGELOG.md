@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.14](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.13...v0.1.14) (2026-10-12)
+
+### Added
+
+* show planned departure times ([c9fc077](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/c9fc077f034b2a30307f34649f91497df940faf0))
+
+### Fixed
+
+* account for early departure delays ([8add2c0](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/8add2c0c4bfcf9b3d9407a63933f7303abcfe617))
+* jitter retry backoff ([b67c134](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/b67c134487f4c3a8ec12ffaaa98bc4006d9e965e))
+* **providers:** abort HAFAS and Vendo requests ([3b72ab5](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/3b72ab56a830cc69d47f190e2df2e8da61f5027e))
+* **retry:** honor Retry-After headers ([91b8b29](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/91b8b29a076595fe9a214f43503d6b94ec168fef))
+* skip overlapping departure requests ([affaf8b](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/affaf8bf3cb81dbb4c686f5550ad902b76ba332c))
+* **ui:** format update time consistently ([3d21506](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/3d215067691de75e06553ee24518222a8a75cb2a))
+* unify effective departure times ([b64cfed](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/b64cfed25976681a01824760586e5129810f4e6f))
+
+### Chores
+
+* update devDependencies ([6bd3f1a](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/6bd3f1a8b5e76d4a911e93d647a37403c42687f5))
+
+### Tests
+
+* **retry:** mock backoff timers ([90a5ced](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/90a5ced552b989492ad092e42db91e44b995eca6))
+
 ## [0.1.13](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.12...v0.1.13) (2026-10-02)
 
 ### Fixed
