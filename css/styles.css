@@ -146,6 +146,12 @@
     text-underline-offset: 0.12em;
   }
 
+  .mmm-pthub-time-label-canceled {
+    text-decoration: line-through;
+    text-decoration-color: #aaaaaa;
+    text-decoration-thickness: 1px;
+  }
+
   .mmm-pthub-delay {
     margin-left: 0.35rem;
     font-size: 0.8em;

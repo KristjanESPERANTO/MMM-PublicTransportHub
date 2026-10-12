@@ -215,6 +215,42 @@ describe("PtDomBuilder", () => {
         globalThis.document = originalDocument
       }
     })
+
+    test("marks canceled time and hides its delay", () => {
+      const originalDocument = globalThis.document
+      globalThis.document = { createElement }
+
+      try {
+        const builder = new PtDomBuilder({
+          timeDisplay: { mode: "absolute", thresholdMinutes: 10 },
+          showPlannedTime: true,
+          showDelay: true,
+          showRealtimeIndicator: true,
+        })
+        const cell = builder.getTimeCell({
+          rawWhen: "2026-09-21T12:15:00Z",
+          rawPlannedWhen: "2026-09-21T12:00:00Z",
+          delay: 900,
+          realTime: true,
+          canceled: true,
+        })
+
+        assert.doesNotMatch(cell.className, /mmm-pthub-time-realtime/u)
+        assert.equal(cell.children.length, 2)
+        assert.equal(
+          cell.children[0].className,
+          "mmm-pthub-time-label mmm-pthub-time-label-canceled",
+        )
+        assert.equal(
+          cell.children[1].className,
+          "mmm-pthub-badge mmm-pthub-badge-canceled",
+        )
+        assert.equal(cell.children[1].textContent, "×")
+      }
+      finally {
+        globalThis.document = originalDocument
+      }
+    })
   })
 
   describe("getPlatformLabel", () => {

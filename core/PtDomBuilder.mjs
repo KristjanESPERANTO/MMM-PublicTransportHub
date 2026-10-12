@@ -196,13 +196,16 @@ export default class PtDomBuilder {
   getTimeCell(dep) {
     const timeCell = document.createElement("td")
     timeCell.className = "bright mmm-pthub-time"
+    const isCanceled = Boolean(dep.canceled)
 
     const timeLabel = document.createElement("span")
-    timeLabel.className = "mmm-pthub-time-label"
+    timeLabel.className = isCanceled
+      ? "mmm-pthub-time-label mmm-pthub-time-label-canceled"
+      : "mmm-pthub-time-label"
     timeLabel.textContent = this.getDisplayedTime(dep)
     timeCell.appendChild(timeLabel)
 
-    if (this.config.showDelay !== false) {
+    if (!isCanceled && this.config.showDelay !== false) {
       const delayLabel = this.getDelayLabel(dep.delay)
       if (delayLabel) {
         const delaySpan = document.createElement("span")
@@ -215,14 +218,18 @@ export default class PtDomBuilder {
       }
     }
 
-    if (this.config.showRealtimeIndicator !== false && dep.realTime) {
+    if (
+      !isCanceled
+      && this.config.showRealtimeIndicator !== false
+      && dep.realTime
+    ) {
       timeCell.classList.add("mmm-pthub-time-realtime")
     }
 
-    if (dep.canceled) {
+    if (isCanceled) {
       const canceledSpan = document.createElement("span")
       canceledSpan.className = "mmm-pthub-badge mmm-pthub-badge-canceled"
-      canceledSpan.textContent = "X"
+      canceledSpan.textContent = "×"
       timeCell.appendChild(canceledSpan)
     }
 
