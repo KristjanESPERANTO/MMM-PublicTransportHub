@@ -34,6 +34,42 @@ function buildUserAgent(config = {}) {
   return `${appName}/${version} (+${contact})`
 }
 
+function attachResponse(error, response) {
+  const normalizedError = error instanceof Error
+    ? error
+    : new Error(
+        typeof error === "string"
+          ? error
+          : error?.message || `Request failed with status ${response.status}`,
+        { cause: error },
+      )
+
+  normalizedError.statusCode ??= response.status
+  normalizedError.response ??= response
+  return normalizedError
+}
+
+async function requestStopTimes(options) {
+  let response
+
+  try {
+    return await stoptimes({
+      ...options,
+      fetch: async (request) => {
+        response = await globalThis.fetch(request)
+        return response
+      },
+    })
+  }
+  catch (error) {
+    if (response && !response.ok) {
+      throw attachResponse(error, response)
+    }
+
+    throw error
+  }
+}
+
 function toRemarks(alerts = []) {
   return alerts.map(alert => ({
     summary: alert.headerText || "Service alert",
@@ -142,14 +178,14 @@ export default class TransitousProvider extends BaseProvider {
     let response
 
     try {
-      response = await stoptimes(fetchOptions)
+      response = await requestStopTimes(fetchOptions)
     }
     catch (error) {
       if (!this.includeRelatedStations || !isFetchStopsTripTerminalError(error)) {
         throw error
       }
 
-      response = await stoptimes({
+      response = await requestStopTimes({
         ...fetchOptions,
         query: {
           ...fetchOptions.query,

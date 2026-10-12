@@ -3,6 +3,7 @@ const NodeHelper = require("node_helper")
 
 const DEFAULT_TIMEOUT_MS = 12000
 const DEFAULT_RETRIES = 1
+const MAX_TIMER_DELAY_MS = 2147483647
 
 function toIntInRange(value, fallback, min, max) {
   if (!Number.isFinite(value)) {
@@ -13,7 +14,20 @@ function toIntInRange(value, fallback, min, max) {
 }
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => {
+    const deadline = Date.now() + ms
+    const wait = () => {
+      const remainingMs = deadline - Date.now()
+      if (remainingMs <= 0) {
+        resolve()
+        return
+      }
+
+      setTimeout(wait, Math.min(remainingMs, MAX_TIMER_DELAY_MS))
+    }
+
+    wait()
+  })
 }
 
 /**
@@ -27,6 +41,26 @@ function getRetryBackoffMs(attempt) {
     baseBackoffMs * (0.8 + Math.random() * 0.4),
   )
   return Math.min(3000, jitteredBackoffMs)
+}
+
+function getRetryAfterMs(error) {
+  const headers = error?.response?.headers
+  const rawValue = typeof headers?.get === "function"
+    ? headers.get("retry-after")
+    : headers?.["retry-after"] ?? headers?.["Retry-After"]
+
+  if (rawValue == null) {
+    return null
+  }
+
+  const value = String(rawValue).trim()
+  if (/^\d+$/u.test(value)) {
+    const delayMs = Number(value) * 1000
+    return Number.isFinite(delayMs) ? delayMs : null
+  }
+
+  const retryAt = Date.parse(value)
+  return Number.isNaN(retryAt) ? null : Math.max(0, retryAt - Date.now())
 }
 
 function isTimeoutError(error) {
@@ -257,7 +291,10 @@ module.exports = NodeHelper.create({
           throw error
         }
 
-        const backoffMs = getRetryBackoffMs(attempt)
+        const backoffMs = Math.max(
+          getRetryBackoffMs(attempt),
+          getRetryAfterMs(error) ?? 0,
+        )
         Log.warn(
           `Fetch attempt ${attempt}/${maxAttempts} failed (${errorClass}), retrying in ${backoffMs}ms ${context}: ${toErrorMessage(error)}`,
         )

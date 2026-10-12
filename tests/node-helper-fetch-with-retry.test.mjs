@@ -140,6 +140,76 @@ describe("fetchWithRetry", () => {
     assert.equal(provider.attempts, 2)
   })
 
+  for (const testCase of [
+    {
+      name: "delta-seconds",
+      value: "5",
+      expectedDelay: 5000,
+    },
+    {
+      name: "HTTP date",
+      value: "Mon, 12 Oct 2026 12:00:30 GMT",
+      now: Date.parse("2026-10-12T12:00:00Z"),
+      expectedDelay: 30000,
+    },
+  ]) {
+    test(`honors Retry-After as ${testCase.name}`, async () => {
+      const warnings = []
+      const helper = loadNodeHelperModuleForTests({
+        warn(message) {
+          warnings.push(message)
+        },
+      })
+      const provider = {
+        attempts: 0,
+        async fetchDepartures() {
+          this.attempts += 1
+          if (this.attempts === 1) {
+            throw withFetchError("Too many requests", {
+              response: {
+                status: 429,
+                headers: new Headers({ "Retry-After": testCase.value }),
+              },
+            })
+          }
+
+          return [{ id: 4 }]
+        },
+      }
+      const originalNow = Date.now
+      const originalSetTimeout = globalThis.setTimeout
+      const originalRandom = Math.random
+      let fakeNow = testCase.now ?? originalNow()
+      Date.now = () => fakeNow
+      Math.random = () => 0.5
+      globalThis.setTimeout = (callback, delay, ...args) => {
+        if (delay === 12000) {
+          return originalSetTimeout(callback, delay, ...args)
+        }
+
+        fakeNow += delay
+        return originalSetTimeout(callback, 0, ...args)
+      }
+
+      try {
+        const result = await helper.fetchWithRetry(provider, {
+          timeoutMs: 12000,
+          retries: 1,
+          context: "[test]",
+        })
+
+        assert.equal(result.length, 1)
+        assert.equal(provider.attempts, 2)
+        assert.ok(warnings[0].includes(`retrying in ${testCase.expectedDelay}ms`))
+      }
+      finally {
+        Date.now = originalNow
+        Math.random = originalRandom
+        globalThis.setTimeout = originalSetTimeout
+      }
+    })
+  }
+
   test("retries for HTTP 5xx and eventually succeeds", async () => {
     const helper = loadNodeHelperModuleForTests()
 

@@ -84,6 +84,7 @@ export default class PlkProvider extends BaseProvider {
         `PLK API request to ${url.pathname} failed with status ${response.status}${details ? `: ${details}` : ""}`,
       )
       error.statusCode = response.status
+      error.response = response
       throw error
     }
 
