@@ -109,6 +109,7 @@ Module.register("MMM-PublicTransportHub", {
       mode: "relative-under",
       thresholdMinutes: 10,
     },
+    showPlannedTime: false,
     showDelay: false,
     showRealtimeIndicator: true,
     showRemarks: true,
@@ -273,6 +274,7 @@ Module.register("MMM-PublicTransportHub", {
         ? Math.max(1, Math.floor(requestedTimeDisplay.thresholdMinutes))
         : 10,
     }
+    this.config.showPlannedTime = this.config.showPlannedTime === true
 
     this.config.maxUnreachableDepartures
       = Number.isFinite(this.config.maxUnreachableDepartures)

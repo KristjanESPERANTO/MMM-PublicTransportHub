@@ -28,9 +28,11 @@ let config = {
         stationId: "de-DELFI_de:15002:5257::01",
         updatesEvery: 60,
         timeDisplay: {
-          mode: "relative-under",
+          mode: "absolute",
           thresholdMinutes: 10,
         },
+        showPlannedTime: true,
+        showDelay: true,
         lineStylePreset: "halle",
         maxUnreachableDepartures: 2,
         replaceInDirections: {
@@ -66,9 +68,11 @@ let config = {
         hafasProfile: "insa",
         updatesEvery: 60,
         timeDisplay: {
-          mode: "relative-under",
+          mode: "absolute",
           thresholdMinutes: 10,
         },
+        showPlannedTime: true,
+        showDelay: true,
         lineStylePreset: "halle",
         showRemarks: false,
         replaceInDirections: {

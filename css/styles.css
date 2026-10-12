@@ -138,17 +138,12 @@
     width: 7ch;
   }
 
-  .mmm-pthub-time-realtime {
+  .mmm-pthub-time-realtime .mmm-pthub-time-label {
     text-decoration-line: underline;
     text-decoration-style: solid;
     text-decoration-color: #ffffff44;
     text-decoration-thickness: 0.1px;
     text-underline-offset: 0.12em;
-  }
-
-  .mmm-pthub-time-realtime .mmm-pthub-delay,
-  .mmm-pthub-time-realtime .mmm-pthub-badge {
-    text-decoration: none;
   }
 
   .mmm-pthub-delay {

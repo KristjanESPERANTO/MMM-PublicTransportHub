@@ -4,6 +4,26 @@ import test, { describe } from "node:test"
 import { loadModuleDefinition } from "./test-helpers.mjs"
 
 describe("sanitizeConfig", () => {
+  describe("showPlannedTime", () => {
+    test("is enabled only when explicitly set to true", () => {
+      const moduleDefinition = loadModuleDefinition()
+      const context = { config: { showPlannedTime: true } }
+
+      moduleDefinition.sanitizeConfig.call(context)
+
+      assert.equal(context.config.showPlannedTime, true)
+    })
+
+    test("defaults to false", () => {
+      const moduleDefinition = loadModuleDefinition()
+      const context = { config: {} }
+
+      moduleDefinition.sanitizeConfig.call(context)
+
+      assert.equal(context.config.showPlannedTime, false)
+    })
+  })
+
   describe("timeDisplay", () => {
     test("defaults to relative-under mode", () => {
       const moduleDefinition = loadModuleDefinition()

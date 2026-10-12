@@ -84,8 +84,12 @@ export default class PtDomBuilder {
   }
 
   getDisplayedTime(departure) {
-    const rawWhen = departure.rawWhen || departure.rawPlannedWhen || null
     const timeDisplayMode = this.config.timeDisplay?.mode
+    const actualWhen = departure.rawWhen || departure.rawPlannedWhen || null
+    const rawWhen
+      = timeDisplayMode === "absolute" && this.config.showPlannedTime
+        ? departure.rawPlannedWhen || actualWhen
+        : actualWhen
     const useRelativeTime = timeDisplayMode === "relative"
       || (
         timeDisplayMode === "relative-under"
@@ -192,7 +196,11 @@ export default class PtDomBuilder {
   getTimeCell(dep) {
     const timeCell = document.createElement("td")
     timeCell.className = "bright mmm-pthub-time"
-    timeCell.textContent = this.getDisplayedTime(dep)
+
+    const timeLabel = document.createElement("span")
+    timeLabel.className = "mmm-pthub-time-label"
+    timeLabel.textContent = this.getDisplayedTime(dep)
+    timeCell.appendChild(timeLabel)
 
     if (this.config.showDelay !== false) {
       const delayLabel = this.getDelayLabel(dep.delay)
