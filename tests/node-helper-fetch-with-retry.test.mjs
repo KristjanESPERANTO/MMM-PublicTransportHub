@@ -3,8 +3,35 @@ import test, { describe } from "node:test"
 
 import { loadNodeHelperModuleForTests, withFetchError } from "./test-helpers.mjs"
 
+async function runWithMockTimers(t, callback, now) {
+  t.mock.timers.enable({
+    apis: ["Date", "setTimeout"],
+    ...(now == null ? {} : { now }),
+  })
+
+  let outcome
+  callback().then(
+    (value) => { outcome = { value } },
+    (error) => { outcome = { error } },
+  )
+
+  for (let attempt = 0; attempt < 100 && !outcome; attempt += 1) {
+    for (let microtask = 0; microtask < 10; microtask += 1) {
+      await Promise.resolve()
+    }
+    t.mock.timers.runAll()
+  }
+
+  assert.ok(outcome, "retry operation did not settle with mocked timers")
+  if ("error" in outcome) {
+    throw outcome.error
+  }
+
+  return outcome.value
+}
+
 describe("fetchWithRetry", () => {
-  test("adds jitter to retry delays", async () => {
+  test("applies the upper jitter bound", async (t) => {
     const originalRandom = Math.random
     Math.random = () => 0.999
     const warnings = []
@@ -26,11 +53,11 @@ describe("fetchWithRetry", () => {
     }
 
     try {
-      const result = await helper.fetchWithRetry(provider, {
+      const result = await runWithMockTimers(t, () => helper.fetchWithRetry(provider, {
         timeoutMs: 12000,
         retries: 1,
         context: "[test]",
-      })
+      }))
 
       assert.equal(result.length, 1)
       assert.match(warnings[0], /retrying in 720ms/u)
@@ -40,7 +67,78 @@ describe("fetchWithRetry", () => {
     }
   })
 
-  test("retries timeout and network-like errors", async () => {
+  test("applies the lower jitter bound", async (t) => {
+    const originalRandom = Math.random
+    Math.random = () => 0
+    const warnings = []
+    const helper = loadNodeHelperModuleForTests({
+      warn(message) {
+        warnings.push(message)
+      },
+    })
+    const provider = {
+      attempts: 0,
+      async fetchDepartures() {
+        this.attempts += 1
+        if (this.attempts === 1) {
+          throw withFetchError("Service unavailable", { statusCode: 503 })
+        }
+
+        return [{ id: 1 }]
+      },
+    }
+
+    try {
+      await runWithMockTimers(t, () => helper.fetchWithRetry(provider, {
+        timeoutMs: 12000,
+        retries: 1,
+        context: "[test]",
+      }))
+
+      assert.match(warnings[0], /retrying in 480ms/u)
+    }
+    finally {
+      Math.random = originalRandom
+    }
+  })
+
+  test("caps jittered backoff at 3000ms", async (t) => {
+    const originalRandom = Math.random
+    Math.random = () => 0.999
+    const warnings = []
+    const helper = loadNodeHelperModuleForTests({
+      warn(message) {
+        warnings.push(message)
+      },
+    })
+    const provider = {
+      attempts: 0,
+      async fetchDepartures() {
+        this.attempts += 1
+        if (this.attempts <= 5) {
+          throw withFetchError("Service unavailable", { statusCode: 503 })
+        }
+
+        return [{ id: 1 }]
+      },
+    }
+
+    try {
+      await runWithMockTimers(t, () => helper.fetchWithRetry(provider, {
+        timeoutMs: 12000,
+        retries: 5,
+        context: "[test]",
+      }))
+
+      assert.equal(provider.attempts, 6)
+      assert.match(warnings.at(-1), /retrying in 3000ms/u)
+    }
+    finally {
+      Math.random = originalRandom
+    }
+  })
+
+  test("retries timeout and network-like errors", async (t) => {
     const helper = loadNodeHelperModuleForTests()
 
     const provider = {
@@ -55,17 +153,17 @@ describe("fetchWithRetry", () => {
       },
     }
 
-    const result = await helper.fetchWithRetry(provider, {
+    const result = await runWithMockTimers(t, () => helper.fetchWithRetry(provider, {
       timeoutMs: 12000,
       retries: 2,
       context: "[test]",
-    })
+    }))
 
     assert.equal(result.length, 1)
     assert.equal(provider.attempts, 3)
   })
 
-  test("retries on premature stream close errors", async () => {
+  test("retries on premature stream close errors", async (t) => {
     const helper = loadNodeHelperModuleForTests()
 
     const provider = {
@@ -83,11 +181,11 @@ describe("fetchWithRetry", () => {
       },
     }
 
-    const result = await helper.fetchWithRetry(provider, {
+    const result = await runWithMockTimers(t, () => helper.fetchWithRetry(provider, {
       timeoutMs: 12000,
       retries: 2,
       context: "[test]",
-    })
+    }))
 
     assert.equal(result.length, 1)
     assert.equal(provider.attempts, 2)
@@ -115,7 +213,35 @@ describe("fetchWithRetry", () => {
     assert.equal(provider.attempts, 1)
   })
 
-  test("retries for HTTP 429 and eventually succeeds", async () => {
+  test("stops after all retry attempts are exhausted", async (t) => {
+    const warnings = []
+    const helper = loadNodeHelperModuleForTests({
+      warn(message) {
+        warnings.push(message)
+      },
+    })
+    const provider = {
+      attempts: 0,
+      async fetchDepartures() {
+        this.attempts += 1
+        throw withFetchError("Service unavailable", { statusCode: 503 })
+      },
+    }
+
+    await assert.rejects(
+      runWithMockTimers(t, () => helper.fetchWithRetry(provider, {
+        timeoutMs: 12000,
+        retries: 2,
+        context: "[test]",
+      })),
+      error => error.message === "Service unavailable",
+    )
+
+    assert.equal(provider.attempts, 3)
+    assert.equal(warnings.length, 2)
+  })
+
+  test("retries for HTTP 429 and eventually succeeds", async (t) => {
     const helper = loadNodeHelperModuleForTests()
 
     const provider = {
@@ -130,11 +256,11 @@ describe("fetchWithRetry", () => {
       },
     }
 
-    const result = await helper.fetchWithRetry(provider, {
+    const result = await runWithMockTimers(t, () => helper.fetchWithRetry(provider, {
       timeoutMs: 12000,
       retries: 2,
       context: "[test]",
-    })
+    }))
 
     assert.equal(result.length, 1)
     assert.equal(provider.attempts, 2)
@@ -153,7 +279,7 @@ describe("fetchWithRetry", () => {
       expectedDelay: 30000,
     },
   ]) {
-    test(`honors Retry-After as ${testCase.name}`, async () => {
+    test(`honors Retry-After as ${testCase.name}`, async (t) => {
       const warnings = []
       const helper = loadNodeHelperModuleForTests({
         warn(message) {
@@ -176,41 +302,30 @@ describe("fetchWithRetry", () => {
           return [{ id: 4 }]
         },
       }
-      const originalNow = Date.now
-      const originalSetTimeout = globalThis.setTimeout
       const originalRandom = Math.random
-      let fakeNow = testCase.now ?? originalNow()
-      Date.now = () => fakeNow
       Math.random = () => 0.5
-      globalThis.setTimeout = (callback, delay, ...args) => {
-        if (delay === 12000) {
-          return originalSetTimeout(callback, delay, ...args)
-        }
-
-        fakeNow += delay
-        return originalSetTimeout(callback, 0, ...args)
-      }
 
       try {
-        const result = await helper.fetchWithRetry(provider, {
+        const result = await runWithMockTimers(t, () => helper.fetchWithRetry(provider, {
           timeoutMs: 12000,
           retries: 1,
           context: "[test]",
-        })
+        }), testCase.now)
 
         assert.equal(result.length, 1)
         assert.equal(provider.attempts, 2)
-        assert.ok(warnings[0].includes(`retrying in ${testCase.expectedDelay}ms`))
+        assert.ok(
+          warnings[0].includes(`retrying in ${testCase.expectedDelay}ms`),
+          warnings[0],
+        )
       }
       finally {
-        Date.now = originalNow
         Math.random = originalRandom
-        globalThis.setTimeout = originalSetTimeout
       }
     })
   }
 
-  test("retries for HTTP 5xx and eventually succeeds", async () => {
+  test("retries for HTTP 5xx and eventually succeeds", async (t) => {
     const helper = loadNodeHelperModuleForTests()
 
     const provider = {
@@ -225,11 +340,11 @@ describe("fetchWithRetry", () => {
       },
     }
 
-    const result = await helper.fetchWithRetry(provider, {
+    const result = await runWithMockTimers(t, () => helper.fetchWithRetry(provider, {
       timeoutMs: 12000,
       retries: 2,
       context: "[test]",
-    })
+    }))
 
     assert.equal(result.length, 1)
     assert.equal(provider.attempts, 2)
