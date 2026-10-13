@@ -1,4 +1,5 @@
 import http from "node:http"
+import dgram from "node:dgram"
 import process from "node:process"
 import fs from "node:fs"
 import path from "node:path"
@@ -10,13 +11,27 @@ const require = createRequire(import.meta.url)
 const DEFAULT_BASE_URL = "https://api.transitous.org"
 const DEFAULT_CONTACT
   = "https://github.com/KristjanESPERANTO/MMM-PublicTransportHub"
-const HOST = "127.0.0.1"
+const HOST = "0.0.0.0"
 const DEFAULT_PORT = 8765
 const PORT = Number(process.env.PTH_QUERY_PORT || DEFAULT_PORT)
 const MAX_BODY_BYTES = 1_000_000
 
 if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
   throw new Error("PTH_QUERY_PORT must be an integer between 1 and 65535")
+}
+
+function getPrimaryNetworkIPv4Address() {
+  return new Promise((resolve) => {
+    const socket = dgram.createSocket("udp4")
+    const finish = (address) => {
+      socket.close()
+      resolve(address)
+    }
+
+    socket.once("error", () => finish(null))
+    // Connecting a UDP socket selects the system route without sending a packet.
+    socket.connect(53, "1.1.1.1", () => finish(socket.address().address))
+  })
 }
 
 function listProfiles(libraryName) {
@@ -1041,7 +1056,19 @@ const server = http.createServer(async (req, res) => {
   }
 })
 
-server.listen(PORT, HOST, () => {
-  console.info(`Station query tool running at http://${HOST}:${PORT}/`)
-  console.info("Open that URL in your browser. Press Ctrl+C to stop.")
+server.listen(PORT, HOST, async () => {
+  console.info("\nStation search is ready.\n")
+  const address = await getPrimaryNetworkIPv4Address()
+  if (address) {
+    console.info(
+      "Open this URL in a browser on this computer or another device on the same local network:",
+    )
+    console.info(`\n  http://${address}:${PORT}`)
+  }
+  else {
+    console.info("No network address was found. Open this URL in a browser on the server itself:")
+    console.info(`\n  http://127.0.0.1:${PORT}`)
+  }
+  console.info("\nKeep this terminal open while using station search.")
+  console.info("Press Ctrl+C to stop the server.")
 })

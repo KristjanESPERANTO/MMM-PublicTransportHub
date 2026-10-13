@@ -177,14 +177,24 @@ Use the local browser-based helper to find station IDs and ready-to-copy config 
 node --run query
 ```
 
-This starts a small local web server on the stable URL `http://127.0.0.1:8765/` (bound to `127.0.0.1`, never reachable from the network):
+This starts the station search helper. Follow the URL and instructions printed in the terminal:
 
 ```sh
-Station query tool running at http://127.0.0.1:8765/
-Open that URL in your browser. Press Ctrl+C to stop.
+Station search is ready.
+
+Open this URL in a browser on this computer or another device on the same local network:
+
+  http://192.168.1.42:8765/
+
+Keep this terminal open while using station search.
+Press Ctrl+C to stop the server.
 ```
 
+If no network address is found, the CLI prints a local-only URL instead.
+
 To use another local port, set `PTH_QUERY_PORT`, for example `PTH_QUERY_PORT=8766 node --run query`.
+
+The helper has no authentication; any device that can reach it can run searches. Avoid exposing its port beyond your trusted network.
 
 Open that URL in your browser. Enter a station or address, tick the provider(s) you want to search (Transitous, HAFAS, Vendo, PLK), and provide profiles/API key where needed - HAFAS and Vendo profile fields default to `db` if left empty. PLK requires an API key (see the [PLK provider](#choosing-a-provider) above); it's entered as a password field, only used in-memory for that search, and never logged or written to disk.
 
