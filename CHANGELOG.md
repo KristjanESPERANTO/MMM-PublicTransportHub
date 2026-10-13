@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.15](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.14...v0.1.15) (2026-10-13)
+
+### Added
+
+* **query:** expose helper on LAN ([9da256f](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/9da256fb40deecf6465e8ed8bf3daa0e07cbd384))
+
+### Chores
+
+* update devDependencies ([144dadd](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/144dadd989300f969658f7fc3e69596cd7ba1cc6))
+
 ## [0.1.14](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.13...v0.1.14) (2026-10-12)
 
 ### Added
