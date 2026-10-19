@@ -200,9 +200,13 @@ Open that URL in your browser. Enter a station or address, tick the provider(s) 
 
 Select a station result to immediately generate a ready-to-copy config block. Use the live departure test if needed, then click "Copy config". For Transitous results, replace the generated `YOUR_EMAIL_OR_FORUM_ALIAS` placeholder with a reachable email address or MagicMirror forum alias. For PLK results, replace the `YOUR_PLK_API_KEY` placeholder with your key - but keep it out of files you commit to version control.
 
-## Credits
+## Special Thanks
 
-Some parts of this module are inspired by [MMM-PublicTransportHafas](https://github.com/KristjanESPERANTO/MMM-PublicTransportHafas).
+- [Ray Wojciechowski](https://github.com/raywo) for creating the original [MMM-PublicTransportHafas](https://github.com/raywo/MMM-PublicTransportHafas), which inspired several core ideas of this module, and for pointing its users here.
+- [Jannis Redmann](https://github.com/derhuerst) for [hafas-client](https://github.com/derhuerst/hafas-client), which powers the `hafas` provider.
+- [Traines](https://github.com/traines-source) for [db-vendo-client](https://github.com/public-transport/db-vendo-client), which powers the `vendo` provider.
+- The [Transitous](https://transitous.org/) community for the open data behind the default `transitous` provider.
+- The [MagicMirror²](https://magicmirror.builders/) community for help in the development process and all contributors for finding and fixing errors in this module.
 
 ## License
 
