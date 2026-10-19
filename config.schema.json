@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Module instance name"
+    },
+    "provider": {
+      "type": "string",
+      "enum": ["transitous", "hafas", "vendo", "plk"],
+      "description": "Departure data provider"
+    },
+    "stationId": {
+      "type": "string",
+      "description": "Station identifier used by the selected provider"
+    },
+    "updatesEvery": {
+      "type": "integer",
+      "minimum": 30,
+      "description": "Seconds between updates; values below 30 are clamped"
+    },
+    "maxStaleMinutes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Minutes to keep the last successful departures after an error"
+    },
+    "maxDepartures": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Maximum number of departures to display"
+    },
+    "animationSpeed": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "DOM update animation duration in milliseconds"
+    },
+    "showLastUpdate": {
+      "type": "boolean",
+      "description": "Show the last update time in the module footer"
+    },
+    "timeDisplay": {
+      "type": "object",
+      "description": "Departure time display settings",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["absolute", "relative", "relative-under"],
+          "description": "Display clock time, relative time, or relative time below a threshold"
+        },
+        "thresholdMinutes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Threshold in minutes for relative-under mode"
+        }
+      }
+    },
+    "showPlannedTime": {
+      "type": "boolean",
+      "description": "Show scheduled instead of expected time in absolute mode"
+    },
+    "showDelay": {
+      "type": "boolean",
+      "description": "Show delay in minutes"
+    },
+    "showRealtimeIndicator": {
+      "type": "boolean",
+      "description": "Visually mark departures with real-time data"
+    },
+    "showRemarks": {
+      "type": "boolean",
+      "description": "Show service remarks below departures"
+    },
+    "showTableHeaders": {
+      "type": "boolean",
+      "description": "Show table column headers"
+    },
+    "columnOrder": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["time", "line", "direction", "platform"]
+      },
+      "description": "Order and visibility of departure table columns"
+    },
+    "timeToStation": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Walking time to the station in minutes"
+    },
+    "maxUnreachableDepartures": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Maximum unreachable departures to keep; null removes this limit"
+    },
+    "excludeCanceled": {
+      "type": "boolean",
+      "description": "Exclude canceled departures from the display"
+    },
+    "requestTimeoutMs": {
+      "type": "integer",
+      "minimum": 1000,
+      "maximum": 60000,
+      "description": "Per-request timeout in milliseconds"
+    },
+    "fetchRetries": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Retry attempts after the initial request"
+    },
+    "lineFilter": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Only include matching lines; a comma-separated string is also accepted"
+    },
+    "directionFilter": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Only include matching directions; a comma-separated string is also accepted"
+    },
+    "productFilter": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Only include matching products; a comma-separated string is also accepted"
+    },
+    "replaceInDirections": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Text replacements applied to directions"
+    },
+    "replaceInLineNames": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Text replacements applied to line names"
+    },
+    "lineStylePreset": {
+      "type": "string",
+      "enum": [
+        "none",
+        "plain",
+        "berlin",
+        "duesseldorf",
+        "graz",
+        "halle",
+        "hamburg",
+        "hannover",
+        "leipzig",
+        "magdeburg",
+        "munich",
+        "nuernberg",
+        "stuttgart"
+      ],
+      "description": "Preset used to style public transport line badges"
+    },
+    "contact": {
+      "type": "string",
+      "description": "Contact for Transitous requests, such as an email or forum alias"
+    },
+    "apiKey": {
+      "type": "string",
+      "description": "API key required by the PLK provider"
+    },
+    "userAgent": {
+      "type": "string",
+      "description": "Optional custom User-Agent suffix"
+    },
+    "clientVersion": {
+      "type": "string",
+      "description": "Optional client version sent to provider clients"
+    },
+    "hafasProfile": {
+      "type": "string",
+      "description": "HAFAS profile, for example insa or vbb"
+    },
+    "vendoProfile": {
+      "type": "string",
+      "description": "Vendo profile, for example db, dbnav, or dbris"
+    },
+    "timeInFutureMinutes": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Look-ahead window for provider queries in minutes"
+    },
+    "includeRelatedStations": {
+      "type": "boolean",
+      "description": "Include nearby or related stations when supported"
+    },
+    "outgoingNotifications": {
+      "type": "object",
+      "description": "Settings for PTH_SERVICE_ALERT notifications",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable outgoing service alerts"
+        },
+        "includeCancellations": {
+          "type": "boolean",
+          "description": "Send alerts for cancellations"
+        },
+        "includeDelays": {
+          "type": "boolean",
+          "description": "Send alerts for delays"
+        },
+        "includeRemarks": {
+          "type": "boolean",
+          "description": "Send alerts for service remarks"
+        },
+        "delayThresholdMinutes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Minimum delay in minutes that triggers an alert"
+        },
+        "includeNoDepartures": {
+          "type": "boolean",
+          "description": "Send an alert when no reachable departures remain"
+        }
+      }
+    }
+  }
+}
