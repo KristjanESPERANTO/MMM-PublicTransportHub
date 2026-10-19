@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.16](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.15...v0.1.16) (2026-10-19)
+
+### Added
+
+* **config:** add module config schema ([f9162b9](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/f9162b9f92d562844c37bc8b6e203ddc44f40131))
+
+### Documentation
+
+* add Special Thanks section to README ([b30d7d2](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/b30d7d2bb9f61b37627068346b1a793df3940f4d))
+
+### Chores
+
+* update devDependencies ([a33285d](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/a33285d67db95a5f3ae06498c51dcf6b4cc7889f))
+
 ## [0.1.15](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.14...v0.1.15) (2026-10-13)
 
 ### Added
