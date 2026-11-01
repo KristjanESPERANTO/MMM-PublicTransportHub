@@ -31,7 +31,7 @@
     "node": ">=24"
   },
   "dependencies": {
-    "@motis-project/motis-client": "^2.11.3",
+    "@motis-project/motis-client": "^2.11.4",
     "db-vendo-client": "^6.11.3",
     "hafas-client": "^6.3.6"
   },
