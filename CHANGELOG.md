@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.17](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.16...v0.1.17) (2026-11-21)
+
+### Fixed
+
+* **transitous:** normalize directions with destination fallback ([45e20d5](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/45e20d5d8b7661c42d82169ec3a6e0d04ef301af))
+
+### Chores
+
+* update dependencies ([48cf493](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/48cf4936f5b88dc94544867ab2b167221cb91a26))
+
+### Code Refactoring
+
+* apply new linter rules ([b4efa40](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/b4efa40d411532d8ebf938bf37de0a84d28d31b5))
+
 ## [0.1.16](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.15...v0.1.16) (2026-10-19)
 
 ### Added
