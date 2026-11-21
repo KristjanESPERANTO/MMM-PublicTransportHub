@@ -66,8 +66,7 @@ function getRetryAfterMs(error) {
 function isTimeoutError(error) {
   const message = String(error?.message || "").toLowerCase()
   return ["timeout", "timed out", "etimedout"].some(term =>
-    message.includes(term),
-  )
+    message.includes(term))
 }
 
 function isNetworkError(error) {

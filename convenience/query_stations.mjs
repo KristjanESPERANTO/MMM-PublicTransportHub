@@ -159,8 +159,7 @@ function uniqueModes(stopTimes = []) {
         .map(stopTime =>
           typeof stopTime.mode === "string"
             ? stopTime.mode.toLowerCase()
-            : null,
-        )
+            : null)
         .filter(Boolean),
     ),
   ]
@@ -243,8 +242,7 @@ async function queryTransitous(searchText) {
         baseUrl,
         headers,
         stopId: location.id,
-      }),
-    ),
+      })),
   )
   modeResults.forEach((activeModes, index) => {
     locations[index].activeModes = activeModes

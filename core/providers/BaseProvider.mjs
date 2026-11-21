@@ -15,8 +15,7 @@ export default class BaseProvider {
         .map(entry =>
           String(entry || "")
             .trim()
-            .toLowerCase(),
-        )
+            .toLowerCase())
         .filter(Boolean)
     }
 
@@ -103,8 +102,7 @@ export default class BaseProvider {
 
     const unreachableIndexes = departures
       .map((departure, index) =>
-        departure.reachable === false ? index : -1,
-      )
+        departure.reachable === false ? index : -1)
       .filter(index => index >= 0)
 
     if (unreachableIndexes.length <= maxUnreachableDepartures) {
