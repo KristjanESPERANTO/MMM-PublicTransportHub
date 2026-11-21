@@ -53,11 +53,11 @@ describe("getEffectiveDepartureTimestamp", () => {
 })
 
 describe("normalizeFilterList", () => {
-  test("supports arrays and comma strings", () => {
+  test("normalizes arrays only", () => {
     const provider = new BaseProvider({})
 
     assert.deepEqual(provider.normalizeFilterList([" S1 ", "", "U2"]), ["s1", "u2"])
-    assert.deepEqual(provider.normalizeFilterList("  S1, U2 ,,Bus  "), ["s1", "u2", "bus"])
+    assert.deepEqual(provider.normalizeFilterList("S1, U2"), [])
     assert.deepEqual(provider.normalizeFilterList(null), [])
   })
 })
@@ -66,8 +66,8 @@ describe("finalizeDepartures", () => {
   test("applies replacements, filtering, sorting and maxDepartures", () => {
     const provider = new BaseProvider({
       maxDepartures: 2,
-      lineFilter: "u2",
-      directionFilter: "hauptbahnhof",
+      lineFilter: ["u2"],
+      directionFilter: ["hauptbahnhof"],
       replaceInDirections: {
         Hbf: "Hauptbahnhof",
       },
@@ -144,8 +144,8 @@ describe("finalizeDepartures", () => {
     const provider = new BaseProvider({
       maxDepartures: 10,
       lineFilter: ["m4", "tram"],
-      directionFilter: "center",
-      productFilter: "tram",
+      directionFilter: ["center"],
+      productFilter: ["tram"],
     })
 
     const departures = [
@@ -173,10 +173,51 @@ describe("finalizeDepartures", () => {
     assert.equal(result[0].direction, "City Center")
   })
 
+  test("excludes matching lines, directions and products", () => {
+    const provider = new BaseProvider({
+      maxDepartures: 10,
+      excludedLineFilter: ["s2"],
+      excludedDirectionFilter: ["airport"],
+      excludedProductFilter: ["bus"],
+      replaceInDirections: {
+        Terminal: "Airport",
+      },
+    })
+
+    const departures = [
+      {
+        rawWhen: isoInMinutes(5),
+        direction: "City Center",
+        line: { name: "S1", id: "s1", product: "suburban" },
+      },
+      {
+        rawWhen: isoInMinutes(6),
+        direction: "City Center",
+        line: { name: "S2", id: "s2", product: "suburban" },
+      },
+      {
+        rawWhen: isoInMinutes(7),
+        direction: "Terminal",
+        line: { name: "S1", id: "s1", product: "suburban" },
+      },
+      {
+        rawWhen: isoInMinutes(8),
+        direction: "City Center",
+        line: { name: "Bus S1", id: "s1-bus", product: "bus" },
+      },
+    ]
+
+    const result = provider.finalizeDepartures(departures)
+
+    assert.equal(result.length, 1)
+    assert.equal(result[0].line.name, "S1")
+    assert.equal(result[0].direction, "City Center")
+  })
+
   test("applies direction replacements before direction filtering", () => {
     const provider = new BaseProvider({
       maxDepartures: 10,
-      directionFilter: "hauptbahnhof",
+      directionFilter: ["hauptbahnhof"],
       replaceInDirections: {
         Hbf: "Hauptbahnhof",
       },
@@ -226,7 +267,7 @@ describe("finalizeDepartures", () => {
   test("lineFilter matches line.id independent of line.name", () => {
     const provider = new BaseProvider({
       maxDepartures: 10,
-      lineFilter: "m10",
+      lineFilter: ["m10"],
     })
 
     const departures = [
@@ -251,7 +292,7 @@ describe("finalizeDepartures", () => {
   test("handles missing line safely and keeps matching entries", () => {
     const provider = new BaseProvider({
       maxDepartures: 10,
-      lineFilter: "u2",
+      lineFilter: ["u2"],
     })
 
     const departures = [

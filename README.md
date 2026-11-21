@@ -103,6 +103,9 @@ npm ci --omit=dev
         lineFilter: ["S", "U2"],
         directionFilter: ["Potsdam", "Alexanderplatz"],
         productFilter: ["subway", "suburban"],
+        excludedLineFilter: ["S1E"],
+        excludedDirectionFilter: [],
+        excludedProductFilter: ["bus"],
         showDelay: false,
         showRealtimeIndicator: true,
         showRemarks: true,
@@ -147,9 +150,12 @@ npm ci --omit=dev
 | `excludeCanceled`          | `false`                                            | Exclude canceled departures.                                                                                                                                                                            |
 | `requestTimeoutMs`         | `12000`                                            | Per-fetch timeout in ms. Clamped to `1000-60000`.                                                                                                                                                       |
 | `fetchRetries`             | `1`                                                | Retry attempts after first try. Clamped to `0-5`.                                                                                                                                                       |
-| `lineFilter`               | `[]`                                               | Only include matching lines. Accepts array or comma-separated string.                                                                                                                                   |
-| `directionFilter`          | `[]`                                               | Only include matching directions. Accepts array or comma-separated string.                                                                                                                              |
-| `productFilter`            | `[]`                                               | Only include matching products. Accepts array or comma-separated string.                                                                                                                                |
+| `lineFilter`               | `[]`                                               | Only include matching lines. Accepts an array of strings.                                                                                                                                               |
+| `directionFilter`          | `[]`                                               | Only include matching directions. Accepts an array of strings.                                                                                                                                          |
+| `productFilter`            | `[]`                                               | Only include matching products. Accepts an array of strings.                                                                                                                                            |
+| `excludedLineFilter`       | `[]`                                               | Exclude matching lines after include filters. Accepts an array of strings.                                                                                                                              |
+| `excludedDirectionFilter`  | `[]`                                               | Exclude matching directions after replacements and include filters. Accepts an array of strings.                                                                                                        |
+| `excludedProductFilter`    | `[]`                                               | Exclude matching products after include filters. Accepts an array of strings.                                                                                                                           |
 | `replaceInDirections`      | `{}`                                               | String replacements before filtering/rendering directions.                                                                                                                                              |
 | `replaceInLineNames`       | `{}`                                               | String replacements before rendering line labels.                                                                                                                                                       |
 | `lineStylePreset`          | `"none"`                                           | `none`, `plain`, or city preset: `berlin`, `duesseldorf`, `graz`, `halle`, `hamburg`, `hannover`, `leipzig`, `magdeburg`, `munich`, `nuernberg`, `stuttgart`. Invalid values fall back to `none`.       |

@@ -60,7 +60,7 @@ test("TransitousProvider normalizes departure directions", async (context) => {
       { headsign: "", tripTo: { name: "Arcachon" } },
       { headsign: "", tripTo: { name: "Bordeaux" } },
     ], {
-      directionFilter: "Arcachon Central",
+      directionFilter: ["Arcachon Central"],
       replaceInDirections: {
         Arcachon: "Arcachon Central",
       },

@@ -112,17 +112,32 @@
     "lineFilter": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "Only include matching lines; a comma-separated string is also accepted"
+      "description": "Only include matching lines"
     },
     "directionFilter": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "Only include matching directions; a comma-separated string is also accepted"
+      "description": "Only include matching directions"
     },
     "productFilter": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "Only include matching products; a comma-separated string is also accepted"
+      "description": "Only include matching products"
+    },
+    "excludedLineFilter": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Exclude matching lines"
+    },
+    "excludedDirectionFilter": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Exclude matching directions"
+    },
+    "excludedProductFilter": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Exclude matching products"
     },
     "replaceInDirections": {
       "type": "object",

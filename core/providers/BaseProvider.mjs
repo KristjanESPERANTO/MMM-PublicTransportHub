@@ -10,23 +10,16 @@ export default class BaseProvider {
   }
 
   normalizeFilterList(value) {
-    if (Array.isArray(value)) {
-      return value
-        .map(entry =>
-          String(entry || "")
-            .trim()
-            .toLowerCase())
-        .filter(Boolean)
+    if (!Array.isArray(value)) {
+      return []
     }
 
-    if (typeof value === "string") {
-      return value
-        .split(",")
-        .map(entry => entry.trim().toLowerCase())
-        .filter(Boolean)
-    }
-
-    return []
+    return value
+      .map(entry =>
+        String(entry || "")
+          .trim()
+          .toLowerCase())
+      .filter(Boolean)
   }
 
   matchesAnyFilter(value, filterList) {
@@ -36,6 +29,10 @@ export default class BaseProvider {
 
     const haystack = String(value || "").toLowerCase()
     return filterList.some(needle => haystack.includes(needle))
+  }
+
+  matchesExcludedFilter(value, filterList) {
+    return filterList.length > 0 && this.matchesAnyFilter(value, filterList)
   }
 
   normalizeDirectionReplacements() {
@@ -132,6 +129,15 @@ export default class BaseProvider {
       this.config.directionFilter,
     )
     const productFilter = this.normalizeFilterList(this.config.productFilter)
+    const excludedLineFilter = this.normalizeFilterList(
+      this.config.excludedLineFilter,
+    )
+    const excludedDirectionFilter = this.normalizeFilterList(
+      this.config.excludedDirectionFilter,
+    )
+    const excludedProductFilter = this.normalizeFilterList(
+      this.config.excludedProductFilter,
+    )
     const maxUnreachableDepartures
       = Number.isFinite(this.config.maxUnreachableDepartures)
         ? Math.max(0, Math.floor(this.config.maxUnreachableDepartures))
@@ -164,8 +170,25 @@ export default class BaseProvider {
           directionFilter,
         )
         const productMatches = this.matchesAnyFilter(product, productFilter)
+        const lineExcluded = this.matchesExcludedFilter(
+          `${lineName} ${lineId}`,
+          excludedLineFilter,
+        )
+        const directionExcluded = this.matchesExcludedFilter(
+          direction,
+          excludedDirectionFilter,
+        )
+        const productExcluded = this.matchesExcludedFilter(
+          product,
+          excludedProductFilter,
+        )
 
-        return lineMatches && directionMatches && productMatches
+        return lineMatches
+          && directionMatches
+          && productMatches
+          && !lineExcluded
+          && !directionExcluded
+          && !productExcluded
       })
 
     this.serviceAlertDepartures = normalizedDepartures
