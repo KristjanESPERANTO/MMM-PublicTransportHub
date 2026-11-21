@@ -81,6 +81,17 @@ function toRemarks(alerts = []) {
   }))
 }
 
+function normalizeDirection(stopTime) {
+  const headsign = typeof stopTime.headsign === "string"
+    ? stopTime.headsign.trim()
+    : ""
+  const destination = typeof stopTime.tripTo?.name === "string"
+    ? stopTime.tripTo.name.trim()
+    : ""
+
+  return headsign || destination
+}
+
 function normalizeDeparture(stopTime) {
   const place = stopTime.place || {}
   const realTime = stopTime.realTime === true
@@ -112,7 +123,7 @@ function normalizeDeparture(stopTime) {
     rawPlannedWhen,
     realTime,
     delay,
-    direction: stopTime.headsign || "",
+    direction: normalizeDirection(stopTime),
     line: {
       id: stopTime.routeId || "",
       name: lineName,
