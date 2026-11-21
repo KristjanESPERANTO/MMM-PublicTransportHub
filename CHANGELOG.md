@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.18](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.17...v0.1.18) (2026-11-21)
+
+### Added
+
+* **filters:** add departure exclusion filters ([c6ee84b](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/c6ee84b4c6271f30abb3bf01b736f8599618fe5e))
+
+### Fixed
+
+* **ci:** update Node.js version to lts ([bb5b37f](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/bb5b37f996b02852e528454ef4025a064b141098))
+
 ## [0.1.17](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.16...v0.1.17) (2026-11-21)
 
 ### Fixed
