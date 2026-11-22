@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.19](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.18...v0.1.19) (2026-11-22)
+
+### Fixed
+
+* log successful departure fetches at debug level ([db64960](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/commit/db64960d82f8ba0a5e1261e3f7c96c1300b6e2b3))
+
 ## [0.1.18](https://github.com/KristjanESPERANTO/MMM-PublicTransportHub/compare/v0.1.17...v0.1.18) (2026-11-21)
 
 ### Added
