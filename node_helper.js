@@ -402,7 +402,7 @@ module.exports = NodeHelper.create({
       this.serviceAlertDetectors?.get(payload.identifier)?.process(
         provider.serviceAlertDepartures || departures,
       )
-      Log.info(`Fetched ${departures.length} departures ${context}`)
+      Log.debug(`Fetched ${departures.length} departures ${context}`)
       this.sendSocketNotification("PTH_DEPARTURES", {
         identifier: payload.identifier,
         departures,

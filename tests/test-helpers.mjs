@@ -37,6 +37,7 @@ export function loadNodeHelperModuleForTests(logger = {}) {
   Module._load = function mockLoad(request, parent, isMain) {
     if (request === "logger") {
       return {
+        debug() {},
         info() {},
         warn() {},
         error() {},
